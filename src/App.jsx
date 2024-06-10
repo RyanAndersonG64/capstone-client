@@ -5,6 +5,7 @@ import { useContext } from "react"
 
 function App() {
   const { auth } = useContext(AuthContext)
+  
   fetchUser({ auth })
         .then(response => {
             console.log('fetchUser response: ', response.data.first_name)
