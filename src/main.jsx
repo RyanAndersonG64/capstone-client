@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
@@ -16,12 +16,13 @@ import Header from './Header'
 import Footer from './Footer'
 import Login from './Login'
 import { AuthContext } from './context'
+import { UserContext } from './usercontext'
 import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import CreateNewUser from './CreateNewUser'
 import CoasterSelector from './CoasterSelector'
-
+import { Navigate } from 'react-router-dom'
 
 function Layout() {
   return (
@@ -35,6 +36,16 @@ function Layout() {
   )
 }
 
+const Protected = ({component}) => {
+  const { auth } = useContext(AuthContext)
+  return auth?.accessToken ? (
+    <>
+      {component}
+    </>
+  ) : (
+    <Navigate to="/" replace={true} />
+  )
+}
 
 const router = createBrowserRouter([
   {
@@ -43,7 +54,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/App',
-        element: <App />
+        element: <Protected component = {<App />} />
       },
       {
         path: '/',
@@ -57,7 +68,7 @@ const router = createBrowserRouter([
         path: '/coasterselector',
         element: <CoasterSelector />
       },
-    ]
+    ],
   }
 ])
 
@@ -77,10 +88,10 @@ const AuthContextProvider = ({ children }) => {
 }
 
 const UserContextProvider = ({ children }) => {
-  const [storedUser, setStoredUser] = useState(JSON.parse(localStorage.getItem('storedUser'))) 
+  const [currentUser, setCurrentUser] = useState([]) 
 
   return (
-    <UserContext.Provider value={{ storedUser, setStoredUser }}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </UserContext.Provider>
   )

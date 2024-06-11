@@ -1,25 +1,48 @@
 import { fetchCoasters, fetchUser, fetchParks } from "./api"
-import { AuthContext } from "./context"
 import { useContext, useEffect, useState } from "react"
-import LocationSelector from "./LocationSelector"
+import { useNavigate } from "react-router-dom"
+
+import { AuthContext } from "./context"
+import { UserContext } from "./usercontext"
 import { ParkContext } from "./parkcontext"
 import { CoasterContext } from "./coasterContext"
 
+import LocationSelector from "./LocationSelector"
+
 function App() {
+
   const { auth } = useContext(AuthContext)
   const {allParks, setAllParks} = useContext(ParkContext)
   const {allCoasters, setAllCoasters} = useContext(CoasterContext)
+  const {currentUser, setCurrentUser} = useContext(UserContext)
+  
+  const storedAuth = localStorage.getItem('authstorage')
 
 
-  // fetchUser({ auth })
-  //       .then(response => {
-  //           console.log('fetchUser response: ', response.data.first_name)
-            // set user once context or something is set up
-        // })
+  const navigate = useNavigate()
+
+  useEffect (
+        () => {
+            if (!auth.accessToken) {
+                auth.setAccessToken(storedAuth)
+              }
+            if (!currentUser) {
+              setCurrentUser(JSON.parse(localStorage.getItem('storedUser')))
+            }
+        },
+        []
+      )
+
+  fetchUser({ auth })
+        .then(response => {
+            console.log('fetchUser response: ', response.data)
+            localStorage.setItem('storedUser', JSON.stringify(response.data))
+            // setCurrentUser(response.data)
+        })
 
   useEffect(
     () => {
-      if (auth.accessToken) {
+      if (storedAuth !== '') {
           fetchParks ({ auth })
               .then(response => {
                   const parkJson = response.json()
@@ -38,8 +61,11 @@ function App() {
                 })
               })
       }
+      else {
+        navigate('/')
+      }
     },
-    [auth.accessToken]
+    []
   )
 
   return (

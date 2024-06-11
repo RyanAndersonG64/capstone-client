@@ -1,17 +1,33 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import LocationSelector from "./LocationSelector"
 import { AuthContext } from "./context"
 import { ParkContext } from "./parkcontext"
 import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
+import { UserContext } from "./usercontext"
 
 const CoasterSelector = () => {
 
     const { auth } = useContext(AuthContext)
     const {selectedPark, setSelectedPark} = useContext(ParkContext2)
     const {allCoasters, setAllCoasters} = useContext(CoasterContext)
+    const {currentUser, setCurrentUser} = useContext(UserContext)
     
+    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
+    const storedAuth = localStorage.getItem('authStorage')
 
+    useEffect (
+        () => {
+            if (!auth.accessToken) {
+                auth.setAccessToken(storedAuth)
+              }
+            setCurrentUser(storedUser)
+        },
+        [storedAuth]
+      )
+      
+    console.log('auth = ', auth)
+    console.log('stored user = ', storedUser)
 
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
 
