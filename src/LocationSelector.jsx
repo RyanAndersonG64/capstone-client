@@ -2,6 +2,7 @@ import { fetchCoasters, fetchUser, fetchParks } from "./api"
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "./context"
 import { ParkContext } from "./parkcontext"
+import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { all } from "axios"
 import { Link } from "react-router-dom"
@@ -11,10 +12,11 @@ const LocationSelector = () => {
     const { auth } = useContext(AuthContext)
     const {allParks, setAllParks} = useContext(ParkContext)
     const {allCoasters, setAllCoasters} = useContext(ParkContext)
-
+    const {selectedPark, setSelectedPark} = useContext(ParkContext2)
+    
     const [continent, setContinent] = useState([])
-    const [country, setCountry] = useState([])
-    const [parkState, setParkState] = useState(allParks)
+    const [parkState, setParkState] = useState([])
+    const [countryParks, setCountryParks] = useState([])
 
     
     const northAmerica = ['Canada', 'Costa Rica', 'Cuba', 'Dominican Republic', 'El Salvador', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Nicaragua', 'Panama', 'United States']
@@ -23,8 +25,6 @@ const LocationSelector = () => {
     const africa = ['Algeria', 'Angola', 'Botswana', "Côte d'Ivoire", 'Egypt', 'Ethiopia', 'Kenya', 'Libya', 'Madagascar', 'Malawi', 'Mauritius', 'Morocco', 'Mozambique', 'Nigeria', 'Rwanda', 'Senegal', 'Somalia', 'South Africa', 'Sudan', 'Tanzania', 'Togo', 'Tunisia', 'Uganda', 'Zambia', 'Zimbabwe']
     const asia = ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Brunei', 'Cambodia', 'China', 'Georgia', 'India', 'Indonesia', 'Iran', 'Iraq', 'Israel', 'Japan', 'Jordan', 'Kazakhstan', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Lebanon', 'Malaysia', 'Maldives', 'Mongolia', 'Myanmar', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palestine', 'Philippines', 'Qatar', 'Russia', 'Saudi Arabia', 'Singapore', 'South Korea', 'Sri Lanka', 'Syria', 'Taiwan', 'Tajikistan', 'Thailand', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen']
     const oceania = ['Australia', 'New Zealand']
-
-    
 
     return (
         <div>
@@ -55,8 +55,9 @@ const LocationSelector = () => {
                 
             </select>
 
-            <label htmlFor="countryFilter"> Country: </label>
+            <label style = {{ marginLeft: 20 }} htmlFor="countryFilter"> Country: </label>
             <select id = 'countries' name = 'countries' onChange={(e) => {
+                setCountryParks(allParks.filter((park) => park.country === e.target.value))
                 setParkState(allParks.filter((park) => park.country === e.target.value))
                 console.log(parkState)
             }}>
@@ -69,11 +70,23 @@ const LocationSelector = () => {
 
             </select>
 
+            <br></br><br></br>
+
+            <input style = {{ marginLeft: 20 }}
+                type = 'text'
+                onChange={(e) => {
+                    setParkState(countryParks.filter((park) => park.name.toLowerCase().includes(e.target.value.toLowerCase())))
+                }
+                }
+            >
+                
+            </input>
+
             <br></br><br></br><br></br>
 
             {parkState.map(park => (
                 <div key = {park.id}>
-                    <Link  to='/coasterselector'>{park.name}</Link>
+                    <Link to='/coasterselector' onClick = {() => setSelectedPark(park)}>{park.name}</Link>
                 </div>
             ))}
 

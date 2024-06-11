@@ -51,21 +51,7 @@ export const createUser = ({ username, password, firstName, lastName }) => {
   })
 }
 
-// export const fetchCoasters = ({ auth }) => {
-//   return axios({
-//     method: 'get',
-//     url: 'https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters-raw.json',
-//     headers: {
-//       Authorization: `Bearer ${auth.accessToken}`
-//     }
-//   }).then(response => {
-//     console.log('fetch coasters response : ', response)
-//     return response
-//   })
-//   .catch(error => {
-//     console.log('fetch coasters error: ', error)
-//   })
-// }
+
 
 export const fetchCoasters = ({ auth }) => {
  return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')

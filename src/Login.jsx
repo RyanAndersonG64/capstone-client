@@ -17,6 +17,7 @@ function Login() {
      const response = await getToken({ auth, username, password })
      if (response.data.access) {
       navigate('/app')
+      localStorage.setItem('storedUser', auth)
      }
     }
     catch (error) {

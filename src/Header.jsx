@@ -9,7 +9,9 @@ function Header() {
       <Link style={{ marginRight: 20 }} to='/'>Social</Link>
       <Link style={{ marginRight: 20 }} to='/'>Forum </Link>
       <Link style={{ marginRight: 20 }} to='/'>Image Gallery </Link> */}
-      <Link style={{ marginRight: 20 }} to='/'>Login</Link>
+      <Link style={{ marginRight: 20 }}
+      //  onClick={localStorage.setItem('currentUser', [])}
+       to='/'>Log out</Link>
     </div>
   )
 }

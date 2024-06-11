@@ -10,15 +10,12 @@ function App() {
   const {allParks, setAllParks} = useContext(ParkContext)
   const {allCoasters, setAllCoasters} = useContext(CoasterContext)
 
-  const [coasterData, setCoasterData] = useState([])
-  const [parkData, setParkData] = useState([])
-  const [parkState, setParkState] = useState([])
 
-  fetchUser({ auth })
-        .then(response => {
-            console.log('fetchUser response: ', response.data.first_name)
+  // fetchUser({ auth })
+  //       .then(response => {
+  //           console.log('fetchUser response: ', response.data.first_name)
             // set user once context or something is set up
-        })
+        // })
 
   useEffect(
     () => {

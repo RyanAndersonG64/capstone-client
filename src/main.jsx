@@ -17,8 +17,10 @@ import Footer from './Footer'
 import Login from './Login'
 import { AuthContext } from './context'
 import { ParkContext } from './parkcontext'
+import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import CreateNewUser from './CreateNewUser'
+import CoasterSelector from './CoasterSelector'
 
 
 function Layout() {
@@ -74,6 +76,17 @@ const AuthContextProvider = ({ children }) => {
   )
 }
 
+const UserContextProvider = ({ children }) => {
+  const [storedUser, setStoredUser] = useState(JSON.parse(localStorage.getItem('storedUser'))) 
+
+  return (
+    <UserContext.Provider value={{ storedUser, setStoredUser }}>
+      {children}
+    </UserContext.Provider>
+  )
+
+}
+
 const ParkContextProvider = ({ children }) => {
   const [allParks, setAllParks] = useState([])
 
@@ -82,6 +95,17 @@ const ParkContextProvider = ({ children }) => {
       {children}
     </ParkContext.Provider>
   )
+}
+
+const ParkContext2Provider = ({ children }) => {
+  const[selectedPark, setSelectedPark] = useState([])
+
+  return (
+    <ParkContext2.Provider value = {{ selectedPark, setSelectedPark }}>
+      {children}
+    </ParkContext2.Provider>
+  )
+
 }
 
 const CoasterContextProvider = ({ children }) => {
@@ -96,10 +120,14 @@ const CoasterContextProvider = ({ children }) => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
-    <ParkContextProvider>
-      <CoasterContextProvider>
-      <RouterProvider router={router} />
-      </CoasterContextProvider>
-    </ParkContextProvider>
+    <UserContextProvider>
+      <ParkContextProvider>
+        <ParkContext2Provider>
+          <CoasterContextProvider>
+            <RouterProvider router={router} />
+          </CoasterContextProvider>
+        </ParkContext2Provider>
+      </ParkContextProvider>
+    </UserContextProvider>
   </AuthContextProvider>
 )
