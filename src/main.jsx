@@ -16,6 +16,8 @@ import Header from './Header'
 import Footer from './Footer'
 import Login from './Login'
 import { AuthContext } from './context'
+import { ParkContext } from './parkcontext'
+import { CoasterContext } from './coasterContext'
 import CreateNewUser from './CreateNewUser'
 
 
@@ -49,6 +51,10 @@ const router = createBrowserRouter([
         path: '/createnewuser',
         element: <CreateNewUser />
       },
+      {
+        path: '/coasterselector',
+        element: <CoasterSelector />
+      },
     ]
   }
 ])
@@ -68,8 +74,32 @@ const AuthContextProvider = ({ children }) => {
   )
 }
 
+const ParkContextProvider = ({ children }) => {
+  const [allParks, setAllParks] = useState([])
+
+  return (
+    <ParkContext.Provider value = {{ allParks, setAllParks }}>
+      {children}
+    </ParkContext.Provider>
+  )
+}
+
+const CoasterContextProvider = ({ children }) => {
+  const [allCoasters, setAllCoasters] = useState([])
+
+  return (
+    <CoasterContext.Provider value = {{ allCoasters, setAllCoasters }}>
+      {children}
+    </CoasterContext.Provider>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
-    <RouterProvider router={router} />
+    <ParkContextProvider>
+      <CoasterContextProvider>
+      <RouterProvider router={router} />
+      </CoasterContextProvider>
+    </ParkContextProvider>
   </AuthContextProvider>
 )

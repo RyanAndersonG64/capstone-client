@@ -1,84 +1,84 @@
 import { fetchCoasters, fetchUser, fetchParks } from "./api"
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "./context"
+import { ParkContext } from "./parkcontext"
+import { CoasterContext } from "./coasterContext"
+import { all } from "axios"
+import { Link } from "react-router-dom"
 
 const LocationSelector = () => {
-
-    const { auth } = useContext(AuthContext)
-    const [parkData, setParkData] = useState([])
-    const [parkState, setParkState] = useState([])
     
-    const peruLocations = ['La Libertad', 'Lima Province']
-    const brazilLocations = ['São Paulo', 'Rio De Janeiro']
+    const { auth } = useContext(AuthContext)
+    const {allParks, setAllParks} = useContext(ParkContext)
+    const {allCoasters, setAllCoasters} = useContext(ParkContext)
 
-    const belgiumLocations = ['Flemish Region', 'Wallonia']
-    const netherlandsLocations = ['Drenthe']
-    const spainLocations = ['Andalusia', 'Aragon', 'Basque Country', 'Canary Islands', 'Catalonia', 'Community of Madrid', 'Galicia', 'Navarre', 'Valencian Community']
-    const turkeyLocations = ['Istanbul', 'İzmir']
-    const ukLocations = ['England', 'Scotland', 'Wales', 'Northern Ireland', 'Isle of Man']
+    const [continent, setContinent] = useState([])
+    const [country, setCountry] = useState([])
+    const [parkState, setParkState] = useState(allParks)
 
-    const tanzaniaLocations = ['Dar es Salaam']
+    
+    const northAmerica = ['Canada', 'Costa Rica', 'Cuba', 'Dominican Republic', 'El Salvador', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Nicaragua', 'Panama', 'United States']
+    const southAmerica = ['Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'Paraguay', 'Peru', 'Trinidad and Tobago', 'Uruguay', 'Venezuela']
+    const europe = ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Kosovo', 'Latvia', 'Lithuania', 'Malta', 'Moldova', 'Montenegro', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Serbia', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom']
+    const africa = ['Algeria', 'Angola', 'Botswana', "Côte d'Ivoire", 'Egypt', 'Ethiopia', 'Kenya', 'Libya', 'Madagascar', 'Malawi', 'Mauritius', 'Morocco', 'Mozambique', 'Nigeria', 'Rwanda', 'Senegal', 'Somalia', 'South Africa', 'Sudan', 'Tanzania', 'Togo', 'Tunisia', 'Uganda', 'Zambia', 'Zimbabwe']
+    const asia = ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Brunei', 'Cambodia', 'China', 'Georgia', 'India', 'Indonesia', 'Iran', 'Iraq', 'Israel', 'Japan', 'Jordan', 'Kazakhstan', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Lebanon', 'Malaysia', 'Maldives', 'Mongolia', 'Myanmar', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palestine', 'Philippines', 'Qatar', 'Russia', 'Saudi Arabia', 'Singapore', 'South Korea', 'Sri Lanka', 'Syria', 'Taiwan', 'Tajikistan', 'Thailand', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen']
+    const oceania = ['Australia', 'New Zealand']
 
-    const indiaLocations = ['Karnataka']
-    const koreaLocations = ['Seoul', 'Gyeongsangnam-do']
-    const japanLocations = ['Yamaguchi','Wakayama', 'Tokyo', 'Tochigi', 'Shizuoka', 'Saitama', 'Osaka', 'Ōita', 'Niigata', 'Kumamoto', 'Kanagawa', 'Hyōgo', 'Hokkaido', 'Hiroshima', 'Gunma', 'Gifu', 'Fukuoka', 'Aichi']
-    const chinaLocations = ['Anhui', 'Fujian', 'Gansu', 'Guangdong', 'Guangxi', 'Guizhou', 'Hainan', 'Hebei', 'Heilongjiang', 'Henan', 'Hubei', 'Hunan', 'Jiangsu', 'Jiangxi', 'Jilin', 'Liaoning', 'Nei Mongol', 'Ningxia Hui', 'Qinghai', 'Shaanxi', 'Shandong', 'Shanxi', 'Sichuan', 'Xinjiang Uygur', 'Xizang', 'Yunnan', 'Zhejiang']
+    
 
-    // useEffect(
-    //     () => {
-    // const initialParkData = fetchParks ({ auth })
-                fetchParks ({ auth })
-                    .then(response => {
-                        const parkJson = response.json()
-                        .then(parkJson => {
-                        console.log('Fetch parks Success')
-                        console.log('fetch parks response 2 = ', parkJson)
-                        setParkData(parkJson)
-                        })
-                    })
-                    .catch(error => console.log('Fetch parks Failure: ', error))
-    // initialParkData()
-            
-    //     },
-    //     []
-    //   )
+    return (
+        <div>
+            <label htmlFor="continentFilter"> Continent: </label>
+            <select id = 'continents' name = 'continents' onChange = {(e) => {
+                if (e.target.value === 'North America') {
+                    setContinent(northAmerica)
+                } else if (e.target.value === 'South America') {
+                    setContinent(southAmerica)
+                } else if (e.target.value === 'Europe') {
+                    setContinent(europe)
+                } else if (e.target.value === 'Africa') {
+                    setContinent(africa)
+                } else if (e.target.value === 'Asia') {
+                    setContinent(asia)
+                } else if (e.target.value === 'Oceania') {
+                    setContinent(oceania)
+                }
 
-    const updatedCountries = parkData.map(park => {
-        if (peruLocations.includes(park.country)) {
-            park.country = 'Peru'
-            console.log(park)
-        } else if (brazilLocations.includes(park.country)) {
-            park.country = 'Brazil'
-        } else if (belgiumLocations.includes(park.country)) {
-            park.country = 'Belgium'
-        } else if (netherlandsLocations.includes(park.country)) {
-            park.country = 'Netherlands'
-        } else if (spainLocations.includes(park.country)) {
-            park.country = 'Spain'
-        } else if (turkeyLocations.includes(park.country)) {
-            park.country = 'Turkey'
-        } else if (ukLocations.includes(park.country)) {
-            park.country = 'United Kingdom'
-        } else if (tanzaniaLocations.includes(park.country)) {
-            park.country = 'Tanzania'
-        } else if (indiaLocations.includes(park.country)) {
-            park.country = 'India'
-        } else if (koreaLocations.includes(park.country)) {
-            park.country = 'South Korea'
-        } else if (japanLocations.includes(park.country)) {
-            park.country = 'Japan'
-        } else if (chinaLocations.includes(park.country)) {
-            park.country = 'China'
-        } else if (oark.country === '') {
-            park.country = park.state
-        }
-    })
+            }}>
+                <option value = ''> --- </option>
+                <option value = 'North America'>North America</option>
+                <option value = 'South America'>South America</option>
+                <option value = 'Europe'>Europe</option>
+                <option value = 'Africa'>Africa</option>
+                <option value = 'Asia'>Asia</option>
+                <option value = 'Oceania'>Oceania</option>
+                
+            </select>
 
-    setParkData(updatedCountries)
+            <label htmlFor="countryFilter"> Country: </label>
+            <select id = 'countries' name = 'countries' onChange={(e) => {
+                setParkState(allParks.filter((park) => park.country === e.target.value))
+                console.log(parkState)
+            }}>
+                <option value = ''> --- </option>
+                {continent.map(country => {
+                    return (
+                        <option key = {continent.indexOf(country)} value = {country}> {country} </option>
+                    )
+                })}
 
-    // return (
+            </select>
 
-    // )
+            <br></br><br></br><br></br>
+
+            {parkState.map(park => (
+                <div key = {park.id}>
+                    <Link  to='/coasterselector'>{park.name}</Link>
+                </div>
+            ))}
+
+        </div>
+    )
 
 }
 
