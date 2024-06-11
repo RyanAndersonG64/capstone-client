@@ -16,7 +16,7 @@ export const getToken = ({ auth, username, password }) => {
 }
 
 export const fetchUser = ({ auth }) => {
-  axios({
+  return axios({
     method: 'get',
     url: `${baseUrl}/profile/`, 
     headers: {
@@ -33,7 +33,7 @@ export const fetchUser = ({ auth }) => {
 }
 
 export const createUser = ({ username, password, firstName, lastName }) => {
-  axios({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-user/`, 
     data: {
@@ -68,15 +68,25 @@ export const createUser = ({ username, password, firstName, lastName }) => {
 // }
 
 export const fetchCoasters = ({ auth }) => {
-  fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')
+ return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+    console.log('fetch coasters response 1 = ', response)
     return response
   })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => console.error('Error:', error));
+  .catch(error => console.error('fetch coasters Error:', error));
 }
+
+export const fetchParks = ({ auth }) => {
+  return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/theme-parks.json')
+   .then(response => {
+     if (!response.ok) {
+       throw new Error('Network response was not ok');
+     }
+     console.log('fetch parks response 1 = ', response)
+     return response
+   })
+   .catch(error => console.error('fetch parks Error:', error));
+ }
