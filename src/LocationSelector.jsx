@@ -59,7 +59,6 @@ const LocationSelector = () => {
             <select id = 'countries' name = 'countries' onChange={(e) => {
                 setCountryParks(allParks.filter((park) => park.country === e.target.value))
                 setParkState(allParks.filter((park) => park.country === e.target.value))
-                console.log(parkState)
             }}>
                 <option value = ''> --- </option>
                 {continent.map(country => {
@@ -86,7 +85,10 @@ const LocationSelector = () => {
 
             {parkState.map(park => (
                 <div key = {park.id}>
-                    <Link to='/coasterselector' onClick = {() => setSelectedPark(park)}>{park.name}</Link>
+                    <Link to='/coasterselector' onClick = {() => {
+                        setSelectedPark(park)
+                        localStorage.setItem('storedPark', JSON.stringify(park))
+                        }}>{park.name}</Link>
                 </div>
             ))}
 

@@ -25,26 +25,17 @@ function App() {
 
   useEffect (
         () => {
+          
               auth.setAccessToken(authStorage)
-              console.log('auth = ', auth.accessToken)
-            
               setCurrentUser(storedUser)
-              console.log('currentUser = ', currentUser) 
-              
-              console.log('authStorage = ', authStorage)
-              console.log('storedUser = ', storedUser)
+
         },
         []
       )
 
-  // fetchUser({ auth })
-  // .then(response => {
-  //   console.log('fetchUser response: ', response.data)
-  //   localStorage.setItem('storedUser', JSON.stringify(response.data))
-  //   setCurrentUser(response.data)
-  //   })
 
-  useEffect(
+
+  useEffect (
     () => {
       if (authStorage !== '') { //change back to if (auth.AccessToken)
           fetchParks ({ auth })
@@ -55,13 +46,6 @@ function App() {
                   })
               })
               .catch(error => console.log('Fetch parks Failure: ', error))
-          fetchCoasters ({ auth })
-              .then(response => {
-                const coasterJson = response.json()
-                .then(coasterJson => {
-                  setAllCoasters(coasterJson)
-                })
-              })
       }
       else {
         navigate('/')

@@ -130,8 +130,15 @@ const ParkContextProvider = ({ children }) => {
   )
 }
 
+const initialPark = () => {
+  const storedPark = localStorage.getItem('storedPark')
+  return (
+    storedPark ? storedPark : []
+  )
+}
+
 const ParkContext2Provider = ({ children }) => {
-  const[selectedPark, setSelectedPark] = useState([])
+  const[selectedPark, setSelectedPark] = useState(initialPark)
 
   return (
     <ParkContext2.Provider value = {{ selectedPark, setSelectedPark }}>
@@ -141,8 +148,15 @@ const ParkContext2Provider = ({ children }) => {
 
 }
 
+const initialCoasters = () => {
+  const storedCoasters = localStorage.getItem('storedCoasters')
+  return (
+    storedCoasters ? storedCoasters : []
+  )
+}
+
 const CoasterContextProvider = ({ children }) => {
-  const [allCoasters, setAllCoasters] = useState([])
+  const [allCoasters, setAllCoasters] = useState(initialCoasters)
 
   return (
     <CoasterContext.Provider value = {{ allCoasters, setAllCoasters }}>

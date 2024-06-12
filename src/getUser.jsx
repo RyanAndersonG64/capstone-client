@@ -13,7 +13,6 @@ function GetUser () {
 
     fetchUser({ auth })
         .then(response => {
-        console.log('fetchUser response: ', response.data)
         localStorage.setItem('storedUser', JSON.stringify(response.data))
         setCurrentUser(response.data)
         navigate('/app')

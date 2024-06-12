@@ -5,6 +5,8 @@ import { ParkContext } from "./parkcontext"
 import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
+import { useNavigate } from "react-router-dom"
+import { fetchParks, fetchCoasters } from "./api"
 
 const CoasterSelector = () => {
 
@@ -15,20 +17,40 @@ const CoasterSelector = () => {
     
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
+    const storedPark = JSON.parse(localStorage.getItem('storedPark'))
+    const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
 
-    useEffect (
+    const navigate = useNavigate()
+
+  useEffect (
         () => {
-            if (!auth.accessToken) {
-                auth.setAccessToken(authStorage)
-              }
-            setCurrentUser(storedUser)
-        },
-        [authStorage]
-      )
-      
-    console.log('auth = ', auth)
-    console.log('stored user = ', storedUser)
 
+              auth.setAccessToken(authStorage)
+              setCurrentUser(storedUser)
+              setSelectedPark(storedPark)
+        },
+        []
+      )
+
+      useEffect (
+        () => {
+          if (authStorage !== '') { //change back to if (auth.AccessToken)
+              fetchCoasters ({ auth })
+                  .then(response => {
+                    const coasterJson = response.json()
+                    .then(coasterJson => {
+                      setAllCoasters(coasterJson)
+                    })
+                  })
+          }
+          else {
+            navigate('/')
+          }
+        },
+        []
+      )
+    
+    
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
 
 

@@ -19,7 +19,6 @@ function Login() {
     try {
      const response = await getToken({ auth, username, password })
      if (response.data.access) {
-      console.log('access response = ', response.data)
        localStorage.setItem('authStorage', response.data.access)
        navigate('/getuser')
       }
