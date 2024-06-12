@@ -7,6 +7,7 @@ import { UserContext } from "./usercontext"
 import { ParkContext } from "./parkcontext"
 import { CoasterContext } from "./coasterContext"
 
+import GetUser from "./getUser"
 import LocationSelector from "./LocationSelector"
 
 function App() {
@@ -17,28 +18,31 @@ function App() {
   const {currentUser, setCurrentUser} = useContext(UserContext)
   
   const storedAuth = localStorage.getItem('authstorage')
+  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
 
   const navigate = useNavigate()
 
   useEffect (
         () => {
-            if (!auth.accessToken) {
-                auth.setAccessToken(storedAuth)
-              }
-            if (!currentUser) {
-              setCurrentUser(JSON.parse(localStorage.getItem('storedUser')))
-            }
+              auth.setAccessToken(storedAuth)
+              console.log('auth = ', auth.accessToken)
+            
+              setCurrentUser(storedUser)
+              console.log('currentUser = ', currentUser) 
+              
+              console.log('authStorage = ', storedAuth)
+              console.log('storedUser = ', storedUser)
         },
         []
       )
 
-  fetchUser({ auth })
-        .then(response => {
-            console.log('fetchUser response: ', response.data)
-            localStorage.setItem('storedUser', JSON.stringify(response.data))
-            // setCurrentUser(response.data)
-        })
+  // fetchUser({ auth })
+  // .then(response => {
+  //   console.log('fetchUser response: ', response.data)
+  //   localStorage.setItem('storedUser', JSON.stringify(response.data))
+  //   setCurrentUser(response.data)
+  //   })
 
   useEffect(
     () => {
@@ -47,7 +51,6 @@ function App() {
               .then(response => {
                   const parkJson = response.json()
                   .then(parkJson => {
-                    console.log('fetch parks response 2 = ', parkJson)
                     setAllParks(parkJson)
                   })
               })
@@ -56,7 +59,6 @@ function App() {
               .then(response => {
                 const coasterJson = response.json()
                 .then(coasterJson => {
-                  console.log('fetch coasters response 2 = ', coasterJson)
                   setAllCoasters(coasterJson)
                 })
               })

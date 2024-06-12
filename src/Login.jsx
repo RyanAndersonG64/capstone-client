@@ -1,26 +1,27 @@
 import React, { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./context"
-// import { UserContext }from './usercontext'
+import { UserContext }from './usercontext'
 import { getToken, fetchUser } from "./api"
 import CreateNewUser from "./CreateNewUser"
 
 
 function Login() {
   const { auth } = useContext(AuthContext)
+  const {currentUser, setCurrentUser} = useContext(UserContext)
+  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  // const [storedUser, setStoredUser] = useContext(UserContext)
 
 
   const submit = async () => {
     try {
      const response = await getToken({ auth, username, password })
      if (response.data.access) {
-      navigate('/app')
-      localStorage.setItem('authStorage', response.data.access)
-     }
+       localStorage.setItem('authStorage', JSON.stringify(response.data.access))
+       navigate('/getuser')
+      }
     }
     catch (error) {
       console.log ('log in error: ', error)

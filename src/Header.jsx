@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom"
+import { AuthContext } from "./context"
+import { useContext } from "react"
+import { UserContext } from "./usercontext"
 
 function Header() {
 
-  const currentUser = localStorage.getItem('storedUser')
-  const currentAuth = localStorage.getItem('authStorage')
+  const { auth } = useContext(AuthContext)
+  const {currentUser, setCurrentUser} = useContext(UserContext)
 
   return (
     <div style={{ margin: 10 }}>
@@ -15,8 +18,10 @@ function Header() {
       <Link style={{ marginRight: 20 }} to='/'>Image Gallery </Link> */}
       <Link style={{ marginRight: 20 }}
        onClick={() => {
-        localStorage.setItem('storedUser', [])
+        localStorage.setItem('storedUser', '')
         localStorage.setItem('authStorage', '')
+        auth.setAccessToken(undefined)
+        setCurrentUser(null)
       }}
        to='/'>Log out</Link>
     </div>

@@ -15,6 +15,7 @@ import ErrorPage from './ErrorPage'
 import Header from './Header'
 import Footer from './Footer'
 import Login from './Login'
+import GetUser from './getUser'
 import { AuthContext } from './context'
 import { UserContext } from './usercontext'
 import { ParkContext } from './parkcontext'
@@ -54,11 +55,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/App',
-        element: <Protected component = {<App />} />
+        // element: <Protected component = {<App />} />
+        element: <App />
       },
       {
         path: '/',
         element: <Login />
+      },
+      {
+        path: 'getuser',
+        element: <GetUser />
       },
       {
         path: '/createnewuser',
@@ -88,7 +94,7 @@ const AuthContextProvider = ({ children }) => {
 }
 
 const UserContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState([]) 
+  const [currentUser, setCurrentUser] = useState(null) 
 
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>

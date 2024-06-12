@@ -59,7 +59,6 @@ export const fetchCoasters = ({ auth }) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    console.log('fetch coasters response 1 = ', response)
     return response
   })
   .catch(error => console.error('fetch coasters Error:', error));
@@ -71,7 +70,6 @@ export const fetchParks = ({ auth }) => {
      if (!response.ok) {
        throw new Error('Network response was not ok');
      }
-     console.log('fetch parks response 1 = ', response)
      return response
    })
    .catch(error => console.error('fetch parks Error:', error));
