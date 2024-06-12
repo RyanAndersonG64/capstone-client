@@ -92,6 +92,10 @@ const PersonalRanking = () => {
                                 let coasterNames = allCoasters.map(coaster => coaster.name)
                                 if (coasterNames.includes(inputValue)) {
                                     setFavorite ({ auth, id: currentUser.id, coaster: inputValue, rank: number })
+                                    .then(response => {
+                                        setCurrentUser(response.data)
+                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                })
                                 } else {
                                     alert('You have not ridden a coaster with that name. Note that name entries are case-sensitive')
                                 }
