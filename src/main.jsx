@@ -10,20 +10,27 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
-import App from './App'
-import ErrorPage from './ErrorPage'
-import Header from './Header'
-import Footer from './Footer'
-import Login from './Login'
-import GetUser from './getUser'
+import { Navigate } from 'react-router-dom'
 import { AuthContext } from './context'
 import { UserContext } from './usercontext'
 import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
+
+import ErrorPage from './ErrorPage'
+
+import Header from './Header'
+import Footer from './Footer'
+
 import CreateNewUser from './CreateNewUser'
+import Login from './Login'
+import GetUser from './getUser'
+
+import App from './App'
 import CoasterSelector from './CoasterSelector'
-import { Navigate } from 'react-router-dom'
+import Profile from './Profile'
+import PersonalRanking from './PersonalRanking'
+
 
 function Layout() {
   return (
@@ -54,9 +61,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/App',
-        element: <Protected component = {<App />} />
-        // element: <App />
+        path: '/createnewuser',
+        element: <CreateNewUser />
       },
       {
         path: '/',
@@ -64,16 +70,20 @@ const router = createBrowserRouter([
       },
       {
         path: 'getuser',
-        element: <GetUser />
+        element: <Protected component = {<GetUser />} />
       },
       {
-        path: '/createnewuser',
-        element: <CreateNewUser />
+        path: '/App',
+        element: <Protected component = {<App />} />
       },
       {
         path: '/coasterselector',
-        element: <CoasterSelector />
+        element: <Protected component = {<CoasterSelector />} />
       },
+      {
+        path: '/profile',
+        element: <Protected component = {<Profile />} />
+      }
     ],
   }
 ])
@@ -102,7 +112,7 @@ const AuthContextProvider = ({ children }) => {
 }
 
 const initialUser = () => {
-  const storedUser = localStorage.getItem('storedUser')
+  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
   return (
     storedUser ? storedUser : []
   )

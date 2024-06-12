@@ -37,7 +37,7 @@ function App() {
 
   useEffect (
     () => {
-      if (authStorage !== '') { //change back to if (auth.AccessToken)
+      if (auth.accessToken) {
           fetchParks ({ auth })
               .then(response => {
                   const parkJson = response.json()

@@ -34,7 +34,7 @@ const CoasterSelector = () => {
 
       useEffect (
         () => {
-          if (authStorage !== '') { //change back to if (auth.AccessToken)
+          if (auth.accessToken) {
               fetchCoasters ({ auth })
                   .then(response => {
                     const coasterJson = response.json()
