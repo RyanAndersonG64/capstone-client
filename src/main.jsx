@@ -83,7 +83,11 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Protected component = {<Profile />} />
-      }
+      },
+      {
+        path: '/personalranking',
+        element: <Protected component = {<PersonalRanking />} />
+      },
     ],
   }
 ])

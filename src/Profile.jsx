@@ -8,7 +8,7 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 
-import { PersonalRanking } from "./PersonalRanking"
+import PersonalRanking from "./PersonalRanking"
 
 const Profile = () => {
 

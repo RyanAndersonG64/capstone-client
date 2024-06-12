@@ -108,3 +108,18 @@ export const removeCredit = ({ auth, userId, coasterId }) => {
     }
   })
 }
+
+export const setFavorite = ({ auth, id, coaster, rank }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/set-favorite/`,
+    data: {
+      id,
+      coaster,
+      rank
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+}
