@@ -6,7 +6,7 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 import { useNavigate } from "react-router-dom"
-import { fetchParks, fetchCoasters } from "./api"
+import { fetchParks, fetchCoasters,addCredit, removeCredit } from "./api"
 
 const CoasterSelector = () => {
 
@@ -60,7 +60,27 @@ const CoasterSelector = () => {
             {coastersAtPark.map(coaster => {
                 return (
                     <div key = {coaster.id}>
-                        <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} />
+                        <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
+                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
+                            onChange={(e) => {
+                                if (e.target.checked === true) {
+                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                            .then(response => {
+                                                setCurrentUser(response.data)
+                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        })
+                                            .catch(error => console.log('addCredit failure: ', error))
+                                } else if (e.target.checked === false) {
+                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                    .then(response => {
+                                        setCurrentUser(response.data)
+                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                })
+                                    .catch(error => console.log('removeCredit failure: ', error))
+                                }
+                            }
+                        }
+                        />
                         {coaster.name}
                     </div>
                 )

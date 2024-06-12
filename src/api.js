@@ -2,6 +2,8 @@ import axios from 'axios'
 
 const baseUrl = "http://127.0.0.1:8000"
 
+// -- Authentication -- 
+
 export const getToken = ({ auth, username, password }) => {
   return axios.post(`${baseUrl}/token/`, {
     username: username,
@@ -52,6 +54,7 @@ export const createUser = ({ username, password, firstName, lastName }) => {
 }
 
 
+// -- fetching GitHub API data --
 
 export const fetchCoasters = ({ auth }) => {
  return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')
@@ -74,3 +77,34 @@ export const fetchParks = ({ auth }) => {
    })
    .catch(error => console.error('fetch parks Error:', error));
  }
+
+
+// -- CRUD on Django database --
+
+export const addCredit = ({ auth, userId, coasterId }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/add-credit/`,
+    data: {
+      user_id: userId,
+      coaster_id: coasterId,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+}
+
+export const removeCredit = ({ auth, userId, coasterId }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/remove-credit/`,
+    data: {
+      user_id: userId,
+      coaster_id: coasterId,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+}
