@@ -17,7 +17,7 @@ function App() {
   const {allCoasters, setAllCoasters} = useContext(CoasterContext)
   const {currentUser, setCurrentUser} = useContext(UserContext)
   
-  const storedAuth = localStorage.getItem('authstorage')
+  const authStorage = localStorage.getItem('authStorage')
   const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
 
@@ -25,13 +25,13 @@ function App() {
 
   useEffect (
         () => {
-              auth.setAccessToken(storedAuth)
+              auth.setAccessToken(authStorage)
               console.log('auth = ', auth.accessToken)
             
               setCurrentUser(storedUser)
               console.log('currentUser = ', currentUser) 
               
-              console.log('authStorage = ', storedAuth)
+              console.log('authStorage = ', authStorage)
               console.log('storedUser = ', storedUser)
         },
         []
@@ -46,7 +46,7 @@ function App() {
 
   useEffect(
     () => {
-      if (storedAuth !== '') {
+      if (authStorage !== '') { //change back to if (auth.AccessToken)
           fetchParks ({ auth })
               .then(response => {
                   const parkJson = response.json()

@@ -55,8 +55,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/App',
-        // element: <Protected component = {<App />} />
-        element: <App />
+        element: <Protected component = {<App />} />
+        // element: <App />
       },
       {
         path: '/',
@@ -78,8 +78,16 @@ const router = createBrowserRouter([
   }
 ])
 
+const initialAuth = () => {
+  const storedAuth = localStorage.getItem('authStorage')
+  return (
+    storedAuth ? storedAuth : undefined
+  )
+}
+
 const AuthContextProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(undefined)
+
+  const [accessToken, setAccessToken] = useState(initialAuth)
   
   const auth = {
     accessToken,
@@ -93,8 +101,16 @@ const AuthContextProvider = ({ children }) => {
   )
 }
 
+const initialUser = () => {
+  const storedUser = localStorage.getItem('storedUser')
+  return (
+    storedUser ? storedUser : []
+  )
+}
+
+
 const UserContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null) 
+  const [currentUser, setCurrentUser] = useState(initialUser) 
 
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>

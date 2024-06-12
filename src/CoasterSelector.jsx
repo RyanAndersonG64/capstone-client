@@ -14,16 +14,16 @@ const CoasterSelector = () => {
     const {currentUser, setCurrentUser} = useContext(UserContext)
     
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const storedAuth = localStorage.getItem('authStorage')
+    const authStorage = localStorage.getItem('authStorage')
 
     useEffect (
         () => {
             if (!auth.accessToken) {
-                auth.setAccessToken(storedAuth)
+                auth.setAccessToken(authStorage)
               }
             setCurrentUser(storedUser)
         },
-        [storedAuth]
+        [authStorage]
       )
       
     console.log('auth = ', auth)
