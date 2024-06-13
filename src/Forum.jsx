@@ -109,9 +109,9 @@ const Forum = () => {
                 if (e.target.value === 'All Posts') {
                         setPostState(allPosts)
                 } else if (e.target.value === 'Your Posts') {
-                        setPostState(allPosts.filter((post) => post.posted_by === userId))
+                        setPostState(allPosts.filter((post) => post.posted_by === currentUser.id))
                 } else if (e.target.value === 'Liked Posts') {
-                        setPostState(allPosts.filter((post) => post.liked_by.includes(userId)))
+                        setPostState(allPosts.filter((post) => post.liked_by.includes(currentUser.id)))
                 } else {
                     setPostState(userPosts)
                 }
@@ -145,7 +145,7 @@ const Forum = () => {
                     </button>
 
                     <button style={{ marginLeft: 20 }} onClick = {() => {
-                        if (post.posted_by === userId) {
+                        if (post.posted_by === currentUser.id) {
                             console.log('Delete has been pressed')
                             deletePost ({ auth, postId : post.id }) 
                             .then(response => { 
@@ -161,7 +161,7 @@ const Forum = () => {
                         Delete
                     </button>
                     <button style={{ marginLeft: 20 }} onClick = {() => {
-                       if (post.posted_by === userId) {
+                       if (post.posted_by === currentUser.id) {
                             console.log('Edit has been pressed')
                             editPost ({ auth, postId: post.id, textContent: prompt('Enter new text content'), likeCount: post.like_count })
                             .then(response => { 
