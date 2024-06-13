@@ -31,6 +31,7 @@ import CoasterSelector from './CoasterSelector'
 import Profile from './Profile'
 import PersonalRanking from './PersonalRanking'
 import Rankings from './Rankings'
+import Forum from './Forum'
 
 
 function Layout() {
