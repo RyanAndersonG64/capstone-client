@@ -51,19 +51,8 @@ const Rankings = () => {
     
       
       function rankTop5(riders) {
-          let top5Riders = []
-        for (let i = 0; i < riders.length; i++) {
-            for(let j = i; j < riders.length; j++) {
-                 if (riders[j].coaster_count > riders[i].coaster_count) {
-                    break
-                 }
-                 top5Riders[i] = riders[i]
-            }
-        }
-        if (top5Riders.length > 5) {
-            top5Riders = top5Riders.slice(0, 5)
-        }
-        return top5Riders
+        riders.sort((a,b) => b.coaster_count - a.coaster_count)
+        return riders.slice(0, 5)
     }
 
 
