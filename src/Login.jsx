@@ -25,6 +25,7 @@ function Login() {
     }
     catch (error) {
       console.log ('log in error: ', error)
+      alert('Invalid username and/or password')
     }
     }
   
