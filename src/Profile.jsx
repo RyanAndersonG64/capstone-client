@@ -51,7 +51,7 @@ const Profile = () => {
         <div className = 'profile'>
             <br></br>
             <h1> {currentUser.first_name} {currentUser.last_name} </h1>
-            <Link style={{ marginRight: 20 }} to='/PersonalRanking'>Ranking</Link>
+            <Link style={{ marginRight: 20 }} to='/PersonalRanking'>Your Top 10</Link>
             <h3> Coaster count: {currentUser.coaster_count} </h3>
             <br></br><br></br>
             <h5>Coasters ridden:</h5>
