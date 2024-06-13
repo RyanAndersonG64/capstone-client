@@ -107,11 +107,23 @@ const Forum = () => {
             <select id="postTypes" name="postTypes" onChange = {(e) => {
                 console.log(e.target.value)
                 if (e.target.value === 'All Posts') {
-                        setPostState(allPosts)
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data)
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
                 } else if (e.target.value === 'Your Posts') {
-                        setPostState(allPosts.filter((post) => post.posted_by === currentUser.id))
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data.filter((post) => post.posted_by === currentUser.id))
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
                 } else if (e.target.value === 'Liked Posts') {
-                        setPostState(allPosts.filter((post) => post.liked_by.includes(currentUser.id)))
+                    getPosts({ auth })
+                    .then(response => {
+                        setPostState(response.data.filter((post) => post.liked_by.includes(currentUser.id)))
+                    })
+                    .catch(error => console.log('Get Posts Failure: ', error))
                 } else {
                     setPostState(userPosts)
                 }
