@@ -46,6 +46,7 @@ const Forum = () => {
                     .then(response => {
                         setPostState(response.data)
                         setAllPosts(response.data)
+                        console.log(response.data)
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
             }
@@ -66,7 +67,7 @@ const Forum = () => {
                 })
                 .catch(error => console.log('Create Post failure: ', error))
     }
-
+    console.log(postState)
     return (
         <div className="p-5">
 
