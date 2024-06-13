@@ -93,6 +93,10 @@ const router = createBrowserRouter([
         path: '/rankings',
         element: <Protected component = {<Rankings />} />
       },
+      {
+        path: '/forum',
+        element: <Protected component = {<Forum />} />
+      },
     ],
   }
 ])
@@ -184,16 +188,29 @@ const CoasterContextProvider = ({ children }) => {
   )
 }
 
+
+const PostContextProvider = ({ children }) => {
+  const [postState, setPostState] = useState([])
+
+  return (
+    <PostContext.Provider value={{ postState, setPostState }}>
+      {children}
+    </PostContext.Provider>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
-    <UserContextProvider>
-      <ParkContextProvider>
-        <ParkContext2Provider>
-          <CoasterContextProvider>
-            <RouterProvider router={router} />
-          </CoasterContextProvider>
-        </ParkContext2Provider>
-      </ParkContextProvider>
-    </UserContextProvider>
+    <PostContextProvider>
+      <UserContextProvider>
+        <ParkContextProvider>
+          <ParkContext2Provider>
+            <CoasterContextProvider>
+              <RouterProvider router={router} />
+            </CoasterContextProvider>
+          </ParkContext2Provider>
+        </ParkContextProvider>
+      </UserContextProvider>
+    </PostContextProvider>
   </AuthContextProvider>
 )

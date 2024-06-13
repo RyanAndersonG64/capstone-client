@@ -14,7 +14,7 @@ function Header() {
       <Link style={{ marginRight: 20 }} to='/rankings'>Rankings</Link>
       <Link style={{ marginRight: 20 }} to='/profile'>Profile</Link>
       {/* <Link style={{ marginRight: 20 }} to='/'>Social</Link> */}
-      {/* <Link style={{ marginRight: 20 }} to='/'>Forum </Link> */}
+      <Link style={{ marginRight: 20 }} to='/forum'>Forum </Link>
       {/* <Link style={{ marginRight: 20 }} to='/'>Image Gallery </Link> */}
       <Link style={{ marginRight: 20 }}
        onClick={() => {

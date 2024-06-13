@@ -51,7 +51,9 @@ const Rankings = () => {
     
       
       function rankTop5(riders) {
+
         riders.sort((a,b) => b.coaster_count - a.coaster_count)
+        
         return riders.slice(0, 5)
     }
 
