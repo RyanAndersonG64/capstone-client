@@ -16,6 +16,7 @@ import { UserContext } from './usercontext'
 import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
+import { PostContext } from './postcontext'
 
 import ErrorPage from './ErrorPage'
 
