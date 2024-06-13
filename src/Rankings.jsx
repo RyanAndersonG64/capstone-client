@@ -49,10 +49,10 @@ const Rankings = () => {
         []
       )
     
-      const top5Riders = ['', '', '', '', '']
-      let slicedRiders = []
-
-    function rankTop5(riders) {
+      
+      function rankTop5(riders) {
+          let top5Riders = ['', '', '', '', '']
+          let slicedRiders = []
         if (riders.length > 5) {
             slicedRiders = riders.slice(0, 5)
         } else {
@@ -73,7 +73,11 @@ const Rankings = () => {
     return (
         <div>
             <h1> Top 5 Riders: </h1>
-            {rankTop5(allUsers)}
+            {rankTop5(allUsers).map(user =>
+                <div key={user.id}>
+                    <h6> {user.first_name} : {user.coaster_count} </h6>
+                </div>
+            )}
         </div>
     )
 }
