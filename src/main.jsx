@@ -30,6 +30,7 @@ import App from './App'
 import CoasterSelector from './CoasterSelector'
 import Profile from './Profile'
 import PersonalRanking from './PersonalRanking'
+import Rankings from './Rankings'
 
 
 function Layout() {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: '/personalranking',
         element: <Protected component = {<PersonalRanking />} />
+      },
+      {
+        path: '/rankings',
+        element: <Protected component = {<Rankings />} />
       },
     ],
   }

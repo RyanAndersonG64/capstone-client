@@ -11,7 +11,7 @@ function Header() {
   return (
     <div style={{ margin: 10 }}>
       <Link style={{ marginRight: 20 }}to='/app'>Parks</Link>
-      {/* <Link style={{ marginRight: 20 }} to='/'>Rankings</Link> */}
+      <Link style={{ marginRight: 20 }} to='/'>Rankings</Link>
       <Link style={{ marginRight: 20 }} to='/profile'>Profile</Link>
       {/* <Link style={{ marginRight: 20 }} to='/'>Social</Link> */}
       {/* <Link style={{ marginRight: 20 }} to='/'>Forum </Link> */}
