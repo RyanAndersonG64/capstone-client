@@ -30,8 +30,24 @@ export const fetchUser = ({ auth }) => {
     return response
   })
   .catch(error => {
-    console.log('ERROR: ', error)
+    console.log('fetch user ERROR: ', error)
     auth.setAccessToken(undefined)
+  })
+}
+
+export const fetchAllUsers = ({ auth }) => {
+  return axios({
+    method: 'get',
+    url: `${baseUrl}/get-all-users/`, 
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  }).then(response => {
+    console.log('ALL PROFILES: ', response)
+    return response
+  })
+  .catch(error => {
+    console.log('get all users ERROR: ', error)
   })
 }
 

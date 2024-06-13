@@ -1,4 +1,4 @@
-import { fetchCoasters, fetchUser, fetchParks } from "./api"
+import { fetchCoasters, fetchUser, fetchParks, fetchAllUsers } from "./api"
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -18,10 +18,12 @@ const Rankings = () => {
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
+    const [allUsers, setAllUsers] = useState([])
+
 
     const navigate = useNavigate()
 
-  useEffect (
+    useEffect (
         () => {
           
               auth.setAccessToken(authStorage)
@@ -30,6 +32,23 @@ const Rankings = () => {
         },
         []
       )
+
+      useEffect (
+        () => {
+          if (auth.accessToken) {
+              fetchAllUsers ({ auth })
+                  .then(response => {
+                      setAllUsers(response.data)
+                      console.log(response.data)
+                  })
+          }
+          else {
+            navigate('/')
+          }
+        },
+        []
+      )
+    
 
     return (
         <div>
