@@ -13,7 +13,8 @@ import LocationSelector from "./LocationSelector"
 const Rankings = () => {
 
     const { auth } = useContext(AuthContext)
-
+    const {currentUser, setCurrentUser} = useContext(UserContext)
+    
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
