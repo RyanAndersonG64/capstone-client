@@ -39,3 +39,8 @@ body {
   width: 3.5%;
   margin-right: 1%;
 }
+
+.rankings {
+  width: 50%;
+  margin: auto;
+}
