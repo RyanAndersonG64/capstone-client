@@ -71,8 +71,11 @@ const LocationSelector = () => {
 
             <br></br><br></br>
 
-            <input style = {{ marginLeft: 20 }}
-                type = 'text'
+            <input style = {{ marginLeft: 20 }} type = 'text' defaultValue = 'Search'
+                onClick={(e) =>{
+                    e.target.value = ''
+                }
+            }
                 onChange={(e) => {
                     setParkState(countryParks.filter((park) => park.name.toLowerCase().includes(e.target.value.toLowerCase())))
                 }

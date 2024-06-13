@@ -52,12 +52,20 @@ const CoasterSelector = () => {
     
     
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
-
+    console.log(coastersAtPark)
+    const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
+    console.log(operatingCoasters)
+    const defunctCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operated' || coaster.status.state === 'SBNO')
+    console.log(defunctCoasters)
+    const underConstruction = coastersAtPark.filter((coaster) => coaster.status.state === 'Under Construction')
+    console.log(underConstruction)
 
     return (
         <div className="p-5">
             <h1> {selectedPark.name} </h1>
-            {coastersAtPark.map(coaster => {
+            <br></br>
+            <h2> Operating Coasters</h2>
+            {operatingCoasters.map(coaster => {
                 return (
                     <div key = {coaster.id}>
                         <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
@@ -81,6 +89,66 @@ const CoasterSelector = () => {
                             }
                         }
                         />
+                        {coaster.name}
+                    </div>
+                )
+            })}
+            <br></br>
+            <h2> Defunct Coasters</h2>
+            {defunctCoasters.map(coaster => {
+                return (
+                    <div key = {coaster.id}>
+                        <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
+                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
+                            onChange={(e) => {
+                                if (e.target.checked === true) {
+                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                            .then(response => {
+                                                setCurrentUser(response.data)
+                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        })
+                                            .catch(error => console.log('addCredit failure: ', error))
+                                } else if (e.target.checked === false) {
+                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                    .then(response => {
+                                        setCurrentUser(response.data)
+                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                })
+                                    .catch(error => console.log('removeCredit failure: ', error))
+                                }
+                            }
+                        }
+                        />
+                        {coaster.name}
+                    </div>
+                )
+            })}
+            <br></br>
+            <h2> Coasters Under Construction </h2>
+            {underConstruction.map(coaster => {
+                return (
+                    <div key = {coaster.id}>
+                        {/* <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
+                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
+                            onChange={(e) => {
+                                if (e.target.checked === true) {
+                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                            .then(response => {
+                                                setCurrentUser(response.data)
+                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        })
+                                            .catch(error => console.log('addCredit failure: ', error))
+                                } else if (e.target.checked === false) {
+                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                    .then(response => {
+                                        setCurrentUser(response.data)
+                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                })
+                                    .catch(error => console.log('removeCredit failure: ', error))
+                                }
+                            }
+                        }
+                        /> */}
                         {coaster.name}
                     </div>
                 )
