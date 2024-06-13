@@ -71,7 +71,7 @@ const Rankings = () => {
 
 
     return (
-        <div>
+        <div className="rankings">
             <h1> Top 5 Riders: </h1>
             {rankTop5(allUsers).map(user =>
                 <div key={user.id}>
