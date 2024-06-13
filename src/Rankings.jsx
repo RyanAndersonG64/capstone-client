@@ -72,7 +72,8 @@ const Rankings = () => {
 
     return (
         <div>
-            {top5Riders}
+            <h1> Top 5 Riders: </h1>
+            {rankTop5(allUsers)}
         </div>
     )
 }
