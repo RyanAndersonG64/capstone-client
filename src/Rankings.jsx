@@ -49,10 +49,30 @@ const Rankings = () => {
         []
       )
     
+      const top5Riders = ['', '', '', '', '']
+      let slicedRiders = []
+
+    function rankTop5(riders) {
+        if (riders.length > 5) {
+            slicedRiders = riders.slice(0, 5)
+        } else {
+            slicedRiders = riders
+        }
+        for (let i = 0; i < slicedRiders.length; i++) {
+            for(let j = i; j < slicedRiders.length; j++) {
+                 if (riders[j].coaster_count > riders[i].coaster_count) {
+                    break
+                 }
+                 top5Riders[i] = riders[i]
+            }
+        }
+        return top5Riders
+    }
+
 
     return (
         <div>
-            we are rito
+            {top5Riders}
         </div>
     )
 }
