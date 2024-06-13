@@ -15,7 +15,7 @@ const Forum = () => {
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
     const [allPosts, setAllPosts] = useState([])
-    const {postState, setPostState} = useContext([])
+    const {postState, setPostState} = useContext(postState)
 
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
