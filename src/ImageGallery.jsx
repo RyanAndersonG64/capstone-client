@@ -6,7 +6,7 @@ import { UserContext } from "./usercontext"
 
 import { getImages, deleteImage, createImage, likeImage } from './api'
 
-const Forum = () => {
+const ImageGallery = () => {
 
     const { auth } = useContext(AuthContext)
     const {currentUser, setCurrentUser} = useContext(UserContext)
@@ -134,11 +134,14 @@ const Forum = () => {
 
             </select>
 
-            {imageState.map(image => (
+            {ImageGallery && imageState.map(image => (
                 <div key={image.id}>
-                    <h2>{image.title}</h2>
-                    <p>{image.text_content}</p>
-
+                    <h3>{image.title}</h3>
+                    <div>
+                        <img src={`http://127.0.0.1:8000/${image.image}`}
+                        style = {{width: '50%'}}
+                        />
+                    </div>
                     <br></br>
                     <button onClick = {() => {
                         console.log('Like has been pressed')
@@ -183,4 +186,4 @@ const Forum = () => {
 
 }
 
-export default Forum
+export default ImageGallery
