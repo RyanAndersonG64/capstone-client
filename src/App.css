@@ -44,3 +44,7 @@ body {
   width: 50%;
   margin: auto;
 }
+
+.display-comments {
+  text-decoration: none;
+}

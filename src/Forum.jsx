@@ -215,7 +215,7 @@ const Forum = () => {
 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     
-                    <button
+                    <button className="display-comments"
                         {...getToggleProps({
                             onClick: () => {
                                 setExpanded((prevExpanded) => !prevExpanded)
