@@ -34,7 +34,7 @@ import PersonalRanking from './PersonalRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
-import Social from './Social'
+import Social from "./Social.jsx"
 
 function Layout() {
   return (
