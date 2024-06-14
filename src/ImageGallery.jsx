@@ -58,7 +58,7 @@ const ImageGallery = () => {
     const submit = () => {
 
             let poster = currentUser.id
-                createImage ({ auth, title, postedBy: poster, textContent })
+                createImage ({ auth, title, postedBy: poster, })
                 .then(response => { 
                     console.log('response from getImage: ', response)
                     getImages({ auth })
