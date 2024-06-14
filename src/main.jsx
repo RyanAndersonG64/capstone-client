@@ -136,7 +136,7 @@ const AuthContextProvider = ({ children }) => {
 }
 
 const initialUser = () => {
-  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
+  const storedUser = localStorage.getItem('storedUser')
   return (
     storedUser ? storedUser : []
   )

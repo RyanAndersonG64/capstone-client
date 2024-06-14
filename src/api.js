@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const baseUrl = "http://127.0.0.1:8000"
-const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+const baseUrl = "http://127.0.0.1:8000"
+// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
 // -- Authentication -- 
 
@@ -255,12 +255,12 @@ export const getImages = ({ auth }) => {
 }
 
 
-export const createImage = ({ auth, posted_by, title, image }) => {
+export const createImage = ({ auth, postedBy, title, image }) => {
   return axios ({
     method: 'post',
     url: `${baseUrl}/create-image/`,
     data: {
-      posted_by,
+      posted_by: postedBy,
       image,
       title,
     },
@@ -271,13 +271,13 @@ export const createImage = ({ auth, posted_by, title, image }) => {
   })
 }
 
-export const likeImage = ({ auth, current_user, image_id, likes }) => {
+export const likeImage = ({ auth, currentUser, image, likes }) => {
   return axios ({
     method: 'put',
     url: `${baseUrl}/like-image/`,
     data: {
-      current_user,
-      image_id,
+      current_user: currentUser,
+      image,
       likes
     },
     headers: {

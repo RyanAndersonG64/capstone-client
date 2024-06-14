@@ -58,9 +58,9 @@ const ImageGallery = () => {
     const submit = () => {
 
             let poster = currentUser.id
-                createImage ({ auth, title, postedBy: poster, })
+                createImage ({ auth, title, postedBy: poster, image })
                 .then(response => { 
-                    console.log('response from getImage: ', response)
+                    console.log('response from createImage: ', response)
                     getImages({ auth })
                     .then(res => {
                         console.log('res from getImages: ', res)
@@ -145,7 +145,7 @@ const ImageGallery = () => {
                     <br></br>
                     <button onClick = {() => {
                         console.log('Like has been pressed')
-                        likeImage ({ auth, current_user: currentUser.id, image_id: image.id, likes: image.likes }) 
+                        likeImage ({ auth, currentUser: currentUser.id, image: image.id, likes: image.likes }) 
                         .then(response => { 
                             getImages({ auth })
                             .then(res => {
