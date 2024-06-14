@@ -17,6 +17,7 @@ import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import { PostContext } from './postcontext'
+import { ImageGallery } from './ImageGallery'
 
 import ErrorPage from './ErrorPage'
 
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: '/forum',
         element: <Protected component = {<Forum />} />
+      },
+      {
+        path: '/imagegallery',
+        element: <Protected component = {<ImageGallery />} />
       },
     ],
   }
