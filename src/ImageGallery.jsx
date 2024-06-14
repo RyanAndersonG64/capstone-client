@@ -20,6 +20,10 @@ const ImageGallery = () => {
     const [image, setImage] = useState(undefined)
     const [title, setTitle] = useState('')
 
+    
+    // const baseUrl = "http://127.0.0.1:8000"
+    const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+
 
     useEffect (
         () => {
@@ -138,7 +142,7 @@ const ImageGallery = () => {
                 <div key={image.id}>
                     <h3>{image.title}</h3>
                     <div>
-                        <img src={`http://127.0.0.1:8000/${image.image}`}
+                        <img src={`${baseUrl}/${image.image}`}
                         style = {{width: '50%'}}
                         />
                     </div>
