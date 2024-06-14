@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const baseUrl = "http://127.0.0.1:8000"
-const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+const baseUrl = "http://127.0.0.1:8000"
+// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
 // -- Authentication -- 
 
@@ -304,3 +304,79 @@ export const deleteImage = ({ auth, imageId }) => {
   })
   .then(response => {return response})
 }
+
+
+// -- CRUD on Comments --
+
+export const getComments = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-comments/`,
+    headers: {
+        Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    return response
+  })
+  .catch(error => console.log('Get posts error: ', error))
+}
+
+export const addComment = ({ auth, postId, postedBy, textContent }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/add-comment/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    },
+    data: {
+      post_id: postId,
+      posted_by: postedBy,
+      text_content: textContent,
+    }
+  })
+  .then(response => {
+    console.log('django response = ', response.data)
+    return response
+  })
+  .catch(error => console.log('Add comment error: ', error))
+}
+
+// export const editPost = ({ auth, postId, textContent }) => {
+//   return axios ({
+//     method: 'patch',
+//     url: `${baseUrl}/edit-post/`,
+//     headers: {
+//       Authorization: `Bearer ${auth.accessToken}`
+//     },
+//     data: {
+//       post_pk: postId,
+//       text_content: textContent,
+//     }
+//   })
+//   .then(response => {
+//     console.log('django response = ', response.data)
+//     return response
+//   })
+//   .catch(error => console.log('Add post error: ', error))
+// }
+
+// export const deletePost = ({ auth, postId }) => {
+//   return axios ({
+//     method: 'delete',
+//     url: `${baseUrl}/delete-post/`,
+//     data: {
+//       postId
+//     },
+//     headers: {
+//       Authorization: `Bearer ${auth.accessToken}`
+//     }
+//   })
+//   .then(response => {
+//     console.log(response.data)
+//     return response
+//   })
+//   .catch(error => console.log('Delete post error: ', error))
+// }
+
+// export const displayComments

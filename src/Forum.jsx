@@ -1,10 +1,11 @@
-import { useContext, useEffect } from "react"
-import { useState } from "react"
+import { useState, useContext, useEffect } from "react"
+import { useCollapse } from "react-collapsed"
+
 import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
 
 
-import { getPosts, deletePost, editPost, addPost, likePost } from './api'
+import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment } from './api'
 
 const Forum = () => {
 
@@ -16,9 +17,14 @@ const Forum = () => {
 
     const [allPosts, setAllPosts] = useState([])
     const [postState, setPostState] = useState([])
+    const [allComments, setAllComments] = useState([])
+    const [commentState, setCommentState] = useState([])
 
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
+
+    const [isExpanded, setExpanded] = useState(false)
+    const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
 
     useEffect (
         () => {
@@ -46,7 +52,6 @@ const Forum = () => {
                     .then(response => {
                         setPostState(response.data)
                         setAllPosts(response.data)
-                        console.log(response.data)
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
             }
@@ -67,7 +72,7 @@ const Forum = () => {
                 })
                 .catch(error => console.log('Create Post failure: ', error))
     }
-    console.log(postState)
+
     return (
         <div className="p-5">
 
@@ -172,6 +177,7 @@ const Forum = () => {
                     }}>
                         Delete
                     </button>
+
                     <button style={{ marginLeft: 20 }} onClick = {() => {
                        if (post.posted_by === currentUser.id) {
                             console.log('Edit has been pressed')
@@ -189,10 +195,51 @@ const Forum = () => {
                     }}>
                         Edit
                     </button>
-                    <h6> Likes: {post.likes} </h6>
+
+                    <button style={{ marginLeft: 20 }} onClick = {() => {
+
+                            console.log('Comment has been pressed')
+                            addComment ({ auth, postId: post.id, postedBy: currentUser.id, textContent: prompt('Enter comment') })
+                            .then(response => { 
+                                console.log('response from addComment: ', response)
+                                getComments({ auth })
+                                .then(res => {
+                                    console.log('res from getComments: ', res)
+                                    setAllComments(res.data)
+                                })
+                            })
+                    }}>
+                        Comment
+                    </button>
+                    <h6> Likes: {post.likes} 
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    
+                    <button
+                        {...getToggleProps({
+                            onClick: () => {
+                                setExpanded((prevExpanded) => !prevExpanded)
+                                setCommentState(allComments.filter(comment => comment.post === post.id))
+                                console.log(allComments)
+                            },
+                        })}
+                    >
+                        {isExpanded ? 'Collapse' : `Comments: ${commentState.length}`}
+                    </button>
+                    <section {...getCollapseProps()}>
+                        {commentState.map(comment => (
+                            <div key = {comment.id}>
+                                <br></br>
+                                <p>{comment.text_content}</p>
+                                <h6> Posted by {comment.poster_name} at {comment.posted_at} </h6>
+                            </div>
+                        ))}
+                    </section>
+
+                    </h6>
 
                     <br></br>
-                    <h6> Posted by {post.poster_name} at {post.posted_at} </h6>
+                    <h5> Posted by {post.poster_name} at {post.posted_at} </h5>
                     <hr />
                 </div>
             ))}
