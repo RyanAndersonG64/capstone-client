@@ -242,8 +242,7 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
 export const getImages = ({ auth }) => {
   return axios ({
     method: 'get',
-    // url: `${baseUrl}/get-images`,
-    url: 'https://ryan-anderson-capstone-server-2.fly.dev/get-images',
+    url: `${baseUrl}/get-images/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
@@ -259,8 +258,7 @@ export const getImages = ({ auth }) => {
 export const createImage = ({ auth, postedBy, title, image }) => {
   return axios ({
     method: 'post',
-    // url: `${baseUrl}/create-image/`,
-    url: 'https://ryan-anderson-capstone-server-2.fly.dev/create-image/',
+    url: `${baseUrl}/create-image/`,
     data: {
       posted_by: postedBy,
       image,
@@ -276,8 +274,7 @@ export const createImage = ({ auth, postedBy, title, image }) => {
 export const likeImage = ({ auth, currentUser, image, likes }) => {
   return axios ({
     method: 'put',
-    // url: `${baseUrl}/like-image/`,
-    url: 'https://ryan-anderson-capstone-server-2.fly.dev/like-image/',
+    url: `${baseUrl}/like-image/`,
     data: {
       current_user: currentUser,
       image,
@@ -297,8 +294,7 @@ export const likeImage = ({ auth, currentUser, image, likes }) => {
 export const deleteImage = ({ auth, imageId }) => {
   return axios ({
     method: 'delete',
-    // url: `${baseUrl}/delete-image/`,
-    url: 'https://ryan-anderson-capstone-server-2.fly.dev/delete-image/',
+    url: `${baseUrl}/delete-image/`,
     data: {
       imageId
     },
