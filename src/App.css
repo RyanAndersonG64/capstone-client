@@ -47,4 +47,6 @@ body {
 
 .display-comments {
   text-decoration: none;
+  border: none;
+  outline: none;
 }
