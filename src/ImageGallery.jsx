@@ -17,6 +17,7 @@ const Forum = () => {
     const [allImages, setAllImages] = useState([])
     const [imageState, setImageState] = useState([])
 
+    const [image, setImage] = useState(undefined)
     const [title, setTitle] = useState('')
 
 
@@ -60,12 +61,12 @@ const Forum = () => {
                 createImage ({ auth, title, postedBy: poster, textContent })
                 .then(response => { 
                     console.log('response from getImage: ', response)
-                    getImage({ auth })
+                    getImages({ auth })
                     .then(res => {
                         console.log('res from getImages: ', res)
                         setImageState(res.data)}) 
                 })
-                .catch(error => console.log('Create Post failure: ', error))
+                .catch(error => console.log('Create Image failure: ', error))
     }
     console.log(imageState)
     return (
@@ -96,10 +97,10 @@ const Forum = () => {
             </div>
         </div>
             
-            {/* -- Display posts -- */}
+            {/* -- Display images -- */}
 
             <hr />
-            <h1>Posts</h1>
+            <h1>Image Gallery</h1>
             <label htmlFor="imageFilter">Sort images by:</label>
             <select id="imageTypes" name="imageTypes" onChange = {(e) => {
                 console.log(e.target.value)
@@ -170,7 +171,7 @@ const Forum = () => {
                         Delete
                     </button>
                     
-                    <h6> Likes: {post.likes} </h6>
+                    <h6> Likes: {image.likes} </h6>
 
                     <br></br>
                     <h6> Posted by {image.poster_name} at {image.created_at} </h6>
