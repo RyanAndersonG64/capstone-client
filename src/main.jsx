@@ -34,7 +34,7 @@ import PersonalRanking from './PersonalRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
-
+import Social from './Social'
 
 function Layout() {
   return (
@@ -103,6 +103,10 @@ const router = createBrowserRouter([
       {
         path: '/imagegallery',
         element: <Protected component = {<ImageGallery />} />
+      },
+      {
+        path: '/social',
+        element: <Protected component = {<Social />} />
       },
     ],
   }

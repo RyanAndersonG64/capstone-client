@@ -13,7 +13,7 @@ function Header() {
       <Link style={{ marginRight: 20 }}to='/app'>Parks</Link>
       <Link style={{ marginRight: 20 }} to='/rankings'>Rankings</Link>
       <Link style={{ marginRight: 20 }} to='/profile'>Profile</Link>
-      {/* <Link style={{ marginRight: 20 }} to='/'>Social</Link> */}
+      <Link style={{ marginRight: 20 }} to='/social'>Social</Link>
       <Link style={{ marginRight: 20 }} to='/forum'>Forum</Link>
       <Link style={{ marginRight: 20 }} to='/imagegallery'>Image Gallery</Link>
       <Link style={{ marginRight: 20 }}
