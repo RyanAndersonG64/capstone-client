@@ -4,7 +4,7 @@ const Social = () => {
 
     return (
         <div className="p-5">
-            insert content here
+            coming soon
         </div>
     )
 

@@ -142,7 +142,7 @@ const ImageGallery = () => {
                 <div key={image.id}>
                     <h3>{image.title}</h3>
                     <div>
-                        <img src={`${baseUrl}/${image.image}`}
+                        <img src={`${baseUrl}${image.image}`}
                         style = {{width: '50%'}}
                         />
                     </div>
