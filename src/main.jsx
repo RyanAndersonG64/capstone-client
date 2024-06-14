@@ -17,7 +17,6 @@ import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import { PostContext } from './postcontext'
-import { ImageGallery } from './ImageGallery'
 
 import ErrorPage from './ErrorPage'
 
@@ -34,6 +33,7 @@ import Profile from './Profile'
 import PersonalRanking from './PersonalRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
+import ImageGallery from './ImageGallery'
 
 
 function Layout() {
