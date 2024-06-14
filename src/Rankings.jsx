@@ -7,8 +7,7 @@ import { UserContext } from "./usercontext"
 import { ParkContext } from "./parkcontext"
 import { CoasterContext } from "./coasterContext"
 
-import GetUser from "./getUser"
-import LocationSelector from "./LocationSelector"
+
 
 const Rankings = () => {
 

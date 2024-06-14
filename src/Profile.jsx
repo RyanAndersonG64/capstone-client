@@ -1,14 +1,14 @@
-import { useState, useContext, useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
 
-import { fetchParks, fetchCoasters } from "./api"
+
 
 import { AuthContext } from "./context"
-import { ParkContext2 } from "./parkcontext2"
+
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 
-import PersonalRanking from "./PersonalRanking"
+
 
 const Profile = () => {
 

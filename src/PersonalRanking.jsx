@@ -3,11 +3,9 @@ import { useNavigate, Link } from "react-router-dom"
 import { fetchParks, fetchCoasters, setFavorite } from "./api"
 
 import { AuthContext } from "./context"
-import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 
-import Profile from "./Profile"
 
 const PersonalRanking = () => {
     const { auth } = useContext(AuthContext)

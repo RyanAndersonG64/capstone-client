@@ -234,3 +234,73 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
     return response
   })
 }
+
+
+//-- CRUD on Images --
+
+
+export const getImages = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-images`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get images error: ', error))
+}
+
+
+export const createImage = ({ auth, posted_by, title, image }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/create-image/`,
+    data: {
+      posted_by,
+      image,
+      title,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`,
+      'Content-Type': 'multipart/form-data'
+    },
+  })
+}
+
+export const likeImage = ({ auth, current_user, image_id, likes }) => {
+  return axios ({
+    method: 'put',
+    url: `${baseUrl}/like-image/`,
+    data: {
+      current_user,
+      image_id,
+      likes
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+}
+
+export const deleteImage = ({ auth, imageId }) => {
+  return axios ({
+    method: 'delete',
+    url: `${baseUrl}/delete-image/`,
+    data: {
+      imageId
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {return response})
+}

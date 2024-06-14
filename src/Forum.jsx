@@ -2,9 +2,9 @@ import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
-import { PostContext } from "./postcontext"
 
-import { getPosts, deletePost, editPost, fetchUser, addPost, likePost } from './api'
+
+import { getPosts, deletePost, editPost, addPost, likePost } from './api'
 
 const Forum = () => {
 
@@ -125,7 +125,7 @@ const Forum = () => {
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
                 } else {
-                    setPostState(userPosts)
+                    setPostState(allPosts)
                 }
                     }
                 }
