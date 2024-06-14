@@ -52,15 +52,14 @@ const Forum = () => {
                     .then(response => {
                         setPostState(response.data)
                         setAllPosts(response.data)
-                    
-                    .catch(error => console.log('Get Posts Failure: ', error))
-                    getComments({ auth })
-                        .then(response => {
-                            setCommentState(response.data)
-                            setAllComments(response.data)
-                        })
-                        .catch(error => console.log('Get Comments Failure: ', error))
                     })
+                    .catch(error => console.log('Get Posts Failure: ', error))
+                getComments({ auth })
+                    .then(response => {
+                        setCommentState(response.data)
+                        setAllComments(response.data)
+                    })
+                    .catch(error => console.log('Get Comments Failure: ', error))
             }
         },
         [auth.accessToken]
