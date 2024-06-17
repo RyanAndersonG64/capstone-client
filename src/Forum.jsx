@@ -309,9 +309,13 @@ const Forum = () => {
                     <h5> Posted by 
                         <button className="profile-link"
                             onClick = {() => {
+                                if (post.posted_by === currentUser.id) {
+                                    navigate('/profile')
+                                } else {
                                 localStorage.setItem('storedProfile', [post.posted_by])
                                 setProfileView(post.posted_by)
                                 navigate('/otherprofile')
+                                }
                             }
                         }>
                             {post.poster_name} 

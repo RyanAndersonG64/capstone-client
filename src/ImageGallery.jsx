@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react"
 import { useState } from "react"
 import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
+import { ProfileContext } from "./profileContext"
+import { useNavigate } from "react-router-dom"
 
 
 import { getImages, deleteImage, createImage, likeImage } from './api'
@@ -10,6 +12,7 @@ const ImageGallery = () => {
 
     const { auth } = useContext(AuthContext)
     const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {profileView, setProfileView} = useContext(ProfileContext)
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
@@ -20,11 +23,12 @@ const ImageGallery = () => {
     const [image, setImage] = useState(undefined)
     const [title, setTitle] = useState('')
 
+    const navigate = useNavigate()
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
-
     
     const baseUrl = "http://127.0.0.1:8000"
     // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
@@ -186,7 +190,22 @@ const ImageGallery = () => {
                     <h6> Likes: {image.likes} </h6>
 
                     <br></br>
-                    <h6> Posted by {image.poster_name} on {formatDate(image.created_at)} </h6>
+                    <h5> Posted by 
+                        <button className="profile-link"
+                            onClick = {() => {
+                                if (image.posted_by === currentUser.id) {
+                                    navigate('/profile')
+                                } else {
+                                localStorage.setItem('storedProfile', [image.posted_by])
+                                setProfileView(image.posted_by)
+                                navigate('/otherprofile')
+                                }
+                            }
+                        }>
+                            {image.poster_name} 
+                        </button> 
+                        on {formatDate(image.created_at)} 
+                    </h5>
                     <hr />
                 </div>
             ))}
