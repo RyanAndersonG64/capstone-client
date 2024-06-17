@@ -6,9 +6,12 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 import { useNavigate } from "react-router-dom"
-import { fetchParks, fetchCoasters,addCredit, removeCredit } from "./api"
+import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, getDataImages } from "./api"
 
 const CoasterSelector = () => {
+
+    const baseUrl = "http://127.0.0.1:8000"
+// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
     const { auth } = useContext(AuthContext)
     const {selectedPark, setSelectedPark} = useContext(ParkContext2)
@@ -49,8 +52,31 @@ const CoasterSelector = () => {
         },
         []
       )
+
+      useEffect (
+        () => {
+            // getDataImages ({ auth })
+            // .then(response => {
+            //     console.log(response.data)
+            //     if(!response.data.includes(storedPark.mainPicture)) {
+            //         createDataImage ({ auth, image: storedPark.mainPicture.url })
+            //         .then(response => {
+            //             getDataImages ({ auth })
+            //             .then(response => console.log(response))
+            //         })
+            //     }
+            // })
+
+            createDataImage ({ auth, image: storedPark.mainPicture.url })
+                    .then(response => {
+                        console.log(response)
+                        getDataImages ({ auth })
+                        .then(response => console.log(response))
+                    })
+        }
+      )
     
-    
+    console.log(storedPark)
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
     console.log(coastersAtPark)
     const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
@@ -63,6 +89,7 @@ const CoasterSelector = () => {
     return (
         <div className="p-5">
             <h1> {selectedPark.name} </h1>
+            <img src={`${baseUrl}${storedPark.mainPicture.url}`}></img>
             <br></br>
             <h2> Operating Coasters</h2>
             {operatingCoasters.map(coaster => {

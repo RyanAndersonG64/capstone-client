@@ -95,6 +95,37 @@ export const fetchParks = ({ auth }) => {
    .catch(error => console.error('fetch parks Error:', error));
  }
 
+// -- Stuff for data images --
+
+export const getDataImages = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-data-images/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get images error: ', error))
+}
+
+
+export const createDataImage = ({ auth, image }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/create-data-image/`,
+    data: {
+      image,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`,
+      'Content-Type': 'multipart/form-data'
+    },
+  })
+}
 
 // -- CRUD on user coaster counts --
 

@@ -9,14 +9,14 @@ function Header() {
   const {currentUser, setCurrentUser} = useContext(UserContext)
 
   return (
-    <div style={{ margin: 10 }}>
-      <Link style={{ marginRight: 20 }}to='/app'>Parks</Link>
-      <Link style={{ marginRight: 20 }} to='/rankings'>Rankings</Link>
-      <Link style={{ marginRight: 20 }} to='/profile'>Profile</Link>
-      <Link style={{ marginRight: 20 }} to='/social'>Social</Link>
-      <Link style={{ marginRight: 20 }} to='/forum'>Forum</Link>
-      <Link style={{ marginRight: 20 }} to='/imagegallery'>Image Gallery</Link>
-      <Link style={{ marginRight: 20 }}
+    <div style={{ margin: 10, textAlign: "center" }}>
+      <Link className = 'nav-item' to='/app'>Parks</Link>
+      <Link className = 'nav-item' to='/rankings'>Rankings</Link>
+      <Link className = 'nav-item' to='/profile'>Profile</Link>
+      <Link className = 'nav-item' to='/social'>Social</Link>
+      <Link className = 'nav-item' to='/forum'>Forum</Link>
+      <Link className = 'nav-item' to='/imagegallery'>Image Gallery</Link>
+      <Link className = 'nav-item'
        onClick={() => {
         localStorage.setItem('storedUser', '')
         localStorage.setItem('authStorage', '')

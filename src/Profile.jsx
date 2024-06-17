@@ -56,12 +56,14 @@ const Profile = () => {
             <br></br><br></br>
             <h5>Coasters ridden:</h5>
             <br></br>
+            <div className="profile-coasters">
                 {allCoasters.map(coaster =>
                     <div key={coaster.id}>
                         <p> {coaster.name}, {coaster.park.name} </p>
                     </div>
                     )
                 }
+            </div>
         </div>
     )
 

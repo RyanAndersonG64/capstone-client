@@ -99,7 +99,7 @@ const ImageGallery = () => {
                 <input 
                     accept='image/*'
                     type='file'
-                    onChange={e => setImage(e.target.files[0])}
+                    onChange={e => {setImage(e.target.files[0])}}
                 />
             </div>
             <div>
