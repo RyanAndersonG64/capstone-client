@@ -25,7 +25,10 @@ const OtherProfile = () => {
 
     useEffect (
         () => {
-
+              console.log(profileView)
+              if (profileView.length === 0) {
+                navigate('/app')
+              }
               auth.setAccessToken(authStorage)
               setCurrentUser(storedUser)
               fetchAllUsers ({ auth })
@@ -33,13 +36,13 @@ const OtherProfile = () => {
                       setAllUsers(response.data)
                       let userBeingViewed = response.data.find(user => user.id === profileView)
                       console.log(userBeingViewed)
+                      console.log(userBeingViewed.id)
                       setProfileView(userBeingViewed)
                       fetchCoasters ({ auth })
                       .then(response => {
                           const coasterJson = response.json()
                           .then(coasterJson => {
                                 setAllCoasters(coasterJson.filter((coaster) => (userBeingViewed.coasters_ridden.includes(coaster.id))))
-                                console.log(profileView)
                             })
                         })
                     })
@@ -55,25 +58,39 @@ const OtherProfile = () => {
         },
         []
       )
-    
-    return (
-        <div className = 'profile'>
-            <br></br>
-            <h1> {profileView.first_name} {profileView.last_name} </h1>
-            <Link style={{ marginRight: 20 }} to='/PersonalRanking'>{profileView.first_name}'s Top 10</Link>
-            <h3> Coaster count: {profileView.coaster_count} </h3>
-            <br></br><br></br>
-            <h5>Coasters ridden:</h5>
-            <br></br>
-                {allCoasters.map(coaster =>
-                    <div key={coaster.id}>
-                        <p> {coaster.name}, {coaster.park.name} </p>
-                    </div>
-                    )
-                }
-        </div>
-    )
-
+    if (profileView.profile_view_state === 'FRIENDS ONLY') { // && !profileView.friends.includes(currentUser)
+        return (
+            <div className="p-5">
+                <br></br>
+                <h1> This user's profile can only be viewed by their friends. </h1>
+            </div>
+        )
+    } else if (profileView.profile_view_state === 'PRIVATE') {
+        return (
+            <div className="p-5">
+                <br></br>
+                <h1> This user's profile is private. </h1>
+            </div>
+        )
+    } else {
+        return (
+            <div className = 'profile'>
+                <br></br>
+                <h1> {profileView.first_name} {profileView.last_name} </h1>
+                <Link style={{ marginRight: 20 }} to='/otherranking'>{profileView.first_name}'s Top 10</Link>
+                <h3> Coaster count: {profileView.coaster_count} </h3>
+                <br></br><br></br>
+                <h5>Coasters ridden:</h5>
+                <br></br>
+                    {allCoasters.map(coaster =>
+                        <div key={coaster.id}>
+                            <p> {coaster.name}, {coaster.park.name} </p>
+                        </div>
+                        )
+                    }
+            </div>
+        )
+    }
 }
 
 export default OtherProfile

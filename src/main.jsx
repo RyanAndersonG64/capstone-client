@@ -33,6 +33,7 @@ import CoasterSelector from './CoasterSelector'
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import PersonalRanking from './PersonalRanking'
+import OtherRanking from './OtherRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: '/personalranking',
         element: <Protected component = {<PersonalRanking />} />
+      },
+      {
+        path: '/otherranking',
+        element: <Protected component = {<OtherRanking />} />
       },
       {
         path: '/rankings',

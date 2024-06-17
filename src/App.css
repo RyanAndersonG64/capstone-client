@@ -34,6 +34,11 @@ body {
   margin: auto;
 }
 
+.other-ranking {
+  width: 60%;
+  margin:auto
+}
+
 .rankingNumber {
   display: inline-block;
   width: 3.5%;
