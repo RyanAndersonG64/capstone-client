@@ -20,9 +20,14 @@ const ImageGallery = () => {
     const [image, setImage] = useState(undefined)
     const [title, setTitle] = useState('')
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
     
-    // const baseUrl = "http://127.0.0.1:8000"
-    const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+    const baseUrl = "http://127.0.0.1:8000"
+    // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
 
     useEffect (
@@ -138,7 +143,7 @@ const ImageGallery = () => {
 
             </select>
 
-            {ImageGallery && imageState.map(image => (
+            {ImageGallery && imageState.toReversed().map(image => (
                 <div key={image.id}>
                     <h3>{image.title}</h3>
                     <div>
@@ -181,7 +186,7 @@ const ImageGallery = () => {
                     <h6> Likes: {image.likes} </h6>
 
                     <br></br>
-                    <h6> Posted by {image.poster_name} at {image.created_at} </h6>
+                    <h6> Posted by {image.poster_name} on {formatDate(image.created_at)} </h6>
                     <hr />
                 </div>
             ))}

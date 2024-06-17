@@ -201,10 +201,10 @@ const CoasterContextProvider = ({ children }) => {
 
 
 const PostContextProvider = ({ children }) => {
-  const [postState, setPostState] = useState([])
+  const [allPosts, setAllPosts] = useState([])
 
   return (
-    <PostContext.Provider value={{ postState, setPostState }}>
+    <PostContext.Provider value={{ allPosts, setAllPosts }}>
       {children}
     </PostContext.Provider>
   )
@@ -217,7 +217,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <ParkContextProvider>
           <ParkContext2Provider>
             <CoasterContextProvider>
-              <RouterProvider router={router} />
+              <PostContextProvider>
+                <RouterProvider router={router} />
+              </PostContextProvider>
             </CoasterContextProvider>
           </ParkContext2Provider>
         </ParkContextProvider>

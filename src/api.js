@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const baseUrl = "http://127.0.0.1:8000"
-const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+const baseUrl = "http://127.0.0.1:8000"
+// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
 // -- Authentication -- 
 
@@ -342,41 +342,39 @@ export const addComment = ({ auth, postId, postedBy, textContent }) => {
   .catch(error => console.log('Add comment error: ', error))
 }
 
-// export const editPost = ({ auth, postId, textContent }) => {
-//   return axios ({
-//     method: 'patch',
-//     url: `${baseUrl}/edit-post/`,
-//     headers: {
-//       Authorization: `Bearer ${auth.accessToken}`
-//     },
-//     data: {
-//       post_pk: postId,
-//       text_content: textContent,
-//     }
-//   })
-//   .then(response => {
-//     console.log('django response = ', response.data)
-//     return response
-//   })
-//   .catch(error => console.log('Add post error: ', error))
-// }
+export const editComment = ({ auth, commentId, textContent }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/edit-comment/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    },
+    data: {
+      comment_pk: commentId,
+      text_content: textContent,
+    }
+  })
+  .then(response => {
+    console.log('django response = ', response.data)
+    return response
+  })
+  .catch(error => console.log('Add post error: ', error))
+}
 
-// export const deletePost = ({ auth, postId }) => {
-//   return axios ({
-//     method: 'delete',
-//     url: `${baseUrl}/delete-post/`,
-//     data: {
-//       postId
-//     },
-//     headers: {
-//       Authorization: `Bearer ${auth.accessToken}`
-//     }
-//   })
-//   .then(response => {
-//     console.log(response.data)
-//     return response
-//   })
-//   .catch(error => console.log('Delete post error: ', error))
-// }
-
-// export const displayComments
+export const deleteComment = ({ auth, commentId }) => {
+  return axios ({
+    method: 'delete',
+    url: `${baseUrl}/delete-comment/`,
+    data: {
+      comment_pk: commentId
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Delete post error: ', error))
+}

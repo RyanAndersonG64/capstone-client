@@ -50,3 +50,7 @@ body {
   border: none;
   outline: none;
 }
+
+.comment {
+  background-color: rgb(216, 215, 215);
+}

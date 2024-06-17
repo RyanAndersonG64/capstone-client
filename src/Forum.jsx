@@ -3,19 +3,20 @@ import { useCollapse } from "react-collapsed"
 
 import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
+import { PostContext } from './postcontext'
 
 
-import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment } from './api'
+import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api'
 
 const Forum = () => {
 
     const { auth } = useContext(AuthContext)
     const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {allPosts, setAllPosts} = useContext(PostContext)
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
-    const [allPosts, setAllPosts] = useState([])
     const [postState, setPostState] = useState([])
     const [allComments, setAllComments] = useState([])
     const [commentState, setCommentState] = useState([])
@@ -23,8 +24,21 @@ const Forum = () => {
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
 
-    const [isExpanded, setExpanded] = useState(false)
+    const [isExpanded, setExpanded] = useState({})
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
+
+    const expandOrCollapse = (postId) => {
+        setExpanded((prevStates) => ({
+          ...prevStates,
+          [postId]: !prevStates[postId],
+        }));
+      };
+    
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     useEffect (
         () => {
@@ -56,7 +70,6 @@ const Forum = () => {
                     .catch(error => console.log('Get Posts Failure: ', error))
                 getComments({ auth })
                     .then(response => {
-                        setCommentState(response.data)
                         setAllComments(response.data)
                     })
                     .catch(error => console.log('Get Comments Failure: ', error))
@@ -118,23 +131,26 @@ const Forum = () => {
             <select id="postTypes" name="postTypes" onChange = {(e) => {
                 console.log(e.target.value)
                 if (e.target.value === 'All Posts') {
-                    getPosts({ auth })
-                    .then(response => {
-                        setPostState(response.data)
-                    })
-                    .catch(error => console.log('Get Posts Failure: ', error))
+                    // getPosts({ auth })
+                    // .then(response => {
+                    //     setPostState(response.data)
+                    // })
+                    // .catch(error => console.log('Get Posts Failure: ', error))
+                    setPostState(allPosts)
                 } else if (e.target.value === 'Your Posts') {
-                    getPosts({ auth })
-                    .then(response => {
-                        setPostState(response.data.filter((post) => post.posted_by === currentUser.id))
-                    })
-                    .catch(error => console.log('Get Posts Failure: ', error))
+                    // getPosts({ auth })
+                    // .then(response => {
+                    //     setPostState(response.data.filter((post) => post.posted_by === currentUser.id))
+                    // })
+                    // .catch(error => console.log('Get Posts Failure: ', error))
+                    setPostState(allPosts.filter((post) => post.posted_by === currentUser.id))
                 } else if (e.target.value === 'Liked Posts') {
-                    getPosts({ auth })
-                    .then(response => {
-                        setPostState(response.data.filter((post) => post.liked_by.includes(currentUser.id)))
-                    })
-                    .catch(error => console.log('Get Posts Failure: ', error))
+                    // getPosts({ auth })
+                    // .then(response => {
+                    //     setPostState(response.data.filter((post) => post.liked_by.includes(currentUser.id)))
+                    // })
+                    // .catch(error => console.log('Get Posts Failure: ', error))
+                    setPostState(allPosts.filter((post) => post.liked_by.includes(currentUser.id)))
                 } else {
                     setPostState(allPosts)
                 }
@@ -147,7 +163,7 @@ const Forum = () => {
 
             </select>
 
-            {postState.map(post => (
+            {postState.toReversed().map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
                     <p>{post.text_content}</p>
@@ -157,10 +173,11 @@ const Forum = () => {
                         console.log('Like has been pressed')
                         likePost ({ auth, current_user: currentUser.id, post_id: post.id, likes: post.likes }) 
                         .then(response => { 
+                            console.log(response)
                             getPosts({ auth })
                             .then(res => {
                                 console.log('res from likePosts: ', res)
-                                setPostState(res.data)}) 
+                                setAllPosts(res.data)}) 
                         })  
                         
                      }}>
@@ -175,7 +192,7 @@ const Forum = () => {
                                 getPosts({ auth })
                                 .then(res => {
                                     console.log('res from getPosts: ', res)
-                                    setPostState(res.data)}) 
+                                    setAllPosts(res.data)}) 
                             })  
                         } else {
                             alert("You can't delete someone else's post")
@@ -193,7 +210,7 @@ const Forum = () => {
                                 getPosts({ auth })
                                 .then(res => {
                                     console.log('res from getPosts: ', res)
-                                    setPostState(res.data)}) 
+                                    setAllPosts(res.data)}) 
                             })
                         } else {
                             alert("You can't edit someone else's post")
@@ -212,7 +229,8 @@ const Forum = () => {
                                 .then(res => {
                                     console.log('res from getComments: ', res)
                                     if (res.data) {
-                                    setAllComments(res.data)
+                                        setAllComments(res.data)
+                                        setCommentState((res.data.filter(comment => comment.post === post.id)))
                                     }
                                 })
                             })
@@ -226,28 +244,65 @@ const Forum = () => {
                     <button className="display-comments"
                         {...getToggleProps({
                             onClick: () => {
-                                setExpanded((prevExpanded) => !prevExpanded)
+                                expandOrCollapse(post.id)
                                 setCommentState(allComments.filter(comment => comment.post === post.id))
-                                console.log(allComments)
                             },
                         })}
                     >
-                        {isExpanded ? 'Collapse' : `Comments: ${commentState.length}`}
+                        {isExpanded[post.id] ? 'Collapse' : `Comments: ${(allComments.filter(comment => comment.post === post.id)).length}`}
                     </button>
                     <section {...getCollapseProps()}>
-                        {commentState.map(comment => (
-                            <div key = {comment.id}>
-                                <br></br>
-                                <p>{comment.text_content}</p>
-                                <h6> Posted by {comment.poster_name} at {comment.posted_at} </h6>
-                            </div>
-                        ))}
+                        {isExpanded[post.id] && 
+                            commentState.map(comment => (
+                                <div key = {comment.id} className="comment">
+                                    <br></br>
+                                    <p className="comment-text">{comment.text_content}</p>
+                                    <button
+                                        onClick = {() => {
+                                            if (comment.posted_by === currentUser.id) {
+                                                    editComment ({ auth, commentId: comment.id, textContent: prompt('Enter new text content') })
+                                                    .then(response => { 
+                                                        getComments({ auth })
+                                                        .then(res => {
+                                                            setAllComments(res.data)
+                                                            setCommentState((res.data.filter(comment => comment.post === post.id)))
+                                                        }) 
+                                                    })
+                                                } else {
+                                                    alert("You can't edit someone else's comment")
+                                                }
+                                            }}
+                                    > 
+                                        Edit
+                                    </button>
+                                    <button style={{ marginLeft: 20 }}
+                                        onClick = {() => {
+                                            if (comment.posted_by === currentUser.id) {
+                                                deleteComment ({ auth, commentId : comment.id }) 
+                                                .then(response => { 
+                                                    getComments({ auth })
+                                                    .then(res => {
+                                                        setCommentState((res.data.filter(comment => comment.post === post.id)))
+                                                        setAllComments(res.data)}) 
+                                                })  
+                                            } else {
+                                                alert("You can't delete someone else's comment")
+                                            }
+                                    }}>
+                                     
+                                        Delete
+                                    </button>
+                                    <br></br>
+                                    <h6> Posted by {comment.poster_name} on {formatDate(comment.posted_at)} </h6>
+                                </div>
+                            ))
+                        }
                     </section>
 
                     </h6>
 
                     <br></br>
-                    <h5> Posted by {post.poster_name} at {post.posted_at} </h5>
+                    <h5> Posted by {post.poster_name} on {formatDate(post.posted_at)} </h5>
                     <hr />
                 </div>
             ))}
