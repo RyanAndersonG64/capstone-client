@@ -54,3 +54,9 @@ body {
 .comment {
   background-color: rgb(216, 215, 215);
 }
+
+.profile-link {
+  text-decoration: none;
+  border: none;
+  outline: none;
+}

@@ -17,6 +17,7 @@ import { ParkContext } from './parkcontext'
 import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import { PostContext } from './postcontext'
+import { ProfileContext } from './profileContext'
 
 import ErrorPage from './ErrorPage'
 
@@ -30,6 +31,7 @@ import GetUser from './getUser'
 import App from './App'
 import CoasterSelector from './CoasterSelector'
 import Profile from './Profile'
+import OtherProfile from './OtherProfile'
 import PersonalRanking from './PersonalRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
@@ -87,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Protected component = {<Profile />} />
+      },
+      {
+        path: '/otherprofile',
+        element: <Protected component = {<OtherProfile />} />
       },
       {
         path: '/personalranking',
@@ -210,6 +216,16 @@ const PostContextProvider = ({ children }) => {
   )
 }
 
+const ProfileContextProvider = ({ children }) => {
+  const [profileView, setProfileView] = useState([])
+
+  return (
+    <ProfileContext.Provider value = {{ profileView, setProfileView }}>
+      {children}
+    </ProfileContext.Provider>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
     <PostContextProvider>
@@ -218,7 +234,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <ParkContext2Provider>
             <CoasterContextProvider>
               <PostContextProvider>
-                <RouterProvider router={router} />
+                <ProfileContextProvider>
+                  <RouterProvider router={router} />
+                </ProfileContextProvider>
               </PostContextProvider>
             </CoasterContextProvider>
           </ParkContext2Provider>

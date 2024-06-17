@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect } from "react"
 import { useCollapse } from "react-collapsed"
-
+import { useNavigate } from "react-router-dom"
 import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
 import { PostContext } from './postcontext'
+import { ProfileContext } from "./profileContext"
 
 
 import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api'
@@ -13,6 +14,7 @@ const Forum = () => {
     const { auth } = useContext(AuthContext)
     const {currentUser, setCurrentUser} = useContext(UserContext)
     const {allPosts, setAllPosts} = useContext(PostContext)
+    const {profileView, setProfileView} = useContext(ProfileContext)
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
@@ -23,6 +25,8 @@ const Forum = () => {
 
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
+
+    const navigate = useNavigate()
 
     const [isExpanded, setExpanded] = useState({})
     const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
@@ -302,7 +306,17 @@ const Forum = () => {
                     </h6>
 
                     <br></br>
-                    <h5> Posted by {post.poster_name} on {formatDate(post.posted_at)} </h5>
+                    <h5> Posted by 
+                        <button className="profile-link"
+                            onClick = {() => {
+                                setProfileView(post.posted_by)
+                                navigate('/otherprofile')
+                            }
+                        }>
+                            {post.poster_name} 
+                        </button> 
+                        on {formatDate(post.posted_at)} 
+                    </h5>
                     <hr />
                 </div>
             ))}
