@@ -88,7 +88,8 @@ const LocationSelector = () => {
 
             {parkState.map(park => (
                 <div key = {park.id}>
-                    <Link to='/coasterselector' onClick = {() => {
+                    <Link className="profile-link" 
+                        to='/coasterselector' onClick = {() => {
                         setSelectedPark(park)
                         localStorage.setItem('storedPark', JSON.stringify(park))
                         }}>{park.name}</Link>

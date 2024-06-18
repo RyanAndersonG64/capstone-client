@@ -23,15 +23,16 @@ const Profile = () => {
 
     useEffect (
         () => {
-
+              if (!currentUser) {
+                setCurrentUser(storedUser)
+              }
               auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
                 
               fetchCoasters ({ auth })
               .then(response => {
                 const coasterJson = response.json()
                 .then(coasterJson => {
-                  setAllCoasters(coasterJson.filter((coaster) => currentUser.coasters_ridden.includes(coaster.id)))
+                  setAllCoasters(coasterJson.filter((coaster) => storedUser.coasters_ridden.includes(coaster.id)))
                 })
               })
         },

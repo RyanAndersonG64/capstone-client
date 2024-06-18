@@ -30,6 +30,7 @@ import GetUser from './getUser'
 
 import App from './App'
 import CoasterSelector from './CoasterSelector'
+import CoasterInfo from './CoasterInfo'
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import PersonalRanking from './PersonalRanking'
@@ -37,7 +38,7 @@ import OtherRanking from './OtherRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
-import Social from "./Social.jsx"
+import Social from "./Social"
 
 function Layout() {
   return (
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: '/coasterselector',
         element: <Protected component = {<CoasterSelector />} />
+      },
+      {
+        path: '/coasterinfo',
+        element: <Protected component = {<CoasterInfo />} />
       },
       {
         path: '/profile',

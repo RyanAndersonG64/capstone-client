@@ -10,8 +10,8 @@ import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, get
 
 const CoasterSelector = () => {
 
-    // const baseUrl = "http://127.0.0.1:8000"
-const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+    const baseUrl = "http://127.0.0.1:8000"
+// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
     const { auth } = useContext(AuthContext)
     const {selectedPark, setSelectedPark} = useContext(ParkContext2)
@@ -67,29 +67,29 @@ const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
             //     }
             // })
 
-            createDataImage ({ auth, image: storedPark.mainPicture.url })
-                    .then(response => {
-                        console.log(response)
-                        getDataImages ({ auth })
-                        .then(response => console.log(response))
-                    })
+            // createDataImage ({ auth, image: storedPark.mainPicture.url })
+            //         .then(response => {
+            //             console.log(response)
+            //             getDataImages ({ auth })
+            //             .then(response => console.log(response))
+            //         })
         }
       )
     
-    console.log(storedPark)
-    const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
-    console.log(coastersAtPark)
-    const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
-    console.log(operatingCoasters)
-    const defunctCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operated' || coaster.status.state === 'SBNO')
-    console.log(defunctCoasters)
-    const underConstruction = coastersAtPark.filter((coaster) => coaster.status.state === 'Under Construction')
-    console.log(underConstruction)
 
+    const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
+
+    const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
+    
+    const defunctCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operated' || coaster.status.state === 'SBNO')
+    
+    const underConstruction = coastersAtPark.filter((coaster) => coaster.status.state === 'Under Construction')
+
+      console.log(storedPark)
     return (
         <div className="p-5">
             <h1> {selectedPark.name} </h1>
-            <img src={`${baseUrl}${storedPark.mainPicture.url}`}></img>
+            <img className = 'park-main-picture' src={`https:/rcdb.com${storedPark.mainPicture.url}`}></img>
             <br></br>
             <h2> Operating Coasters</h2>
             {operatingCoasters.map(coaster => {
@@ -116,7 +116,7 @@ const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
                             }
                         }
                         />
-                        {coaster.name}
+                        <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -146,7 +146,7 @@ const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
                             }
                         }
                         />
-                        {coaster.name}
+                         <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -176,10 +176,19 @@ const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
                             }
                         }
                         /> */}
-                        {coaster.name}
+                         <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
+            <br></br>
+            <h2> Images </h2>
+            <div className='coaster-images-container container-fluid'>
+                {storedPark.pictures.map(picture => (
+                    <div className="coaster-image-wrapper sm-2 lg-6" key={picture.id}>
+                        <img className="coaster-images" src={`https://rcdb.com${picture.url}`} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
