@@ -10,7 +10,7 @@ import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, get
 
 const CoasterSelector = () => {
 
-    const baseUrl = "http://127.0.0.1:8000"
+    // const baseUrl = "http://127.0.0.1:8000"
 // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
 
     const { auth } = useContext(AuthContext)
@@ -87,9 +87,9 @@ const CoasterSelector = () => {
 
       console.log(storedPark)
     return (
-        <div className="p-5">
+        <div className='coaster-selector'>
             <h1> {selectedPark.name} </h1>
-            <img className = 'park-main-picture' src={`https:/rcdb.com${storedPark.mainPicture.url}`}></img>
+            {storedPark.mainPicture && <img className = 'park-main-picture' src={`https:/rcdb.com${storedPark.mainPicture.url}`}></img>}
             <br></br>
             <h2> Operating Coasters</h2>
             {operatingCoasters.map(coaster => {

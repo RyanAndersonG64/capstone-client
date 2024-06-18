@@ -28,74 +28,76 @@ const LocationSelector = () => {
 
     return (
         <div>
-            <label htmlFor="continentFilter"> Continent: </label>
-            <select id = 'continents' name = 'continents' onChange = {(e) => {
-                if (e.target.value === 'North America') {
-                    setContinent(northAmerica)
-                } else if (e.target.value === 'South America') {
-                    setContinent(southAmerica)
-                } else if (e.target.value === 'Europe') {
-                    setContinent(europe)
-                } else if (e.target.value === 'Africa') {
-                    setContinent(africa)
-                } else if (e.target.value === 'Asia') {
-                    setContinent(asia)
-                } else if (e.target.value === 'Oceania') {
-                    setContinent(oceania)
+            <div className="location-selector-1">
+                <label htmlFor="continentFilter"> Continent: </label>
+                <select id = 'continents' name = 'continents' onChange = {(e) => {
+                    if (e.target.value === 'North America') {
+                        setContinent(northAmerica)
+                    } else if (e.target.value === 'South America') {
+                        setContinent(southAmerica)
+                    } else if (e.target.value === 'Europe') {
+                        setContinent(europe)
+                    } else if (e.target.value === 'Africa') {
+                        setContinent(africa)
+                    } else if (e.target.value === 'Asia') {
+                        setContinent(asia)
+                    } else if (e.target.value === 'Oceania') {
+                        setContinent(oceania)
+                    }
+
+                }}>
+                    <option value = ''> --- </option>
+                    <option value = 'North America'>North America</option>
+                    <option value = 'South America'>South America</option>
+                    <option value = 'Europe'>Europe</option>
+                    <option value = 'Africa'>Africa</option>
+                    <option value = 'Asia'>Asia</option>
+                    <option value = 'Oceania'>Oceania</option>
+                    
+                </select>
+
+                <label style = {{ marginLeft: 20 }} htmlFor="countryFilter"> Country: </label>
+                <select id = 'countries' name = 'countries' onChange={(e) => {
+                    setCountryParks(allParks.filter((park) => park.country === e.target.value))
+                    setParkState(allParks.filter((park) => park.country === e.target.value))
+                }}>
+                    <option value = ''> --- </option>
+                    {continent.map(country => {
+                        return (
+                            <option key = {continent.indexOf(country)} value = {country}> {country} </option>
+                        )
+                    })}
+
+                </select>
+
+                <br></br><br></br>
+
+                <input style = {{ marginLeft: 20 }} type = 'text' defaultValue = 'Search'
+                    onClick={(e) =>{
+                        e.target.value = ''
+                    }
                 }
+                    onChange={(e) => {
+                        setParkState(countryParks.filter((park) => park.name.toLowerCase().includes(e.target.value.toLowerCase())))
+                    }
+                    }
+                >
+                    
+                </input>
 
-            }}>
-                <option value = ''> --- </option>
-                <option value = 'North America'>North America</option>
-                <option value = 'South America'>South America</option>
-                <option value = 'Europe'>Europe</option>
-                <option value = 'Africa'>Africa</option>
-                <option value = 'Asia'>Asia</option>
-                <option value = 'Oceania'>Oceania</option>
-                
-            </select>
-
-            <label style = {{ marginLeft: 20 }} htmlFor="countryFilter"> Country: </label>
-            <select id = 'countries' name = 'countries' onChange={(e) => {
-                setCountryParks(allParks.filter((park) => park.country === e.target.value))
-                setParkState(allParks.filter((park) => park.country === e.target.value))
-            }}>
-                <option value = ''> --- </option>
-                {continent.map(country => {
-                    return (
-                        <option key = {continent.indexOf(country)} value = {country}> {country} </option>
-                    )
-                })}
-
-            </select>
-
-            <br></br><br></br>
-
-            <input style = {{ marginLeft: 20 }} type = 'text' defaultValue = 'Search'
-                onClick={(e) =>{
-                    e.target.value = ''
-                }
-            }
-                onChange={(e) => {
-                    setParkState(countryParks.filter((park) => park.name.toLowerCase().includes(e.target.value.toLowerCase())))
-                }
-                }
-            >
-                
-            </input>
-
-            <br></br><br></br><br></br>
-
-            {parkState.map(park => (
-                <div key = {park.id}>
-                    <Link className="profile-link" 
-                        to='/coasterselector' onClick = {() => {
-                        setSelectedPark(park)
-                        localStorage.setItem('storedPark', JSON.stringify(park))
-                        }}>{park.name}</Link>
+                <br></br><br></br><br></br>
+                <div className="location-selector">
+                    {parkState.map(park => (
+                        <div key = {park.id}>
+                            <Link className="park-link" 
+                                to='/coasterselector' onClick = {() => {
+                                setSelectedPark(park)
+                                localStorage.setItem('storedPark', JSON.stringify(park))
+                                }}>{park.name}</Link>
+                        </div>
+                    ))}
                 </div>
-            ))}
-
+            </div>
         </div>
     )
 
