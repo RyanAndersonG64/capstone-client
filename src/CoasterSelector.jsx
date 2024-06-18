@@ -93,7 +93,7 @@ const CoasterSelector = () => {
     return (
         <div className='coaster-selector'>
             <h1> {selectedPark.name} </h1>
-            {storedPark.mainPicture.url && <img className = 'park-main-picture' src={`https:/rcdb.com${storedPark.mainPicture.url}`}></img>}
+            {storedPark.mainPicture.url && <img className = 'park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
             <br></br>
             <h2> Operating Coasters</h2>
             {operatingCoasters.map(coaster => {
