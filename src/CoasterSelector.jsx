@@ -11,7 +11,8 @@ import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, get
 const CoasterSelector = () => {
 
     // const baseUrl = "http://127.0.0.1:8000"
-// const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+    // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
+    const baseUrl = import.meta.env.VITE_BASE_URL
 
     const { auth } = useContext(AuthContext)
     const {selectedPark, setSelectedPark} = useContext(ParkContext2)
