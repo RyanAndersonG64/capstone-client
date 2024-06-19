@@ -39,6 +39,7 @@ import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
 import Social from "./Social"
+import GroupPage from './GroupPage'
 
 function Layout() {
   return (
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: '/social',
         element: <Protected component = {<Social />} />
+      },
+      {
+        path: '/grouppage',
+        element: <Protected component = {<GroupPage />} />
       },
     ],
   }

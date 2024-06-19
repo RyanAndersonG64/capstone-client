@@ -190,12 +190,14 @@ body {
   text-align: center;
 }
 
-#friends-list {
+.friend-stuff {
   float: right;
+}
+
+#friends-list {
   margin-top: 10vh;
   margin-right: 10vw;
   border: solid 2px black;
-  font-size:x-large;
   font: bold;
 }
 
@@ -203,5 +205,21 @@ body {
   text-align: center;
   border: solid 1px grey;
   padding: 5px;
-  font-size: medium;
+}
+
+#friend-requests {
+  padding: 1vh;
+  width: fit-content;
+  height: fit-content;
+  border: solid 2px black;
+}
+
+.friend-request {
+  text-align: center;
+  border: solid 1px grey;
+}
+
+.group-stuff {
+  text-align: center;
+  margin-top: 5vh;
 }

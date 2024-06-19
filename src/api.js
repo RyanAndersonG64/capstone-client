@@ -391,7 +391,7 @@ export const editComment = ({ auth, commentId, textContent }) => {
     console.log('django response = ', response.data)
     return response
   })
-  .catch(error => console.log('Add post error: ', error))
+  .catch(error => console.log('Edit comment error: ', error))
 }
 
 export const deleteComment = ({ auth, commentId }) => {
@@ -409,11 +409,27 @@ export const deleteComment = ({ auth, commentId }) => {
     console.log(response.data)
     return response
   })
-  .catch(error => console.log('Delete post error: ', error))
+  .catch(error => console.log('Delete comment error: ', error))
 }
 
 
 // -- Stuff for friends --
+
+
+export const getFriendRequests = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-friend-requests`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get friend requests error: ', error))
+}
 
 export const sendFriendRequest = ({ auth, sender, reciever }) => {
   return axios ({
@@ -432,4 +448,40 @@ export const sendFriendRequest = ({ auth, sender, reciever }) => {
     return response
   })
   .catch(error => console.log('Send friend requesr error: ', error))
+}
+
+export const acceptFriendRequest = ({ auth, request }) => {
+  return axios ({
+    method: 'patch',
+    url: `${baseUrl}/accept-friend-request/`,
+    data: {
+      request
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    return response
+  })
+  .catch(error => console.log('Accept friend requesr error: ', error))
+}
+
+
+// -- Stuff for friends --
+
+
+export const getGroups = ({ auth }) => {
+  return axios ({
+    method: 'get',
+    url: `${baseUrl}/get-groups`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Get groups error: ', error))
 }
