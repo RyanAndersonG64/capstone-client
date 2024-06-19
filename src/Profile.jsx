@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchCoasters } from "./api"
+import { fetchAllUsers, fetchCoasters } from "./api"
 
 
 import { AuthContext } from "./context"
@@ -20,6 +20,8 @@ const Profile = () => {
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
 
+    const [allUsers, setAllUsers] = useState([])
+
     const navigate = useNavigate()
 
     useEffect (
@@ -28,13 +30,21 @@ const Profile = () => {
                 setCurrentUser(storedUser)
               }
               auth.setAccessToken(authStorage)
-                
+
+              setProfileView(currentUser.id)
+
               fetchCoasters ({ auth })
               .then(response => {
                 const coasterJson = response.json()
                 .then(coasterJson => {
                   setAllCoasters(coasterJson.filter((coaster) => storedUser.coasters_ridden.includes(coaster.id)))
                 })
+              })
+
+              fetchAllUsers ({ auth })
+              .then(response => {
+                setAllUsers(response.data)
+                console.log(allUsers)
               })
         },
         []
@@ -53,17 +63,33 @@ const Profile = () => {
         <div className = 'profile'>
             <br></br>
             <h1> {currentUser.first_name} {currentUser.last_name} </h1>
-            {/* <button style = {{ float: "right", marginLeft: 2 }}
-                    onClick = {() => navigate('/otherprofile')}
+            <button style = {{ float: "right", marginLeft: 2 }}
+                    onClick = {() => {
+                      if (profileView == currentUser.id) {
+                        navigate('/profile')
+                      } else {
+                      navigate('/otherprofile')
+                    }}}
             >
               Look up User
             </button>
-            <input style = {{ float: "right" }}type="text" name="lookupuser" id="lookupuser"
-                   onChange = {(e) => {
-                    setProfileView(JSON.parse(e.target.value))
-                   }}
-            >
-            </input> */}
+
+            <select style={{ float:'right' }} id="postTypes" name="postTypes" defaultValue = {currentUser.id} 
+              onChange = {(e) => {
+                setProfileView(e.target.value)
+                localStorage.setItem('profileView', JSON.stringify(profileView))
+              }
+          }
+                >
+              <option value = {currentUser.id}> --- </option>
+            {allUsers.map(user =>
+              <option  key = {user.id} value = {user.id}> {`${user.first_name} ${user.last_name}`} </option>
+            )}
+
+
+            </select>
+          <label style={{ float:'right' }} htmlFor="userLookup">Search Users:</label>
+
             <br></br>
             <h3> 
               Coaster count: {currentUser.coaster_count} 

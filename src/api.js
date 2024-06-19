@@ -411,3 +411,25 @@ export const deleteComment = ({ auth, commentId }) => {
   })
   .catch(error => console.log('Delete post error: ', error))
 }
+
+
+// -- Stuff for friends --
+
+export const sendFriendRequest = ({ auth, sender, reciever }) => {
+  return axios ({
+    method: 'post',
+    url: `${baseUrl}/create-friend-request/`,
+    data: {
+      sender,
+      reciever,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    return response
+  })
+  .catch(error => console.log('Send friend requesr error: ', error))
+}

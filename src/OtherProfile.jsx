@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchAllUsers, fetchCoasters } from "./api"
+import { fetchAllUsers, fetchCoasters, sendFriendRequest } from "./api"
 
 
 import { AuthContext } from "./context"
@@ -26,15 +26,18 @@ const OtherProfile = () => {
     useEffect (
         () => {
               console.log(profileView)
-              if (profileView.length === 0) {
-                navigate('/app')
+              if (!profileView || profileView.length == 0) {
+                navigate('/profile')
               }
+              
               auth.setAccessToken(authStorage)
               setCurrentUser(storedUser)
+              setProfileView(JSON.parse(localStorage.getItem('profileView')))
               fetchAllUsers ({ auth })
                   .then(response => {
                       setAllUsers(response.data)
-                      let userBeingViewed = response.data.find(user => user.id === profileView)
+                      console.log(response.data)
+                      let userBeingViewed = response.data.find(user => user.id == profileView)
                       console.log(userBeingViewed)
                       console.log(userBeingViewed.id)
                       setProfileView(userBeingViewed)
@@ -58,7 +61,7 @@ const OtherProfile = () => {
         },
         []
       )
-    if (profileView.profile_view_state === 'FRIENDS ONLY') { // && !profileView.friends.includes(currentUser)
+    if (profileView.profile_view_state === 'FRIENDS ONLY' && !profileView.friends.includes(currentUser)) {
         return (
             <div className="p-5">
                 <br></br>
@@ -77,8 +80,21 @@ const OtherProfile = () => {
             <div className = 'profile'>
                 <br></br>
                 <h1> {profileView.first_name} {profileView.last_name} </h1>
-                <Link style={{ marginRight: 20 }} to='/otherranking'>{profileView.first_name}'s Top 10</Link>
-                <h3> Coaster count: {profileView.coaster_count} </h3>
+
+                <button style = {{ float: "right", marginLeft: 2 }}
+                    onClick = {() => {
+                      if (!currentUser.friends.includes(profileView)) {
+                        sendFriendRequest ({ auth, sender: currentUser.id, reciever: profileView.id })
+                    }}}
+            >
+              Send Friend Request
+            </button>
+
+                <h3> 
+                    Coaster count: {profileView.coaster_count} 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Link className = 'profile-link' style={{ marginRight: 20 }} to='/otherranking'>{profileView.first_name}'s Top 10</Link> 
+                </h3>
                 <br></br><br></br>
                 <h5>Coasters ridden:</h5>
                 <br></br>

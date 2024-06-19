@@ -185,3 +185,23 @@ body {
     height: 100%;
   }
 }
+
+.social {
+  text-align: center;
+}
+
+#friends-list {
+  float: right;
+  margin-top: 10vh;
+  margin-right: 10vw;
+  border: solid 2px black;
+  font-size:x-large;
+  font: bold;
+}
+
+.friend {
+  text-align: center;
+  border: solid 1px grey;
+  padding: 5px;
+  font-size: medium;
+}
