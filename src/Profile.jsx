@@ -74,7 +74,7 @@ const Profile = () => {
               Look up User
             </button>
 
-            <select style={{ float:'right' }} id="postTypes" name="postTypes" defaultValue = {currentUser.id} 
+            <select style={{ float:'right' }} id='userLookup' name='userLookup' defaultValue = {currentUser.id} 
               onChange = {(e) => {
                 setProfileView(e.target.value)
                 localStorage.setItem('profileView', JSON.stringify(profileView))

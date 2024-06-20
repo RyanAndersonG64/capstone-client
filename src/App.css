@@ -186,12 +186,22 @@ body {
   }
 }
 
+.social-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .social {
+  width: 100%;
+  display: flex;
   text-align: center;
 }
 
 .friend-stuff {
-  float: right;
+    flex: 1;
+    margin: 10px;
+    overflow: hidden;
+    max-width: 33.33%;
 }
 
 #friends-list {
@@ -199,6 +209,7 @@ body {
   margin-right: 10vw;
   border: solid 2px black;
   font: bold;
+  min-width: fit-content;
 }
 
 .friend {
@@ -220,6 +231,37 @@ body {
 }
 
 .group-stuff {
+  flex: 1;
+  margin: 10px;
+  overflow: hidden;
+  max-width: 66.66%;
+}
+
+#group-invites {
+    width: 20vh;
+    height: fit-content;
+    max-height: 20vh;
+    margin: auto;
+    border: solid 2px black;
+}
+
+.group-invite {
   text-align: center;
+}
+
+.group-members {
   margin-top: 5vh;
+  margin-right: 5vw;
+  width: fit-content;
+  height: fit-content;
+  border: solid 2px black;
+}
+
+.group-member {
+  text-align: center;
+  border: solid 1px grey;
+}
+
+.group-messages {
+  text-align: center;
 }
