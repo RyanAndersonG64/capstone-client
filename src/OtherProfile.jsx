@@ -19,6 +19,7 @@ const OtherProfile = () => {
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
+    const profileStorage = JSON.parse(localStorage.getItem('profileView'))
     const [allUsers, setAllUsers] = useState([])
     const [loading, setLoading] = useState([])
 
@@ -26,26 +27,22 @@ const OtherProfile = () => {
 
     useEffect(
         () => {
-            console.log(profileView)
-            if (!profileView || profileView.length == 0) {
-                navigate('/profile')
-            }
+
 
             auth.setAccessToken(authStorage)
             setCurrentUser(storedUser)
-            setProfileView(JSON.parse(localStorage.getItem('profileView')))
             fetchAllUsers({ auth })
                 .then(response => {
-                    setAllUsers(response.data)
                     console.log(response.data)
-                    let userBeingViewed = response.data.find(user => user.id == profileView)
+                    setAllUsers(response.data)
+                    let userBeingViewed = response.data.find(user => user.id == profileStorage)
                     console.log(userBeingViewed)
-                    console.log(userBeingViewed.id)
-                    setProfileView(userBeingViewed)
+                    console.log(userBeingViewed.first_name)
                     fetchCoasters({ auth })
                         .then(response => {
                             const coasterJson = response.json()
                                 .then(coasterJson => {
+                                    console.log(userBeingViewed)
                                     setAllCoasters(coasterJson.filter((coaster) => (userBeingViewed.coasters_ridden.includes(coaster.id))))
                                     setLoading(false)
                                 })
@@ -64,18 +61,20 @@ const OtherProfile = () => {
         []
     )
 
-    if (loading) {
-        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
+    function getUserFromId(inputId) {
+        return allUsers.find(user => user.id == inputId)
     }
 
-    if (profileView.profile_view_state === 'FRIENDS ONLY' && !profileView.friends.includes(currentUser)) {
+    if (loading) {
+        return <div><img src='https://http.cat/images/102.jpg'></img></div>
+    } else if (getUserFromId(profileStorage).profile_view_state === 'FRIENDS ONLY' && !getUserFromId(profileStorage).friends.includes(currentUser.id)) {
         return (
             <div className="p-5">
                 <br></br>
                 <h1> This user's profile can only be viewed by their friends. </h1>
             </div>
         )
-    } else if (profileView.profile_view_state === 'PRIVATE') {
+    } else if (getUserFromId(profileStorage).profile_view_state === 'PRIVATE') {
         return (
             <div className="p-5">
                 <br></br>
@@ -86,12 +85,12 @@ const OtherProfile = () => {
         return (
             <div className='profile'>
                 <br></br>
-                <h1> {profileView.first_name} {profileView.last_name} </h1>
+                <h1> {getUserFromId(profileStorage).first_name} {getUserFromId(profileStorage).last_name} </h1>
 
                 <button style={{ float: "right", marginLeft: 2 }}
                     onClick={() => {
-                        if (!currentUser.friends.includes(profileView)) {
-                            sendFriendRequest({ auth, sender: currentUser.id, reciever: profileView.id })
+                        if (!currentUser.friends.includes(getUserFromId(profileStorage))) {
+                            sendFriendRequest({ auth, sender: currentUser.id, reciever: getUserFromId(profileStorage).id })
                                 .then(response => {
                                     if (response.data === 'already') {
                                         alert('That user is already your friend, or you have already sent them a friend invite')
@@ -104,9 +103,9 @@ const OtherProfile = () => {
                 </button>
 
                 <h3>
-                    Coaster count: {profileView.coaster_count}
+                    Coaster count: {getUserFromId(profileStorage).coaster_count}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>{profileView.first_name}'s Top 10</Link>
+                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>{getUserFromId(profileStorage).first_name}'s Top 10</Link>
                 </h3>
                 <br></br><br></br>
                 <h5>Coasters ridden:</h5>

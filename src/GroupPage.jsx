@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers, inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, getMessages, sendMessage } from "./api"
+import { fetchUser, fetchAllUsers, inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from "./api"
 
 
 import { AuthContext } from "./context"
@@ -22,6 +22,16 @@ const GroupPage = () => {
     const [joinRequests, setJoinRequests] = useState([])
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState([])
+
+    const navigate = useNavigate()
+
+    const memberColor = (member) => {
+        if (member == group.founder) {
+            return 'yellow'
+        } else {
+            return 'black'
+        }
+    }
 
     const [loading1, setLoading1] = useState(true)
     const [loading2, setLoading2] = useState(true)
@@ -78,13 +88,31 @@ const GroupPage = () => {
     }
 
     if (loading1 || loading2 || loading3) {
-        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
+        return <div><img src='https://http.cat/images/102.jpg'></img></div>
     }
 
     return (
         <div className='group-stuff'>
             {group.founder == storedUser.id &&
                 <div>
+
+                    <button className='profile-link' style={{ float: 'right', marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
+                        onClick={() => {
+
+                            let confirm_dissolve = confirm('Are you sure you want to dissolve this group?')
+                            if (confirm_dissolve) {
+                                dissolveGroup({ auth, group: group.id })
+                                    .then(response => {
+                                        navigate('/social')
+                                    })
+                            }
+
+                        }
+                        }
+                    >
+                        Dissolve Group
+                    </button>
+
                     <label htmlFor="userLookup">Search Users:</label>
                     <select id="userLookup" name="userLookup" style={{ marginLeft: 10 }} defaultValue={currentUser.id}
                         onChange={(e) => {
@@ -166,8 +194,8 @@ const GroupPage = () => {
             <div className="group-members">
                 <h2> Members: {group.members.length} </h2>
                 {group.members.map(member => (
-                    <div key={member} className="group-member">
-                        <Link className='profile-link'
+                    <div key={member} className="group-member" >
+                        <Link className='profile-link' style={{ color: memberColor(member) }}
                             onClick={() => {
                                 localStorage.setItem('profileView', JSON.stringify(member))
                                 setProfileView(member)
@@ -181,8 +209,8 @@ const GroupPage = () => {
                             &nbsp;&nbsp;{getUserFromId(member).first_name} {getUserFromId(member).last_name}&nbsp;&nbsp;
                             <br></br>
                         </Link>
-                        {group.founder == storedUser.id &&
-                            <button className='profile-link' style={{ marginLeft: 10, border: 'none', background: 'none' }}
+                        {group.founder == storedUser.id && member !== group.founder &&
+                            <button className='profile-link' style={{ marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
                                 onClick={() => {
                                     if (member != group.founder) {
                                         let confirm_kick = confirm('Are you sure you want to Kick this member?')
@@ -200,6 +228,25 @@ const GroupPage = () => {
                                 Kick
                             </button>
                         }
+                        {member !== group.founder && member == storedUser.id &&
+                            <button className='profile-link' style={{ marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
+                                onClick={() => {
+
+                                    let confirm_leave = confirm('Are you sure you want to leave this group?')
+                                    if (confirm_leave) {
+                                        leaveGroup({ auth, group: group.id, memberLeaving: storedUser.id })
+                                            .then(response => {
+                                                (localStorage.setItem('group', JSON.stringify(group)))
+                                                navigate('/social')
+                                            })
+                                    }
+
+                                }
+                                }
+                            >
+                                Leave Group
+                            </button>
+                        }
                     </div>
                 ))}
             </div>
@@ -210,6 +257,7 @@ const GroupPage = () => {
                         {message.text_content}
                         <br></br>
                         Sent by {getUserFromId(message.sender).first_name} on {formatDate(message.posted_at)}
+                        <br></br><br></br>
                     </div>
                 ))}
                 <input type="text" id='groupMessage' value={message}

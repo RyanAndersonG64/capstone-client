@@ -175,7 +175,31 @@ export const setFavorite = ({ auth, id, coaster, rank }) => {
 }
 
 
+// -- Stuff for user profiles --
+
+
+export const changeProfileViewState = ({ auth, user, newState }) => {
+  return axios({
+    method: 'patch',
+    url: `${baseUrl}/change-profile-view-state/`,
+    data: {
+      user,
+      new_state: newState,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+    .then(response => {
+      console.log('django response = ', response.data)
+      return response
+    })
+    .catch(error => console.log('changep rofile error: ', error))
+}
+
+
 // -- CRUD on forum posts --
+
 
 export const getPosts = ({ auth }) => {
   return axios({
@@ -695,6 +719,42 @@ export const rejectJoinRequest = ({ auth, request }) => {
       return response
     })
     .catch(error => console.log('reject join request error: ', error))
+}
+
+export const leaveGroup = ({ auth, group, memberLeaving }) => {
+  return axios({
+    method: 'patch',
+    url: `${baseUrl}/leave-group/`,
+    data: {
+      group,
+      member_leaving: memberLeaving
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('leave group error: ', error))
+}
+
+export const dissolveGroup = ({ auth, group }) => {
+  return axios({
+    method: 'delete',
+    url: `${baseUrl}/dissolve-group/`,
+    data: {
+      group
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('dissolve group error: ', error))
 }
 
 export const getMessages = ({ auth }) => {

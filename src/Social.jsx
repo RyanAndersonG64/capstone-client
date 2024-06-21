@@ -20,6 +20,7 @@ const Social = () => {
     const [friendRequests, setFriendRequests] = useState([])
     const [groupInvites, setGroupInvites] = useState([])
     const [groups, setGroups] = useState([])
+    const [groupState, setGroupState] = useState([])
     const [friendToAdd, setFriendToAdd] = useState(0)
     const [dms, setDms] = useState([])
     const [dmState, setDmState] = useState([])
@@ -58,7 +59,8 @@ const Social = () => {
             getGroups({ auth })
                 .then(response => {
                     setGroups(response.data)
-                    console.log(response.data)
+                    setGroupState(response.data.filter(group => !group.members.includes(storedUser.id)))
+
                     setLoading1(false)
                 })
 
@@ -183,7 +185,21 @@ const Social = () => {
                     <hr />
 
                     <h2> Find New Groups </h2>
-                    {otherGroups.map(group => (
+
+                    <input style={{ marginLeft: 20 }} type='text' defaultValue='Search'
+                    onClick={(e) => {
+                        e.target.value = ''
+                    }
+                    }
+                    onChange={(e) => {
+                        setGroupState(otherGroups.filter((group) => group.name.toLowerCase().includes(e.target.value.toLowerCase())))
+                    }
+                    }
+                >
+
+                </input>
+                    <br></br><br></br>
+                    {groupState.map(group => (
                         <div className='group' key={group.id}>
                             {group.name}
                             <button className='profile-link' style={{ marginLeft: 10, border: 'solid 1px', background: 'none' }}

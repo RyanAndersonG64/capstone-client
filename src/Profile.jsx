@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchAllUsers, fetchCoasters } from "./api"
+import { fetchAllUsers, fetchCoasters, changeProfileViewState } from "./api"
 
 
 import { AuthContext } from "./context"
@@ -19,11 +19,11 @@ const Profile = () => {
 
   const storedUser = JSON.parse(localStorage.getItem('storedUser'))
   const authStorage = localStorage.getItem('authStorage')
+  const [profileViewState, setProfileViewState] = useState([storedUser.profile_view_state])
 
   const [allUsers, setAllUsers] = useState([])
 
   const navigate = useNavigate()
-
   useEffect(
     () => {
       if (!currentUser) {
@@ -62,7 +62,35 @@ const Profile = () => {
   return (
     <div className='profile'>
       <br></br>
-      <h1> {currentUser.first_name} {currentUser.last_name} </h1>
+      <button style={{ float: "right", marginLeft: 2 }}
+        onClick={() => {
+          changeProfileViewState({ auth, user: storedUser.id, newState:profileViewState })
+        }}
+      >
+        Set State
+      </button>
+
+      <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={storedUser.profile_view_state}
+        onChange={(e) => {
+          console.log(e.target.value.toUpperCase())
+          setProfileViewState(e.target.value.toUpperCase())
+        }
+        }
+      >
+        <option value='PUBLIC'> Public </option>
+        <option value='PRIVATE'> Private </option>
+        <option value='FRIENDS ONLY'> Friends Only </option>
+
+
+
+      </select>
+      <label style={{ float: 'right' }} htmlFor="userLookup">Profile State:&nbsp;</label>
+      HUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUE
+      <br></br><br></br>
+
+      <h1>
+        {currentUser.first_name} {currentUser.last_name}
+      </h1>
       <button style={{ float: "right", marginLeft: 2 }}
         onClick={() => {
           if (profileView == currentUser.id) {
@@ -78,7 +106,7 @@ const Profile = () => {
       <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={currentUser.id}
         onChange={(e) => {
           setProfileView(e.target.value)
-          localStorage.setItem('profileView', JSON.stringify(profileView))
+          localStorage.setItem('profileView', JSON.stringify(e.target.value))
         }
         }
       >
@@ -89,7 +117,7 @@ const Profile = () => {
 
 
       </select>
-      <label style={{ float: 'right' }} htmlFor="userLookup">Search Users:</label>
+      <label style={{ float: 'right' }} htmlFor="userLookup">Search Users:&nbsp;</label>
 
       <br></br>
       <h3>

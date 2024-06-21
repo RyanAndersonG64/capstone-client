@@ -40,6 +40,10 @@ body {
   margin: auto;
 }
 
+.poogers {
+  display: inline-block;
+}
+
 .personalRanking {
   width: 60%;
   margin: auto;
