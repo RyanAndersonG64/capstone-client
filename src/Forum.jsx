@@ -12,9 +12,9 @@ import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComm
 const Forum = () => {
 
     const { auth } = useContext(AuthContext)
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    const {allPosts, setAllPosts} = useContext(PostContext)
-    const {profileView, setProfileView} = useContext(ProfileContext)
+    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { allPosts, setAllPosts } = useContext(PostContext)
+    const { profileView, setProfileView } = useContext(ProfileContext)
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
@@ -25,7 +25,10 @@ const Forum = () => {
 
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
-
+    
+    const [loading1, setLoading1] = useState(true)
+    const [loading2, setLoading2] = useState(true)
+    
     const navigate = useNavigate()
 
     const [isExpanded, setExpanded] = useState({})
@@ -33,48 +36,50 @@ const Forum = () => {
 
     const expandOrCollapse = (postId) => {
         setExpanded((prevStates) => ({
-          ...prevStates,
-          [postId]: !prevStates[postId],
+            ...prevStates,
+            [postId]: !prevStates[postId],
         }));
-      };
-    
+    };
+
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
-    useEffect (
+    useEffect(
         () => {
 
-              auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
-                
+            auth.setAccessToken(authStorage)
+            setCurrentUser(storedUser)
+
         },
         []
-      )
+    )
 
-    useEffect (
+    useEffect(
         () => {
             if (!auth.accessToken) {
-            navigate('/')
-          }
+                navigate('/')
+            }
         },
         []
-      )
+    )
 
-    useEffect (
+    useEffect(
         () => {
             if (auth.accessToken) {
                 getPosts({ auth })
                     .then(response => {
                         setPostState(response.data)
                         setAllPosts(response.data)
+                        setLoading1(false)
                     })
                     .catch(error => console.log('Get Posts Failure: ', error))
                 getComments({ auth })
                     .then(response => {
                         setAllComments(response.data)
+                        setLoading2(false)
                     })
                     .catch(error => console.log('Get Comments Failure: ', error))
             }
@@ -84,16 +89,21 @@ const Forum = () => {
 
     const submit = () => {
 
-            let poster = currentUser.id
-                addPost ({ auth, title, postedBy: poster, textContent })
-                .then(response => { 
-                    console.log('response from AddPost: ', response)
-                    getPosts({ auth })
+        let poster = currentUser.id
+        addPost({ auth, title, postedBy: poster, textContent })
+            .then(response => {
+                console.log('response from AddPost: ', response)
+                getPosts({ auth })
                     .then(res => {
                         console.log('res from getPosts: ', res)
-                        setPostState(res.data)}) 
-                })
-                .catch(error => console.log('Create Post failure: ', error))
+                        setPostState(res.data)
+                    })
+            })
+            .catch(error => console.log('Create Post failure: ', error))
+    }
+
+    if (loading1 || loading2) {
+        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
     }
 
     return (
@@ -102,37 +112,37 @@ const Forum = () => {
             {/* -- Create posts -- */}
 
             <div>
-            <h1>Create a Post</h1>
-            <h2>Post Title</h2>
-            <input
-                onChange = {e =>setTitle(e.target.value)}
-                value = {title}
-            />
-            <br></br>
-            <h2>Post Content</h2>
-            <input
-                onChange = {e =>setTextContent(e.target.value)}
-                value = {textContent}
-            />
-            <hr />
-            <div>
-                
-            </div>
-            <div>
-                <button onClick={() => submit()}>
-                    Submit Post
+                <h1>Create a Post</h1>
+                <h2>Post Title</h2>
+                <input
+                    onChange={e => setTitle(e.target.value)}
+                    value={title}
+                />
+                <br></br>
+                <h2>Post Content</h2>
+                <input
+                    onChange={e => setTextContent(e.target.value)}
+                    value={textContent}
+                />
+                <hr />
+                <div>
 
-                </button>
+                </div>
+                <div>
+                    <button onClick={() => submit()}>
+                        Submit Post
+
+                    </button>
+                </div>
+                <hr />
             </div>
-            <hr />
-        </div>
-            
+
             {/* -- Display posts -- */}
 
             <hr />
             <h1>Posts</h1>
             <label htmlFor="postFilter">Sort posts by:</label>
-            <select id="postTypes" name="postTypes" onChange = {(e) => {
+            <select id="postTypes" name="postTypes" onChange={(e) => {
                 console.log(e.target.value)
                 if (e.target.value === 'All Posts') {
                     // getPosts({ auth })
@@ -158,12 +168,12 @@ const Forum = () => {
                 } else {
                     setPostState(allPosts)
                 }
-                    }
-                }
-                >
-            <option value = 'All Posts'>All Posts</option>
-            <option value = 'Your Posts'>Your Posts</option>
-            <option value = 'Liked Posts'>Liked Posts</option>
+            }
+            }
+            >
+                <option value='All Posts'>All Posts</option>
+                <option value='Your Posts'>Your Posts</option>
+                <option value='Liked Posts'>Liked Posts</option>
 
             </select>
 
@@ -173,31 +183,33 @@ const Forum = () => {
                     <p>{post.text_content}</p>
 
                     <br></br>
-                    <button onClick = {() => {
+                    <button onClick={() => {
                         console.log('Like has been pressed')
-                        likePost ({ auth, current_user: currentUser.id, post_id: post.id, likes: post.likes }) 
-                        .then(response => { 
-                            console.log(response)
-                            getPosts({ auth })
-                            .then(res => {
-                                console.log('res from likePosts: ', res)
-                                setAllPosts(res.data)}) 
-                        })  
-                        
-                     }}>
+                        likePost({ auth, current_user: currentUser.id, post_id: post.id, likes: post.likes })
+                            .then(response => {
+                                console.log(response)
+                                getPosts({ auth })
+                                    .then(res => {
+                                        console.log('res from likePosts: ', res)
+                                        setAllPosts(res.data)
+                                    })
+                            })
+
+                    }}>
                         Like
                     </button>
 
-                    <button style={{ marginLeft: 20 }} onClick = {() => {
+                    <button style={{ marginLeft: 20 }} onClick={() => {
                         if (post.posted_by === currentUser.id) {
                             console.log('Delete has been pressed')
-                            deletePost ({ auth, postId : post.id }) 
-                            .then(response => { 
-                                getPosts({ auth })
-                                .then(res => {
-                                    console.log('res from getPosts: ', res)
-                                    setAllPosts(res.data)}) 
-                            })  
+                            deletePost({ auth, postId: post.id })
+                                .then(response => {
+                                    getPosts({ auth })
+                                        .then(res => {
+                                            console.log('res from getPosts: ', res)
+                                            setAllPosts(res.data)
+                                        })
+                                })
                         } else {
                             alert("You can't delete someone else's post")
                         }
@@ -205,17 +217,18 @@ const Forum = () => {
                         Delete
                     </button>
 
-                    <button style={{ marginLeft: 20 }} onClick = {() => {
-                       if (post.posted_by === currentUser.id) {
+                    <button style={{ marginLeft: 20 }} onClick={() => {
+                        if (post.posted_by === currentUser.id) {
                             console.log('Edit has been pressed')
-                            editPost ({ auth, postId: post.id, textContent: prompt('Enter new text content'), likeCount: post.like_count })
-                            .then(response => { 
-                                console.log('response from editPost: ', response)
-                                getPosts({ auth })
-                                .then(res => {
-                                    console.log('res from getPosts: ', res)
-                                    setAllPosts(res.data)}) 
-                            })
+                            editPost({ auth, postId: post.id, textContent: prompt('Enter new text content'), likeCount: post.like_count })
+                                .then(response => {
+                                    console.log('response from editPost: ', response)
+                                    getPosts({ auth })
+                                        .then(res => {
+                                            console.log('res from getPosts: ', res)
+                                            setAllPosts(res.data)
+                                        })
+                                })
                         } else {
                             alert("You can't edit someone else's post")
                         }
@@ -223,104 +236,105 @@ const Forum = () => {
                         Edit
                     </button>
 
-                    <button style={{ marginLeft: 20 }} onClick = {() => {
+                    <button style={{ marginLeft: 20 }} onClick={() => {
 
-                            console.log('Comment has been pressed')
-                            addComment ({ auth, postId: post.id, postedBy: currentUser.id, textContent: prompt('Enter comment') })
-                            .then(response => { 
+                        console.log('Comment has been pressed')
+                        addComment({ auth, postId: post.id, postedBy: currentUser.id, textContent: prompt('Enter comment') })
+                            .then(response => {
                                 console.log('response from addComment: ', response)
                                 getComments({ auth })
-                                .then(res => {
-                                    console.log('res from getComments: ', res)
-                                    if (res.data) {
-                                        setAllComments(res.data)
-                                        setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                    }
-                                })
+                                    .then(res => {
+                                        console.log('res from getComments: ', res)
+                                        if (res.data) {
+                                            setAllComments(res.data)
+                                            setCommentState((res.data.filter(comment => comment.post === post.id)))
+                                        }
+                                    })
                             })
                     }}>
                         Comment
                     </button>
-                    <h6> Likes: {post.likes} 
+                    <h6> Likes: {post.likes}
 
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    
-                    <button className="display-comments"
-                        {...getToggleProps({
-                            onClick: () => {
-                                expandOrCollapse(post.id)
-                                setCommentState(allComments.filter(comment => comment.post === post.id))
-                            },
-                        })}
-                    >
-                        {isExpanded[post.id] ? 'Collapse' : `Comments: ${(allComments.filter(comment => comment.post === post.id)).length}`}
-                    </button>
-                    <section {...getCollapseProps()}>
-                        {isExpanded[post.id] && 
-                            commentState.map(comment => (
-                                <div key = {comment.id} className="comment">
-                                    <br></br>
-                                    <p className="comment-text">{comment.text_content}</p>
-                                    <button
-                                        onClick = {() => {
-                                            if (comment.posted_by === currentUser.id) {
-                                                    editComment ({ auth, commentId: comment.id, textContent: prompt('Enter new text content') })
-                                                    .then(response => { 
-                                                        getComments({ auth })
-                                                        .then(res => {
-                                                            setAllComments(res.data)
-                                                            setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                                        }) 
-                                                    })
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <button className="display-comments"
+                            {...getToggleProps({
+                                onClick: () => {
+                                    expandOrCollapse(post.id)
+                                    setCommentState(allComments.filter(comment => comment.post === post.id))
+                                },
+                            })}
+                        >
+                            {isExpanded[post.id] ? 'Collapse' : `Comments: ${(allComments.filter(comment => comment.post === post.id)).length}`}
+                        </button>
+                        <section {...getCollapseProps()}>
+                            {isExpanded[post.id] &&
+                                commentState.map(comment => (
+                                    <div key={comment.id} className="comment">
+                                        <br></br>
+                                        <p className="comment-text">{comment.text_content}</p>
+                                        <button
+                                            onClick={() => {
+                                                if (comment.posted_by === currentUser.id) {
+                                                    editComment({ auth, commentId: comment.id, textContent: prompt('Enter new text content') })
+                                                        .then(response => {
+                                                            getComments({ auth })
+                                                                .then(res => {
+                                                                    setAllComments(res.data)
+                                                                    setCommentState((res.data.filter(comment => comment.post === post.id)))
+                                                                })
+                                                        })
                                                 } else {
                                                     alert("You can't edit someone else's comment")
                                                 }
                                             }}
-                                    > 
-                                        Edit
-                                    </button>
-                                    <button style={{ marginLeft: 20 }}
-                                        onClick = {() => {
-                                            if (comment.posted_by === currentUser.id) {
-                                                deleteComment ({ auth, commentId : comment.id }) 
-                                                .then(response => { 
-                                                    getComments({ auth })
-                                                    .then(res => {
-                                                        setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                                        setAllComments(res.data)}) 
-                                                })  
-                                            } else {
-                                                alert("You can't delete someone else's comment")
-                                            }
-                                    }}>
-                                     
-                                        Delete
-                                    </button>
-                                    <br></br>
-                                    <h6> Posted by {comment.poster_name} on {formatDate(comment.posted_at)} </h6>
-                                </div>
-                            ))
-                        }
-                    </section>
+                                        >
+                                            Edit
+                                        </button>
+                                        <button style={{ marginLeft: 20 }}
+                                            onClick={() => {
+                                                if (comment.posted_by === currentUser.id) {
+                                                    deleteComment({ auth, commentId: comment.id })
+                                                        .then(response => {
+                                                            getComments({ auth })
+                                                                .then(res => {
+                                                                    setCommentState((res.data.filter(comment => comment.post === post.id)))
+                                                                    setAllComments(res.data)
+                                                                })
+                                                        })
+                                                } else {
+                                                    alert("You can't delete someone else's comment")
+                                                }
+                                            }}>
+
+                                            Delete
+                                        </button>
+                                        <br></br>
+                                        <h6> Posted by {comment.poster_name} on {formatDate(comment.posted_at)} </h6>
+                                    </div>
+                                ))
+                            }
+                        </section>
 
                     </h6>
 
                     <br></br>
-                    <h5> Posted by 
+                    <h5> Posted by
                         <button className="profile-link"
-                            onClick = {() => {
+                            onClick={() => {
                                 if (post.posted_by === currentUser.id) {
                                     navigate('/profile')
                                 } else {
-                                localStorage.setItem('storedProfile', [post.posted_by])
-                                setProfileView(post.posted_by)
-                                navigate('/otherprofile')
+                                    localStorage.setItem('storedProfile', [post.posted_by])
+                                    setProfileView(post.posted_by)
+                                    navigate('/otherprofile')
                                 }
                             }
-                        }>
-                            {post.poster_name} 
-                        </button> 
-                        on {formatDate(post.posted_at)} 
+                            }>
+                            {post.poster_name}
+                        </button>
+                        on {formatDate(post.posted_at)}
                     </h5>
                     <hr />
                 </div>

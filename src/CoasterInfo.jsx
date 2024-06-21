@@ -6,25 +6,26 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 import { useNavigate } from "react-router-dom"
-import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, getDataImages } from "./api"
+import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from "./api"
 
 const CoasterSelector = () => {
 
     const { auth } = useContext(AuthContext)
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    
+    const { currentUser, setCurrentUser } = useContext(UserContext)
+
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
 
     const savedCoaster = JSON.parse(localStorage.getItem('coaster'))
-    useEffect (
+    
+    useEffect(
         () => {
 
-              auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
+            auth.setAccessToken(authStorage)
+            setCurrentUser(storedUser)
         },
         []
-      )
+    )
 
     let stats = Object.entries(savedCoaster.stats)
     let newStats = []
@@ -35,15 +36,14 @@ const CoasterSelector = () => {
         newStats[i][0] = newStats[i][0].replace(/([a-z])([A-Z])/g, '$1 $2')
     }
     stats = newStats
-    console.log(stats)
-    console.log(savedCoaster)
+
     return (
         <div className="coaster-info-panel">
             <h1> {savedCoaster.name} </h1>
-            <h3> <a className = 'profile-link' href = '/coasterselector'>{savedCoaster.park.name}</a> </h3>
+            <h3> <a className='profile-link' href='/coasterselector'>{savedCoaster.park.name}</a> </h3>
             <h6> {savedCoaster.city}, {savedCoaster.state}, {savedCoaster.country} </h6>
-            { savedCoaster.mainPicture.url && <img className = 'coaster-info-image' src={`${savedCoaster.mainPicture.url}`}></img>}
-            <div> 
+            {savedCoaster.mainPicture.url && <img className='coaster-info-image' src={`${savedCoaster.mainPicture.url}`}></img>}
+            <div>
                 {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
                 {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
                 {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
@@ -55,33 +55,17 @@ const CoasterSelector = () => {
                 {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
                 {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
             </div>
-            
-            {/* <div className="coasterStat">
-                Length: {stats[0][1]} m
-                <br></br>
-                Height: {stats[1][1]} m
-                <br></br>
-                Highest Drop: {stats[2][1]} m
-                <br></br>
-                Max Speed: {stats[3][1]} km/h
-                <br></br>
-                Inversions: {stats[4][1]}
-                <br></br>
-                Max Vertical Angle: {stats[5][1]}°
-                <br></br>
-                Duration: {stats[6][1]}
-                <br></br>
-            </div> */}
-            <a href = {`https://rcdb.com/${savedCoaster.link}`}> RCDB Link </a>
+
+            <a href={`https://rcdb.com/${savedCoaster.link}`}> RCDB Link </a>
             <br></br><br></br>
             <h2> Images </h2>
             <br></br><br></br>
             <div className="coaster-images-container">
                 {savedCoaster.pictures.map(picture => (
                     <div className="coaster-image-wrapper" key={picture.id}>
-                        <a href = {`${picture.url}`} >
-                            <img className="coaster-images" 
-                                src={`${picture.url}`} 
+                        <a href={`${picture.url}`} >
+                            <img className="coaster-images"
+                                src={`${picture.url}`}
                             />
                         </a>
                     </div>

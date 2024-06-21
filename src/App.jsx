@@ -13,39 +13,39 @@ import LocationSelector from "./LocationSelector"
 function App() {
 
   const { auth } = useContext(AuthContext)
-  const {allParks, setAllParks} = useContext(ParkContext)
-  const {allCoasters, setAllCoasters} = useContext(CoasterContext)
-  const {currentUser, setCurrentUser} = useContext(UserContext)
-  
+  const { allParks, setAllParks } = useContext(ParkContext)
+  const { allCoasters, setAllCoasters } = useContext(CoasterContext)
+  const { currentUser, setCurrentUser } = useContext(UserContext)
+
   const authStorage = localStorage.getItem('authStorage')
   const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
 
   const navigate = useNavigate()
 
-  useEffect (
-        () => {
-          
-              auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
+  useEffect(
+    () => {
 
-        },
-        []
-      )
+      auth.setAccessToken(authStorage)
+      setCurrentUser(storedUser)
+
+    },
+    []
+  )
 
 
 
-  useEffect (
+  useEffect(
     () => {
       if (auth.accessToken) {
-          fetchParks ({ auth })
-              .then(response => {
-                  const parkJson = response.json()
-                  .then(parkJson => {
-                    setAllParks(parkJson)
-                  })
+        fetchParks({ auth })
+          .then(response => {
+            const parkJson = response.json()
+              .then(parkJson => {
+                setAllParks(parkJson)
               })
-              .catch(error => console.log('Fetch parks Failure: ', error))
+          })
+          .catch(error => console.log('Fetch parks Failure: ', error))
       }
       else {
         navigate('/')

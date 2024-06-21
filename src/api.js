@@ -15,15 +15,15 @@ export const getToken = ({ auth, username, password }) => {
     auth.setAccessToken(response.data.access)
     return response
   })
-  .catch(error => {
-    auth.setAccessToken(undefined)
-  })
+    .catch(error => {
+      auth.setAccessToken(undefined)
+    })
 }
 
 export const fetchUser = ({ auth }) => {
   return axios({
     method: 'get',
-    url: `${baseUrl}/profile/`, 
+    url: `${baseUrl}/profile/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
@@ -31,16 +31,16 @@ export const fetchUser = ({ auth }) => {
     console.log('PROFILE: ', response)
     return response
   })
-  .catch(error => {
-    console.log('fetch user ERROR: ', error)
-    auth.setAccessToken(undefined)
-  })
+    .catch(error => {
+      console.log('fetch user ERROR: ', error)
+      auth.setAccessToken(undefined)
+    })
 }
 
 export const fetchAllUsers = ({ auth }) => {
   return axios({
     method: 'get',
-    url: `${baseUrl}/get-all-users/`, 
+    url: `${baseUrl}/get-all-users/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
@@ -48,15 +48,15 @@ export const fetchAllUsers = ({ auth }) => {
     console.log('ALL PROFILES: ', response)
     return response
   })
-  .catch(error => {
-    console.log('get all users ERROR: ', error)
-  })
+    .catch(error => {
+      console.log('get all users ERROR: ', error)
+    })
 }
 
 export const createUser = ({ username, password, firstName, lastName }) => {
   return axios({
     method: 'post',
-    url: `${baseUrl}/create-user/`, 
+    url: `${baseUrl}/create-user/`,
     data: {
       username,
       password: password,
@@ -67,56 +67,56 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     console.log('CREATE USER: ', response)
     return response
   })
-  .catch(error => {
-    console.log('ERROR: ', error)
-  })
+    .catch(error => {
+      console.log('ERROR: ', error)
+    })
 }
 
 
 // -- fetching GitHub API data --
 
 export const fetchCoasters = ({ auth }) => {
- return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response
-  })
-  .catch(error => console.error('fetch coasters Error:', error));
+  return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response
+    })
+    .catch(error => console.error('fetch coasters Error:', error));
 }
 
 export const fetchParks = ({ auth }) => {
   return fetch('https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/theme-parks.json')
-   .then(response => {
-     if (!response.ok) {
-       throw new Error('Network response was not ok');
-     }
-     return response
-   })
-   .catch(error => console.error('fetch parks Error:', error));
- }
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response
+    })
+    .catch(error => console.error('fetch parks Error:', error));
+}
 
 // -- Stuff for data images --
 
 export const getDataImages = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-data-images/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get images error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get images error: ', error))
 }
 
 
 export const createDataImage = ({ auth, image }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-data-image/`,
     data: {
@@ -132,7 +132,7 @@ export const createDataImage = ({ auth, image }) => {
 // -- CRUD on user coaster counts --
 
 export const addCredit = ({ auth, userId, coasterId }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/add-credit/`,
     data: {
@@ -146,7 +146,7 @@ export const addCredit = ({ auth, userId, coasterId }) => {
 }
 
 export const removeCredit = ({ auth, userId, coasterId }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/remove-credit/`,
     data: {
@@ -160,7 +160,7 @@ export const removeCredit = ({ auth, userId, coasterId }) => {
 }
 
 export const setFavorite = ({ auth, id, coaster, rank }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/set-favorite/`,
     data: {
@@ -178,21 +178,21 @@ export const setFavorite = ({ auth, id, coaster, rank }) => {
 // -- CRUD on forum posts --
 
 export const getPosts = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-posts/`,
     headers: {
-        Authorization: `Bearer ${auth.accessToken}`
+      Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('Get posts error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('Get posts error: ', error))
 }
 
 export const addPost = ({ auth, title, postedBy, textContent }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/add-post/`,
     headers: {
@@ -205,15 +205,15 @@ export const addPost = ({ auth, title, postedBy, textContent }) => {
 
     }
   })
-  .then(response => {
-    console.log('django response = ', response.data)
-    return response
-  })
-  .catch(error => console.log('Add post error: ', error))
+    .then(response => {
+      console.log('django response = ', response.data)
+      return response
+    })
+    .catch(error => console.log('Add post error: ', error))
 }
 
 export const editPost = ({ auth, postId, textContent }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/edit-post/`,
     headers: {
@@ -224,15 +224,15 @@ export const editPost = ({ auth, postId, textContent }) => {
       text_content: textContent,
     }
   })
-  .then(response => {
-    console.log('django response = ', response.data)
-    return response
-  })
-  .catch(error => console.log('Add post error: ', error))
+    .then(response => {
+      console.log('django response = ', response.data)
+      return response
+    })
+    .catch(error => console.log('Add post error: ', error))
 }
 
 export const deletePost = ({ auth, postId }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/delete-post/`,
     data: {
@@ -242,15 +242,15 @@ export const deletePost = ({ auth, postId }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Delete post error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Delete post error: ', error))
 }
 
 export const likePost = ({ auth, current_user, post_id, likes }) => {
-  return axios ({
+  return axios({
     method: 'put',
     url: `${baseUrl}/like-post/`,
     data: {
@@ -262,10 +262,10 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
 }
 
 
@@ -273,23 +273,23 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
 
 
 export const getImages = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-images/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get images error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get images error: ', error))
 }
 
 
 export const createImage = ({ auth, postedBy, title, image }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-image/`,
     data: {
@@ -305,7 +305,7 @@ export const createImage = ({ auth, postedBy, title, image }) => {
 }
 
 export const likeImage = ({ auth, currentUser, image, likes }) => {
-  return axios ({
+  return axios({
     method: 'put',
     url: `${baseUrl}/like-image/`,
     data: {
@@ -318,14 +318,14 @@ export const likeImage = ({ auth, currentUser, image, likes }) => {
       'Content-Type': 'multipart/form-data'
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
 }
 
 export const deleteImage = ({ auth, imageId }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/delete-image/`,
     data: {
@@ -335,28 +335,28 @@ export const deleteImage = ({ auth, imageId }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {return response})
+    .then(response => { return response })
 }
 
 
 // -- CRUD on Comments --
 
 export const getComments = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-comments/`,
     headers: {
-        Authorization: `Bearer ${auth.accessToken}`
+      Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('Get posts error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('Get posts error: ', error))
 }
 
 export const addComment = ({ auth, postId, postedBy, textContent }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/add-comment/`,
     headers: {
@@ -368,15 +368,15 @@ export const addComment = ({ auth, postId, postedBy, textContent }) => {
       text_content: textContent,
     }
   })
-  .then(response => {
-    console.log('django response = ', response.data)
-    return response
-  })
-  .catch(error => console.log('Add comment error: ', error))
+    .then(response => {
+      console.log('django response = ', response.data)
+      return response
+    })
+    .catch(error => console.log('Add comment error: ', error))
 }
 
 export const editComment = ({ auth, commentId, textContent }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/edit-comment/`,
     headers: {
@@ -387,15 +387,15 @@ export const editComment = ({ auth, commentId, textContent }) => {
       text_content: textContent,
     }
   })
-  .then(response => {
-    console.log('django response = ', response.data)
-    return response
-  })
-  .catch(error => console.log('Edit comment error: ', error))
+    .then(response => {
+      console.log('django response = ', response.data)
+      return response
+    })
+    .catch(error => console.log('Edit comment error: ', error))
 }
 
 export const deleteComment = ({ auth, commentId }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/delete-comment/`,
     data: {
@@ -405,11 +405,11 @@ export const deleteComment = ({ auth, commentId }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Delete comment error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Delete comment error: ', error))
 }
 
 
@@ -417,22 +417,22 @@ export const deleteComment = ({ auth, commentId }) => {
 
 
 export const getFriendRequests = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-friend-requests`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get friend requests error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get friend requests error: ', error))
 }
 
 export const sendFriendRequest = ({ auth, sender, reciever }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-friend-request/`,
     data: {
@@ -443,15 +443,15 @@ export const sendFriendRequest = ({ auth, sender, reciever }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Send friend requesr error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Send friend requesr error: ', error))
 }
 
 export const acceptFriendRequest = ({ auth, request }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/accept-friend-request/`,
     data: {
@@ -461,14 +461,14 @@ export const acceptFriendRequest = ({ auth, request }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('Accept friend requesr error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('Accept friend requesr error: ', error))
 }
 
 export const rejectFriendRequest = ({ auth, request }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/reject-friend-request/`,
     data: {
@@ -478,10 +478,28 @@ export const rejectFriendRequest = ({ auth, request }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('Accept friend requesr error: ', error))
+}
+
+export const deleteFriend = ({ auth, user, friend }) => {
+  return axios({
+    method: 'patch',
+    url: `${baseUrl}/delete-friend/`,
+    data: {
+      user,
+      friend,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
   })
-  .catch(error => console.log('Accept friend requesr error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('delete friend error: ', error))
 }
 
 
@@ -489,22 +507,22 @@ export const rejectFriendRequest = ({ auth, request }) => {
 
 
 export const getGroups = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-groups/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get groups error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get groups error: ', error))
 }
 
 export const createGroup = ({ auth, name, creator }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-group/`,
     data: {
@@ -515,30 +533,30 @@ export const createGroup = ({ auth, name, creator }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Create group error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Create group error: ', error))
 }
 
 export const getGroupInvites = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-group-invites/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get groups error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get groups error: ', error))
 }
 
 export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/invite-to-group/`,
     data: {
@@ -549,15 +567,15 @@ export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Invite to group error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Invite to group error: ', error))
 }
 
 export const acceptGroupInvite = ({ auth, invite }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/accept-group-invite/`,
     data: {
@@ -567,15 +585,15 @@ export const acceptGroupInvite = ({ auth, invite }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('acceptg group invite error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('acceptg group invite error: ', error))
 }
 
 export const rejectGroupInvite = ({ auth, invite }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/reject-group-invite/`,
     data: {
@@ -585,14 +603,14 @@ export const rejectGroupInvite = ({ auth, invite }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('Accept friend requesr error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('Accept friend requesr error: ', error))
 }
 
 export const kickFromGroup = ({ auth, group, memberToKick }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/kick-from-group/`,
     data: {
@@ -603,15 +621,15 @@ export const kickFromGroup = ({ auth, group, memberToKick }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Kick from group error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Kick from group error: ', error))
 }
 
-export const requestToJoinGroup = ({ auth, user, group}) => {
-  return axios ({
+export const requestToJoinGroup = ({ auth, user, group }) => {
+  return axios({
     method: 'post',
     url: `${baseUrl}/create-join-request/`,
     data: {
@@ -622,30 +640,30 @@ export const requestToJoinGroup = ({ auth, user, group}) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Join request error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Join request error: ', error))
 }
 
 export const getJoinRequests = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-join-requests`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('Get join requests error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('Get join requests error: ', error))
 }
 
 export const acceptJoinRequest = ({ auth, request }) => {
-  return axios ({
+  return axios({
     method: 'patch',
     url: `${baseUrl}/accept-join-request/`,
     data: {
@@ -655,15 +673,15 @@ export const acceptJoinRequest = ({ auth, request }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    console.log(response.data)
-    return response
-  })
-  .catch(error => console.log('acceptg join request error: ', error))
+    .then(response => {
+      console.log(response.data)
+      return response
+    })
+    .catch(error => console.log('acceptg join request error: ', error))
 }
 
 export const rejectJoinRequest = ({ auth, request }) => {
-  return axios ({
+  return axios({
     method: 'delete',
     url: `${baseUrl}/reject-join-request/`,
     data: {
@@ -673,28 +691,28 @@ export const rejectJoinRequest = ({ auth, request }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('reject join request error: ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('reject join request error: ', error))
 }
 
 export const getMessages = ({ auth }) => {
-  return axios ({
+  return axios({
     method: 'get',
     url: `${baseUrl}/get-messages/`,
     headers: {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
-  })
-  .catch(error => console.log('get messages error : ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('get messages error : ', error))
 }
 
 export const sendMessage = ({ auth, group, sender, textContent }) => {
-  return axios ({
+  return axios({
     method: 'post',
     url: `${baseUrl}/send-message/`,
     data: {
@@ -706,8 +724,45 @@ export const sendMessage = ({ auth, group, sender, textContent }) => {
       Authorization: `Bearer ${auth.accessToken}`
     }
   })
-  .then(response => {
-    return response
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('send message error : ', error))
+}
+
+
+// -- stuff for friend DMs --
+
+
+export const getDms = ({ auth }) => {
+  return axios({
+    method: 'get',
+    url: `${baseUrl}/get-dms/`,
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
   })
-  .catch(error => console.log('send message error : ', error))
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('get DMs error : ', error))
+}
+
+export const sendDm = ({ auth, sender, reciever, textContent }) => {
+  return axios({
+    method: 'post',
+    url: `${baseUrl}/send-dm/`,
+    data: {
+      sender,
+      reciever,
+      text_content: textContent,
+    },
+    headers: {
+      Authorization: `Bearer ${auth.accessToken}`
+    }
+  })
+    .then(response => {
+      return response
+    })
+    .catch(error => console.log('send DM error : ', error))
 }

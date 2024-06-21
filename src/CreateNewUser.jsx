@@ -13,23 +13,23 @@ const CreateNewUser = () => {
   const submit = () => {
     if (username === '' || username.includes(' ')) {
       console.log(username)
-      alert ('username cannot be blank')
+      alert('username cannot be blank')
     } else if (password === '' || username.includes(' ')) {
-        alert ('password cannot be blank')
+      alert('password cannot be blank')
     } else if (password.length < 8) {
-        alert('password must be at least 8 characters')
+      alert('password must be at least 8 characters')
     } else if (firstName === '' || username.includes(' ')) {
-        alert ('name cannot be blank')
+      alert('name cannot be blank')
     } else if (lastName === '' || username.includes(' ')) {
-        alert ('name cannot be blank')
+      alert('name cannot be blank')
     } else {
-    createUser({ username, password, firstName, lastName })
-    navigate('/')
+      createUser({ username, password, firstName, lastName })
+      navigate('/')
     }
   }
 
   return (
-    <div className = "createUser">
+    <div className="createUser">
       <h1>Create New User</h1>
       <div>
         <div>Username:</div>

@@ -78,7 +78,7 @@ const GroupPage = () => {
     }
 
     if (loading1 || loading2 || loading3) {
-        return <div>Loading...</div>
+        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
     }
 
     return (
@@ -116,6 +116,11 @@ const GroupPage = () => {
                                     if (memberIncrement === memberCheck.length) {
                                         console.log('invited to group')
                                         inviteToGroup({ auth, group: group.id, userBeingInvited: userToInvite })
+                                            .then(response => {
+                                                if (response.data === 'already') {
+                                                    alert('That user has already been invited')
+                                                }
+                                            })
                                     }
                                 }
                             }

@@ -218,6 +218,10 @@ body {
   padding: 5px;
 }
 
+.buttons {
+  display: inline-block;
+}
+
 #friend-requests {
   padding: 1vh;
   width: fit-content;
@@ -228,6 +232,30 @@ body {
 .friend-request {
   text-align: center;
   border: solid 1px grey;
+}
+
+.friend-button {
+  display: inline-block;
+}
+
+.dm {
+  height: fit-content;
+}
+
+.friend-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: solid 1px;
+  min-height: 50px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.friend-search label, .friend-search select, .friend-search button {
+  margin: 5px;
 }
 
 .group-stuff {

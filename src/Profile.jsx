@@ -12,103 +12,104 @@ import { UserContext } from "./usercontext"
 
 const Profile = () => {
 
-    const { auth } = useContext(AuthContext)
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    const {allCoasters, setAllCoasters} = useContext(CoasterContext)
-    const {profileView, setProfileView} = useContext(ProfileContext)
-    
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
+  const { auth } = useContext(AuthContext)
+  const { currentUser, setCurrentUser } = useContext(UserContext)
+  const { allCoasters, setAllCoasters } = useContext(CoasterContext)
+  const { profileView, setProfileView } = useContext(ProfileContext)
 
-    const [allUsers, setAllUsers] = useState([])
+  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
+  const authStorage = localStorage.getItem('authStorage')
 
-    const navigate = useNavigate()
+  const [allUsers, setAllUsers] = useState([])
 
-    useEffect (
-        () => {
-              if (!currentUser) {
-                setCurrentUser(storedUser)
-              }
-              auth.setAccessToken(authStorage)
+  const navigate = useNavigate()
 
-              setProfileView(currentUser.id)
+  useEffect(
+    () => {
+      if (!currentUser) {
+        setCurrentUser(storedUser)
+      }
+      auth.setAccessToken(authStorage)
 
-              fetchCoasters ({ auth })
-              .then(response => {
-                const coasterJson = response.json()
-                .then(coasterJson => {
-                  setAllCoasters(coasterJson.filter((coaster) => storedUser.coasters_ridden.includes(coaster.id)))
-                })
-              })
+      setProfileView(currentUser.id)
 
-              fetchAllUsers ({ auth })
-              .then(response => {
-                setAllUsers(response.data)
-                console.log(allUsers)
-              })
-        },
-        []
-      )
+      fetchCoasters({ auth })
+        .then(response => {
+          const coasterJson = response.json()
+            .then(coasterJson => {
+              setAllCoasters(coasterJson.filter((coaster) => storedUser.coasters_ridden.includes(coaster.id)))
+            })
+        })
 
-    useEffect (
-        () => {
-            if (!auth.accessToken) {
-            navigate('/')
+      fetchAllUsers({ auth })
+        .then(response => {
+          setAllUsers(response.data)
+          console.log(allUsers)
+        })
+    },
+    []
+  )
+
+  useEffect(
+    () => {
+      if (!auth.accessToken) {
+        navigate('/')
+      }
+    },
+    []
+  )
+
+  return (
+    <div className='profile'>
+      <br></br>
+      <h1> {currentUser.first_name} {currentUser.last_name} </h1>
+      <button style={{ float: "right", marginLeft: 2 }}
+        onClick={() => {
+          if (profileView == currentUser.id) {
+            navigate('/profile')
+          } else {
+            navigate('/otherprofile')
           }
-        },
-        []
-      )
-    
-    return (
-        <div className = 'profile'>
-            <br></br>
-            <h1> {currentUser.first_name} {currentUser.last_name} </h1>
-            <button style = {{ float: "right", marginLeft: 2 }}
-                    onClick = {() => {
-                      if (profileView == currentUser.id) {
-                        navigate('/profile')
-                      } else {
-                      navigate('/otherprofile')
-                    }}}
-            >
-              Look up User
-            </button>
+        }}
+      >
+        Look up User
+      </button>
 
-            <select style={{ float:'right' }} id='userLookup' name='userLookup' defaultValue = {currentUser.id} 
-              onChange = {(e) => {
-                setProfileView(e.target.value)
-                localStorage.setItem('profileView', JSON.stringify(profileView))
-              }
-          }
-                >
-              <option value = {currentUser.id}> --- </option>
-            {allUsers.map(user =>
-              <option  key = {user.id} value = {user.id}> {`${user.first_name} ${user.last_name}`} </option>
-            )}
+      <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={currentUser.id}
+        onChange={(e) => {
+          setProfileView(e.target.value)
+          localStorage.setItem('profileView', JSON.stringify(profileView))
+        }
+        }
+      >
+        <option value={currentUser.id}> --- </option>
+        {allUsers.map(user =>
+          <option key={user.id} value={user.id}> {`${user.first_name} ${user.last_name}`} </option>
+        )}
 
 
-            </select>
-          <label style={{ float:'right' }} htmlFor="userLookup">Search Users:</label>
+      </select>
+      <label style={{ float: 'right' }} htmlFor="userLookup">Search Users:</label>
 
-            <br></br>
-            <h3> 
-              Coaster count: {currentUser.coaster_count} 
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Link className = 'profile-link' style={{ marginRight: 20 }} to='/PersonalRanking'>Your Top 10</Link> 
-            </h3>
-            <br></br>
-            <h5>Coasters ridden:</h5>
-            <br></br>
-            <div className="profile-coasters">
-                {allCoasters.map(coaster =>
-                    <div key={coaster.id}>
-                         {coaster.name}, {coaster.park.name} 
-                    </div>
-                    )
-                }
-            </div>
-        </div>
-    )
+      <br></br>
+      <h3>
+        Coaster count: {currentUser.coaster_count}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Link className='profile-link' style={{ marginRight: 20 }} to='/PersonalRanking'>Your Top 10</Link>
+      </h3>
+      <br></br>
+      <h5>Coasters ridden:</h5>
+      <br></br>
+      <div className="profile-coasters">
+        {allCoasters.map(coaster =>
+          <div key={coaster.id}>
+            {coaster.name}, {coaster.park.name}
+          </div>
+        )
+        }
+      </div>
+    </div>
+  )
 
 }
 

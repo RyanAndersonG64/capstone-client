@@ -6,7 +6,7 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 import { useNavigate } from "react-router-dom"
-import { fetchParks, fetchCoasters,addCredit, removeCredit, createDataImage, getDataImages } from "./api"
+import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from "./api"
 
 const CoasterSelector = () => {
 
@@ -16,46 +16,49 @@ const CoasterSelector = () => {
     const baseUrl = import.meta.env.VITE_BASE_URL
 
     const { auth } = useContext(AuthContext)
-    const {selectedPark, setSelectedPark} = useContext(ParkContext2)
-    const {allCoasters, setAllCoasters} = useContext(CoasterContext)
-    const {currentUser, setCurrentUser} = useContext(UserContext)
-    
+    const { selectedPark, setSelectedPark } = useContext(ParkContext2)
+    const { allCoasters, setAllCoasters } = useContext(CoasterContext)
+    const { currentUser, setCurrentUser } = useContext(UserContext)
+
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
     const storedPark = JSON.parse(localStorage.getItem('storedPark'))
     const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
 
+    const [loading, setLoading] = useState(true)
+
     const navigate = useNavigate()
 
-  useEffect (
+    useEffect(
         () => {
 
-              auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
-              setSelectedPark(storedPark)
+            auth.setAccessToken(authStorage)
+            setCurrentUser(storedUser)
+            setSelectedPark(storedPark)
         },
         []
-      )
+    )
 
-      useEffect (
+    useEffect(
         () => {
-          if (auth.accessToken) {
-              fetchCoasters ({ auth })
-                  .then(response => {
-                    const coasterJson = response.json()
-                    .then(coasterJson => {
-                      setAllCoasters(coasterJson)
+            if (auth.accessToken) {
+                fetchCoasters({ auth })
+                    .then(response => {
+                        const coasterJson = response.json()
+                            .then(coasterJson => {
+                                setAllCoasters(coasterJson)
+                                setLoading(false)
+                            })
                     })
-                  })
-          }
-          else {
-            navigate('/')
-          }
+            }
+            else {
+                navigate('/')
+            }
         },
         []
-      )
+    )
 
-      useEffect (
+    useEffect(
         () => {
             // getDataImages ({ auth })
             // .then(response => {
@@ -76,51 +79,52 @@ const CoasterSelector = () => {
             //             .then(response => console.log(response))
             //         })
         }
-      )
-    
+    )
+
 
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
 
     const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
-    
+
     const defunctCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operated' || coaster.status.state === 'SBNO')
-    
+
     const underConstruction = coastersAtPark.filter((coaster) => coaster.status.state === 'Under Construction')
 
-      console.log(storedPark)
-      console.log(storedPark.mainPicture)
-      console.log(storedPark.mainPicture.url)
+    if (loading) {
+        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
+    }
+
     return (
         <div className='coaster-selector'>
             <h1> {selectedPark.name} </h1>
-            {storedPark.mainPicture.url && <img className = 'park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
+            {storedPark.mainPicture.url && <img className='park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
             <br></br>
             <h2> Operating Coasters</h2>
             {operatingCoasters.map(coaster => {
                 return (
-                    <div key = {coaster.id}>
-                        <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
-                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
+                    <div key={coaster.id}>
+                        <input type="checkbox" id={coaster.id} name={coaster.name} value={coaster.name} style={{ marginRight: 10 }}
+                            checked={currentUser.coasters_ridden.includes(coaster.id) ? true : false}
                             onChange={(e) => {
                                 if (e.target.checked === true) {
-                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                            .then(response => {
-                                                setCurrentUser(response.data)
-                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                    addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                        .then(response => {
+                                            setCurrentUser(response.data)
+                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                            .catch(error => console.log('addCredit failure: ', error))
+                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                    .then(response => {
-                                        setCurrentUser(response.data)
-                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
-                                })
-                                    .catch(error => console.log('removeCredit failure: ', error))
+                                        .then(response => {
+                                            setCurrentUser(response.data)
+                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        })
+                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
-                        }
+                            }
                         />
-                        <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -128,29 +132,29 @@ const CoasterSelector = () => {
             <h2> Defunct Coasters</h2>
             {defunctCoasters.map(coaster => {
                 return (
-                    <div key = {coaster.id}>
-                        <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
-                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
+                    <div key={coaster.id}>
+                        <input type="checkbox" id={coaster.id} name={coaster.name} value={coaster.name} style={{ marginRight: 10 }}
+                            checked={currentUser.coasters_ridden.includes(coaster.id) ? true : false}
                             onChange={(e) => {
                                 if (e.target.checked === true) {
-                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                            .then(response => {
-                                                setCurrentUser(response.data)
-                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                    addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
+                                        .then(response => {
+                                            setCurrentUser(response.data)
+                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                            .catch(error => console.log('addCredit failure: ', error))
+                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                    .then(response => {
-                                        setCurrentUser(response.data)
-                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
-                                })
-                                    .catch(error => console.log('removeCredit failure: ', error))
+                                        .then(response => {
+                                            setCurrentUser(response.data)
+                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        })
+                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
-                        }
+                            }
                         />
-                         <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -158,7 +162,7 @@ const CoasterSelector = () => {
             <h2> Coasters Under Construction </h2>
             {underConstruction.map(coaster => {
                 return (
-                    <div key = {coaster.id}>
+                    <div key={coaster.id}>
                         {/* <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
                         checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
                             onChange={(e) => {
@@ -180,7 +184,7 @@ const CoasterSelector = () => {
                             }
                         }
                         /> */}
-                         <a className = 'profile-link' href = './coasterinfo' onClick = {() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )
             })}
