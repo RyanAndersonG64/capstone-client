@@ -16,6 +16,7 @@ const PersonalRanking = () => {
     const authStorage = localStorage.getItem('authStorage')
     const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
     const [coasterState, setCoasterState] = useState([])
+    const [loading, setLoading] = useState(true)
     
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const [editable, setEditable] = useState(false)
@@ -46,6 +47,7 @@ const PersonalRanking = () => {
                 .then(coasterJson => {
                   setAllCoasters(coasterJson.filter((coaster) => currentUser.coasters_ridden.includes(coaster.id)))
                   setCoasterState(coasterJson.filter((coaster) => currentUser.coasters_ridden.includes(coaster.id)))
+                  setLoading(false)
                 })
               })
         },
@@ -61,7 +63,11 @@ const PersonalRanking = () => {
         []
       )
     
-      console.log(currentUser.favorites)
+      if (loading) {
+        return <div><img src='https://http.cat/images/102.jpg'></img></div>
+    }
+
+
     return (
         <div className = 'personalRanking'>
             <br></br>
