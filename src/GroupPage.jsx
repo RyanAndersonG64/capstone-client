@@ -84,7 +84,8 @@ const GroupPage = () => {
     )
 
     function getUserFromId(inputId) {
-        return allUsers.find(user => user.id == inputId)
+        let user = allUsers.find(user => user.id == inputId)
+        return user ? user : {first_name: '', last_name: ''}
     }
 
     if (loading1 || loading2 || loading3) {
@@ -159,7 +160,7 @@ const GroupPage = () => {
 
                 </div>
             }
-            {joinRequests.map(request => (
+            {joinRequests.filter(request => request.group == group.id).map(request => (
                 <div key={request.id} className="join-request">
                     {request.sender}
                     <button
@@ -168,8 +169,9 @@ const GroupPage = () => {
                             console.log('join request accepted')
                             acceptJoinRequest({ auth, request: request.id })
                                 .then(response => {
+                                    console.log(response)
                                     setGroup(response.data)
-
+                                    setLoading2(true)
                                     getJoinRequests({ auth })
                                         .then(response => {
                                             console.log(response.data)
@@ -184,7 +186,20 @@ const GroupPage = () => {
                     &nbsp;
                     <button
                         style={{ border: 'none', background: 'none' }}
-                        onClick={() => rejectJoinRequest({ auth, request: request.id })}
+                        onClick={() => {
+                            console.log('join request accepted')
+                            rejectJoinRequest({ auth, request: request.id })
+                                .then(response => {
+                   
+                                    setLoading2(true)
+                                    getJoinRequests({ auth })
+                                        .then(response => {
+                                            console.log(response.data)
+                                            setJoinRequests(response.data)
+                                            setLoading2(false)
+                                        })
+                                })
+                        }}
                     >
                         ❌
                     </button>
@@ -193,7 +208,7 @@ const GroupPage = () => {
             <h1>{group.name}</h1>
             <div className="group-members">
                 <h2> Members: {group.members.length} </h2>
-                {group.members.map(member => (
+                {group?.members && group.members.length > 0 && group.members.map(member => (
                     <div key={member} className="group-member" >
                         <Link className='profile-link' style={{ color: memberColor(member) }}
                             onClick={() => {

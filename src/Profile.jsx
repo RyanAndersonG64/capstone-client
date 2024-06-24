@@ -85,7 +85,7 @@ const Profile = () => {
 
       </select>
       <label style={{ float: 'right' }} htmlFor="userLookup">Profile State:&nbsp;</label>
-      HUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUEHUE
+
       <br></br><br></br>
 
       <h1>
@@ -123,7 +123,7 @@ const Profile = () => {
       <h3>
         Coaster count: {currentUser.coaster_count}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <Link className='profile-link' style={{ marginRight: 20 }} to='/PersonalRanking'>Your Top 10</Link>
+        <Link className='profile-link' style={{ marginRight: 20,  }} to='/PersonalRanking'>View Your Top 10</Link>
       </h3>
       <br></br>
       <h5>Coasters ridden:</h5>

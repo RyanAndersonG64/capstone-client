@@ -58,28 +58,7 @@ const CoasterSelector = () => {
         []
     )
 
-    useEffect(
-        () => {
-            // getDataImages ({ auth })
-            // .then(response => {
-            //     console.log(response.data)
-            //     if(!response.data.includes(storedPark.mainPicture)) {
-            //         createDataImage ({ auth, image: storedPark.mainPicture.url })
-            //         .then(response => {
-            //             getDataImages ({ auth })
-            //             .then(response => console.log(response))
-            //         })
-            //     }
-            // })
 
-            // createDataImage ({ auth, image: storedPark.mainPicture.url })
-            //         .then(response => {
-            //             console.log(response)
-            //             getDataImages ({ auth })
-            //             .then(response => console.log(response))
-            //         })
-        }
-    )
 
 
     const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
@@ -97,9 +76,10 @@ const CoasterSelector = () => {
     return (
         <div className='coaster-selector'>
             <h1> {selectedPark.name} </h1>
-            {storedPark.mainPicture.url && <img className='park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
+            {storedPark.mainPicture && <img className='park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
             <br></br>
             <h2> Operating Coasters</h2>
+                <h5>Check off coasters you have ridden (or uncheck ones you checked by mistake)</h5>
             {operatingCoasters.map(coaster => {
                 return (
                     <div key={coaster.id}>

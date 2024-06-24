@@ -15,9 +15,10 @@ const CoasterSelector = () => {
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
-
     const savedCoaster = JSON.parse(localStorage.getItem('coaster'))
-    
+
+    const [imperialStats, setImperialStats] = useState(true)
+
     useEffect(
         () => {
 
@@ -44,16 +45,56 @@ const CoasterSelector = () => {
             <h6> {savedCoaster.city}, {savedCoaster.state}, {savedCoaster.country} </h6>
             {savedCoaster.mainPicture.url && <img className='coaster-info-image' src={`${savedCoaster.mainPicture.url}`}></img>}
             <div>
-                {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
-                {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
-                {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
-                {savedCoaster.stats.length && <div className="coasterStat"> Length: {savedCoaster.stats.length} m</div>}
-                {savedCoaster.stats.height && <div className="coasterStat"> Height: {savedCoaster.stats.height} m</div>}
-                {savedCoaster.stats.drop && <div className="coasterStat"> Highest Drop: {savedCoaster.stats.drop} m</div>}
-                {savedCoaster.stats.speed && <div className="coasterStat"> Max Speed: {savedCoaster.stats.speed} km/h</div>}
-                {savedCoaster.stats.inversions && <div className="coasterStat"> Inversions: {savedCoaster.stats.inversions} </div>}
-                {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
-                {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
+
+                <label htmlFor="stat-types">Measurements: &nbsp;</label>
+                <select id="stayType" name="statType" onChange={(e) => {
+                    console.log(e.target.value)
+                    if (e.target.value === 'Imperial') {
+                        setImperialStats(true)
+                    } else if (e.target.value === 'Metric') {
+                        setImperialStats(false)
+                    } else {
+                        setImperialStats(true)
+                    }
+                }
+                }
+                >
+                    <option value='Imperial'>Imperial</option>
+                    <option value='Metric'>Metric</option>
+
+                </select>
+
+                <br></br><br></br>
+
+                {imperialStats == true &&
+                <div>
+                    {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
+                    {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
+                    {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
+                    {savedCoaster.stats.length && <div className="coasterStat"> Length: {Math.round(savedCoaster.stats.length * 3.28)} ft</div>}
+                    {savedCoaster.stats.height && <div className="coasterStat"> Height: {Math.round(savedCoaster.stats.height * 3.28)} ft</div>}
+                    {savedCoaster.stats.drop && <div className="coasterStat"> Highest Drop: {Math.round(savedCoaster.stats.drop * 3.28)} ft</div>}
+                    {savedCoaster.stats.speed && <div className="coasterStat"> Max Speed: {Math.round(savedCoaster.stats.speed / 1.60934)} mph</div>}
+                    {savedCoaster.stats.inversions && <div className="coasterStat"> Inversions: {savedCoaster.stats.inversions} </div>}
+                    {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
+                    {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
+                </div>
+                }
+
+                {imperialStats == false &&
+                <div>
+                    {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
+                    {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
+                    {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
+                    {savedCoaster.stats.length && <div className="coasterStat"> Length: {Math.round(savedCoaster.stats.length)} m</div>}
+                    {savedCoaster.stats.height && <div className="coasterStat"> Height: {Math.round(savedCoaster.stats.height)} m</div>}
+                    {savedCoaster.stats.drop && <div className="coasterStat"> Highest Drop: {Math.round(savedCoaster.stats.drop)} m</div>}
+                    {savedCoaster.stats.speed && <div className="coasterStat"> Max Speed: {Math.round(savedCoaster.stats.speed)} km/h</div>}
+                    {savedCoaster.stats.inversions && <div className="coasterStat"> Inversions: {savedCoaster.stats.inversions} </div>}
+                    {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
+                    {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
+                </div>
+                }
             </div>
 
             <a href={`https://rcdb.com/${savedCoaster.link}`}> RCDB Link </a>

@@ -105,7 +105,7 @@ const OtherProfile = () => {
                 <h3>
                     Coaster count: {getUserFromId(profileStorage).coaster_count}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>{getUserFromId(profileStorage).first_name}'s Top 10</Link>
+                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>View {getUserFromId(profileStorage).first_name}'s Top 10</Link>
                 </h3>
                 <br></br><br></br>
                 <h5>Coasters ridden:</h5>

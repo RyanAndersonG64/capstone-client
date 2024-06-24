@@ -61,8 +61,21 @@ body {
 }
 
 .rankings {
+  text-align: center;
   width: 50%;
   margin: auto;
+}
+
+.rankings ol {
+  list-style-position: inside; /* This moves the list numbers inside the list item */
+  padding-left: 0;             /* Remove default padding */
+  margin-left: 0;              /* Remove default margin */
+}
+
+.rankings li {
+  padding: 5px 0;              /* Adjust padding as needed */
+  margin: 0;                   /* Remove default margin */
+  list-style-type: decimal;    /* Ensure it uses decimal numbers */
 }
 
 .display-comments {
@@ -204,7 +217,7 @@ body {
 .friend-stuff {
     flex: 1;
     margin: 10px;
-    overflow: hidden;
+    overflow: visible;
     max-width: 33.33%;
 }
 
