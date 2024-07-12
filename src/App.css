@@ -2,7 +2,11 @@ html {
   height: 100%;
 }
 body {
-  background-image: linear-gradient(225deg, rgba(104, 187, 255, 0.6), rgb(255, 104, 104));
+  background-image: linear-gradient(
+    225deg,
+    rgba(104, 187, 255, 0.6),
+    rgb(255, 104, 104)
+  );
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
@@ -51,7 +55,7 @@ body {
 
 .other-ranking {
   width: 60%;
-  margin:auto
+  margin: auto;
 }
 
 .rankingNumber {
@@ -68,14 +72,14 @@ body {
 
 .rankings ol {
   list-style-position: inside; /* This moves the list numbers inside the list item */
-  padding-left: 0;             /* Remove default padding */
-  margin-left: 0;              /* Remove default margin */
+  padding-left: 0; /* Remove default padding */
+  margin-left: 0; /* Remove default margin */
 }
 
 .rankings li {
-  padding: 5px 0;              /* Adjust padding as needed */
-  margin: 0;                   /* Remove default margin */
-  list-style-type: decimal;    /* Ensure it uses decimal numbers */
+  padding: 5px 0; /* Adjust padding as needed */
+  margin: 0; /* Remove default margin */
+  list-style-type: decimal; /* Ensure it uses decimal numbers */
 }
 
 .display-comments {
@@ -111,25 +115,43 @@ body {
 }
 
 .location-selector {
-  padding: 1%;
+  width: 100vw;
   text-align: center;
-  height: 100%;
-  min-height: 50vh;
-  margin: 5vh;
-  background-image: url(https://upload.wikimedia.org/wikipedia/commons/9/91/Winkel_triple_projection_SW.jpg);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-image: url(https://cdn.midjourney.com/330dc4a5-955e-4c5f-a487-f37b630fdc37/0_1.jpeg);
   background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  z-index: -1;
   background-attachment: fixed;
 }
 
+.all-park-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  background-color: rgba(0, 0, 0, 0.685);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0 auto;
+}
+
 .park-link {
+  text-shadow: 0px 1px 3px rgba(255, 255, 255, 0.55);
   color: rgb(251, 255, 0);
   text-decoration: none;
   border: none;
   outline: none;
+  text-align: left;
 }
 
 .park-link:hover {
-  color: black;
+  color: rgb(0, 0, 0);
+  text-shadow: 0px;
 }
 
 .park-main-picture {
@@ -215,10 +237,10 @@ body {
 }
 
 .friend-stuff {
-    flex: 1;
-    margin: 10px;
-    overflow: visible;
-    max-width: 33.33%;
+  flex: 1;
+  margin: 10px;
+  overflow: visible;
+  max-width: 33.33%;
 }
 
 #friends-list {
@@ -271,7 +293,9 @@ body {
   box-sizing: border-box;
 }
 
-.friend-search label, .friend-search select, .friend-search button {
+.friend-search label,
+.friend-search select,
+.friend-search button {
   margin: 5px;
 }
 
@@ -283,11 +307,11 @@ body {
 }
 
 #group-invites {
-    width: 20vh;
-    height: fit-content;
-    max-height: 20vh;
-    margin: auto;
-    border: solid 2px black;
+  width: 20vh;
+  height: fit-content;
+  max-height: 20vh;
+  margin: auto;
+  border: solid 2px black;
 }
 
 .group-invite {
