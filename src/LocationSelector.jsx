@@ -209,10 +209,10 @@ const LocationSelector = () => {
           name="countries"
           onChange={(e) => {
             setCountryParks(
-              allParks.filter((park) => park.country === e.target.value)
+              allParks.filter((park) => park.country === e.target.value || park.country === '' && park.state === e.target.value)
             );
             setParkState(
-              allParks.filter((park) => park.country === e.target.value)
+              allParks.filter((park) => park.country === e.target.value || park.country === '' && park.state === e.target.value)
             );
           }}
         >

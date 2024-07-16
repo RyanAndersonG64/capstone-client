@@ -213,6 +213,10 @@ body {
   margin: 0;
 }
 
+.multi-stat {
+  display: inline;
+}
+
 @media only screen and (max-width: 600px) {
   .coaster-images {
     max-width: 90vw;

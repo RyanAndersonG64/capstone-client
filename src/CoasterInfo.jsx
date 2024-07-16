@@ -36,7 +36,40 @@ const CoasterSelector = () => {
         newStats[i] = [newFirstLetter + stats[i][0].slice(1), stats[i][1]]
         newStats[i][0] = newStats[i][0].replace(/([a-z])([A-Z])/g, '$1 $2')
     }
+
     stats = newStats
+    console.log(stats)
+    
+    const fillArray= (arr) => {
+        if (arr.length > 1) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === '') {
+                    arr[i] = arr[i-1]
+                }
+            }
+        }
+        return arr
+    }
+
+    const formatStat = (label, value, unit) => {
+        if (Array.isArray(value)) {
+            for (let i = 0; i < value.length; i++) {
+                if (value[i] === '') {
+                    value[i] = value[i-1]
+                }
+            }
+            return value.map((v, i) => (
+                <div className="multi-stat" key={`${label}-${i}`}>
+                    {`${i === 0 ? label + ':' : ''} Track ${i + 1}: ${Math.round(v * (unit === "ft" ? 3.28 : 1))}${unit ? ' ' : ''}${unit}${i < value.length - 1 ? ',' : ''}`}
+                </div>
+            ));
+        }
+        return (
+            <div className="coasterStat">
+                {label}: {Math.round(value * (unit === "ft" ? 3.28 : 1))} {unit}
+            </div>
+        );
+    };
 
     return (
         <div className="coaster-info-panel">
@@ -64,37 +97,90 @@ const CoasterSelector = () => {
 
                 </select>
 
-                <br></br><br></br>
+                <br></br>
+                <br></br>
 
-                {imperialStats == true &&
-                <div>
-                    {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
-                    {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
-                    {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
-                    {savedCoaster.stats.length && <div className="coasterStat"> Length: {Math.round(savedCoaster.stats.length * 3.28)} ft</div>}
-                    {savedCoaster.stats.height && <div className="coasterStat"> Height: {Math.round(savedCoaster.stats.height * 3.28)} ft</div>}
-                    {savedCoaster.stats.drop && <div className="coasterStat"> Highest Drop: {Math.round(savedCoaster.stats.drop * 3.28)} ft</div>}
-                    {savedCoaster.stats.speed && <div className="coasterStat"> Max Speed: {Math.round(savedCoaster.stats.speed / 1.60934)} mph</div>}
-                    {savedCoaster.stats.inversions && <div className="coasterStat"> Inversions: {savedCoaster.stats.inversions} </div>}
-                    {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
-                    {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
-                </div>
-                }
+                {imperialStats ? (
+                    <div>
+                        {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
+                        {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
+                        {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
 
-                {imperialStats == false &&
-                <div>
-                    {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
-                    {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
-                    {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
-                    {savedCoaster.stats.length && <div className="coasterStat"> Length: {Math.round(savedCoaster.stats.length)} m</div>}
-                    {savedCoaster.stats.height && <div className="coasterStat"> Height: {Math.round(savedCoaster.stats.height)} m</div>}
-                    {savedCoaster.stats.drop && <div className="coasterStat"> Highest Drop: {Math.round(savedCoaster.stats.drop)} m</div>}
-                    {savedCoaster.stats.speed && <div className="coasterStat"> Max Speed: {Math.round(savedCoaster.stats.speed)} km/h</div>}
-                    {savedCoaster.stats.inversions && <div className="coasterStat"> Inversions: {savedCoaster.stats.inversions} </div>}
-                    {savedCoaster.stats.verticalAngle && <div className="coasterStat"> Max Vertical Angle: {savedCoaster.stats.verticalAngle}° </div>}
-                    {savedCoaster.stats.duration && <div className="coasterStat"> Duration: {savedCoaster.stats.duration} </div>}
-                </div>
-                }
+                        <div className="coasterStat">{savedCoaster.stats.length && formatStat("Length", savedCoaster.stats.length, "ft")}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.height && formatStat('Height', savedCoaster.stats.height, 'ft')}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.drop && formatStat('Highest Drop', savedCoaster.stats.drop, 'ft')}</div>
+
+                        <div className="coasterStat">
+                            {fillArray(savedCoaster.stats.speed) && (
+                                <div className="multi-stat">
+                                    Max Speed:{" "}
+                                    {Array.isArray(savedCoaster.stats.speed)
+                                        ? savedCoaster.stats.speed.map((s, i) => (
+                                            <div className="multi-stat" key={`speed-${i}`}>Track {i + 1}: {Math.round(s / 1.60934)} mph{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
+                                        ))
+                                        : `${Math.round(savedCoaster.stats.speed / 1.60934)} mph`}
+                                </div>
+                            )}
+                        </div>
+                        <div className="coasterStat">{savedCoaster.stats.inversions && formatStat('Inversions', savedCoaster.stats.inversions, '')}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.verticalAngle && formatStat('Max Vertical Angle', savedCoaster.stats.verticalAngle, '°')}</div>
+
+                        {fillArray(savedCoaster.stats.duration) && (
+                            <div className="coasterStat">
+                                Duration:{" "}
+                                {Array.isArray(savedCoaster.stats.duration)
+                                    ? savedCoaster.stats.duration.map((s, i) => (
+                                        <div className="multi-stat" key={`duration-${i}`}>Track {i + 1}: {s}{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
+                                    ))
+                                    : savedCoaster.stats.duration}
+                            </div>
+                        )}
+                    </div>
+
+
+                ) : (
+                    <div>
+                        {savedCoaster.status.state && <div className="coasterStat">Status: {savedCoaster.status.state}</div>}
+                        {savedCoaster.type && <div className="coasterStat">Type: {savedCoaster.type}</div>}
+                        {savedCoaster.make && <div className="coasterStat">Manufacturer: {savedCoaster.make}</div>}
+
+                        <div className="coasterStat">{savedCoaster.stats.length && formatStat("Length", savedCoaster.stats.length, "m")}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.height && formatStat('Height', savedCoaster.stats.height, 'm')}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.drop && formatStat('Highest Drop', savedCoaster.stats.drop, 'm')}</div>
+
+                        <div className="coasterStat">
+                            {fillArray(savedCoaster.stats.speed) && (
+                                <div className="multi-stat">
+                                    Max Speed:{" "}
+                                    {Array.isArray(savedCoaster.stats.speed)
+                                        ? savedCoaster.stats.speed.map((s, i) => (
+                                            <div className="multi-stat" key={`speed-${i}`}>Track {i + 1}: {s} km/h{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
+                                        ))
+                                        : `${savedCoaster.stats.speed} mph`}
+                                </div>
+                            )}
+                        </div>
+                        <div className="coasterStat">{savedCoaster.stats.inversions && formatStat('Inversions', savedCoaster.stats.inversions, '')}</div>
+
+                        <div className="coasterStat">{savedCoaster.stats.verticalAngle && formatStat('Max Vertical Angle', savedCoaster.stats.verticalAngle, '°')}</div>
+
+                        {fillArray(savedCoaster.stats.duration) && (
+                            <div className="coasterStat">
+                                Duration:{" "}
+                                {Array.isArray(savedCoaster.stats.duration)
+                                    ? savedCoaster.stats.duration.map((s, i) => (
+                                        <div className="multi-stat" key={`duration-${i}`}>Track {i + 1}: {s}{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
+                                    ))
+                                    : savedCoaster.stats.duration}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             <a href={`https://rcdb.com/${savedCoaster.link}`}> RCDB Link </a>
