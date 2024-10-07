@@ -39,12 +39,13 @@ const CoasterSelector = () => {
 
     stats = newStats
     console.log(stats)
-    
-    const fillArray= (arr) => {
-        if (arr.length > 1) {
+
+    const fillArray = (arr) => {
+        console.log('fillArray arr: ', arr)
+        if (arr) {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === '') {
-                    arr[i] = arr[i-1]
+                    arr[i] = arr[i - 1]
                 }
             }
         }
@@ -55,7 +56,7 @@ const CoasterSelector = () => {
         if (Array.isArray(value)) {
             for (let i = 0; i < value.length; i++) {
                 if (value[i] === '') {
-                    value[i] = value[i-1]
+                    value[i] = value[i - 1]
                 }
             }
             return value.map((v, i) => (
@@ -112,18 +113,16 @@ const CoasterSelector = () => {
 
                         <div className="coasterStat">{savedCoaster.stats.drop && formatStat('Highest Drop', savedCoaster.stats.drop, 'ft')}</div>
 
-                        <div className="coasterStat">
-                            {fillArray(savedCoaster.stats.speed) && (
-                                <div className="multi-stat">
-                                    Max Speed:{" "}
-                                    {Array.isArray(savedCoaster.stats.speed)
-                                        ? savedCoaster.stats.speed.map((s, i) => (
-                                            <div className="multi-stat" key={`speed-${i}`}>Track {i + 1}: {Math.round(s / 1.60934)} mph{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
-                                        ))
-                                        : `${Math.round(savedCoaster.stats.speed / 1.60934)} mph`}
-                                </div>
-                            )}
-                        </div>
+                        {fillArray(savedCoaster.stats.speed) && (
+                            <div className="coasterStat">
+                                Max Speed:{" "}
+                                {Array.isArray(savedCoaster.stats.speed)
+                                    ? savedCoaster.stats.speed.map((s, i) => (
+                                        <div className="multi-stat" key={`speed-${i}`}>Track {i + 1}: {Math.round(s / 1.60934)} mph{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
+                                    ))
+                                    : `${Math.round(savedCoaster.stats.speed / 1.60934)} mph`}
+                            </div>
+                        )}
                         <div className="coasterStat">{savedCoaster.stats.inversions && formatStat('Inversions', savedCoaster.stats.inversions, '')}</div>
 
                         <div className="coasterStat">{savedCoaster.stats.verticalAngle && formatStat('Max Vertical Angle', savedCoaster.stats.verticalAngle, '°')}</div>
