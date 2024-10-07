@@ -18,8 +18,7 @@ function Header() {
       <Link className='nav-item' to='/imagegallery'>Image Gallery</Link>
       <Link className='nav-item'
         onClick={() => {
-          localStorage.setItem('storedUser', '')
-          localStorage.setItem('authStorage', '')
+          localStorage.clear()
           auth.setAccessToken(undefined)
           setCurrentUser(null)
         }}

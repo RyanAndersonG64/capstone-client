@@ -13,6 +13,9 @@ const LocationSelector = () => {
   const { allCoasters, setAllCoasters } = useContext(ParkContext);
   const { selectedPark, setSelectedPark } = useContext(ParkContext2);
 
+  const storedContinent = JSON.parse(localStorage.getItem('storedContinent'))
+  const storedCountry = JSON.parse(localStorage.getItem('storedCountry'))
+
   const [continent, setContinent] = useState([]);
   const [parkState, setParkState] = useState([]);
   const [countryParks, setCountryParks] = useState([]);
@@ -168,6 +171,22 @@ const LocationSelector = () => {
   ];
   const oceania = ['Australia', 'New Zealand'];
 
+  useEffect(() => {
+    if (storedContinent) {
+      console.log(storedContinent)
+      setContinent(storedContinent)
+    }
+    if (storedCountry) {
+      console.log(storedCountry)
+      setCountryParks(
+        allParks.filter((park) => park.country === storedCountry || park.country === '' && park.state === storedCountry)
+      );
+      setParkState(
+        allParks.filter((park) => park.country === storedCountry || park.country === '' && park.state === storedCountry)
+      );
+    }
+  }, [])
+
   return (
     <div>
       <div className="location-selector-1">
@@ -178,20 +197,28 @@ const LocationSelector = () => {
           onChange={(e) => {
             if (e.target.value === 'North America') {
               setContinent(northAmerica);
+              localStorage.setItem('storedContinent', JSON.stringify(northAmerica))
             } else if (e.target.value === 'South America') {
               setContinent(southAmerica);
+              localStorage.setItem('storedPark', JSON.stringify(southAmerica))
             } else if (e.target.value === 'Europe') {
               setContinent(europe);
+              localStorage.setItem('storedPark', JSON.stringify(europe))
             } else if (e.target.value === 'Africa') {
               setContinent(africa);
+              localStorage.setItem('storedPark', JSON.stringify(africa))
             } else if (e.target.value === 'Asia') {
               setContinent(asia);
+              localStorage.setItem('storedPark', JSON.stringify(asia))
             } else if (e.target.value === 'Oceania') {
               setContinent(oceania);
+              localStorage.setItem('storedPark', JSON.stringify(oceania))
             }
           }}
         >
-          <option value=""> --- </option>
+          {!storedContinent &&
+            <option value=""> --- </option>
+          }
           <option value="North America">North America</option>
           <option value="South America">South America</option>
           <option value="Europe">Europe</option>
@@ -214,12 +241,17 @@ const LocationSelector = () => {
             setParkState(
               allParks.filter((park) => park.country === e.target.value || park.country === '' && park.state === e.target.value)
             );
+            console.log(e.target.value)
+            localStorage.setItem('storedCountry', JSON.stringify(e.target.value))
           }}
         >
-          <option value=""> --- </option>
+          {!storedCountry &&
+            <option value=""> --- </option>
+          }
           {continent.map((country) => {
             return (
-              <option key={continent.indexOf(country)} value={country}>
+              <option key={continent.indexOf(country)} value={country} onChange={() => {
+              }}>
                 {' '}
                 {country}{' '}
               </option>
