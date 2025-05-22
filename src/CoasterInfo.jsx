@@ -41,7 +41,6 @@ const CoasterSelector = () => {
     console.log(stats)
 
     const fillArray = (arr) => {
-        console.log('fillArray arr: ', arr)
         if (arr) {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === '') {
