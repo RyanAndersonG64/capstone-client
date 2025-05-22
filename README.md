@@ -4,7 +4,7 @@
 
 This app was created as my capstone project for Awesome Inc's developer bootcamp.  It is a social media app for roller coaster enthusiasts that allows them to track the coasters they have ridden.  It uses data pulled from the [RCDB API](https://github.com/fabianrguez/rcdb-api)
 
-#### LIVE LINK: coastertrack.vercel.app
+#### LIVE LINK: [coastertrack.vercel.app](coastertrack.vercel.app)
 
 ## Features
 
