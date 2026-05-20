@@ -159,7 +159,7 @@ const CoasterSelector = () => {
                                         ? savedCoaster.stats.speed.map((s, i) => (
                                             <div className="multi-stat" key={`speed-${i}`}>Track {i + 1}: {s} km/h{i < savedCoaster.stats.speed.length - 1 ? ',' : ''} </div>
                                         ))
-                                        : `${savedCoaster.stats.speed} mph`}
+                                        : `${savedCoaster.stats.speed} km/h`}
                                 </div>
                             )}
                         </div>
