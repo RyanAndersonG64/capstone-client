@@ -44,7 +44,6 @@ const Profile = () => {
       fetchAllUsers({ auth })
         .then(response => {
           setAllUsers(response.data)
-          console.log(allUsers)
         })
     },
     []
@@ -72,7 +71,6 @@ const Profile = () => {
 
       <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={storedUser.profile_view_state}
         onChange={(e) => {
-          console.log(e.target.value.toUpperCase())
           setProfileViewState(e.target.value.toUpperCase())
         }
         }

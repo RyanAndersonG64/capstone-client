@@ -31,10 +31,7 @@ const ImageGallery = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
-    // const baseUrl = "http://127.0.0.1:8000"
-    // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
     const baseUrl = import.meta.env.VITE_BASE_URL
-
 
     useEffect(
         () => {
@@ -64,7 +61,6 @@ const ImageGallery = () => {
                         setAllImages(response.data)
                         setLoading(false)
                     })
-                    .catch(error => console.log('Get Images Failure: ', error))
             }
         },
         [auth.accessToken]
@@ -75,14 +71,11 @@ const ImageGallery = () => {
         let poster = currentUser.id
         createImage({ auth, title, postedBy: poster, image })
             .then(response => {
-                console.log('response from createImage: ', response)
                 getImages({ auth })
                     .then(res => {
-                        console.log('res from getImages: ', res)
                         setImageState(res.data)
                     })
             })
-            .catch(error => console.log('Create Image failure: ', error))
     }
 
     if (loading) {
@@ -123,25 +116,21 @@ const ImageGallery = () => {
             <h1>Image Gallery</h1>
             <label htmlFor="imageFilter">Sort images by:</label>
             <select id="imageTypes" name="imageTypes" onChange={(e) => {
-                console.log(e.target.value)
                 if (e.target.value === 'All Images') {
                     getImages({ auth })
                         .then(response => {
                             setImageState(response.data)
                         })
-                        .catch(error => console.log('Get Images Failure: ', error))
                 } else if (e.target.value === 'Your Images') {
                     getImages({ auth })
                         .then(response => {
                             setImageState(response.data.filter((image) => image.posted_by === currentUser.id))
                         })
-                        .catch(error => console.log('Get Images Failure: ', error))
                 } else if (e.target.value === 'Liked Images') {
                     getImages({ auth })
                         .then(response => {
                             setImageState(response.data.filter((image) => image.liked_by.includes(currentUser.id)))
                         })
-                        .catch(error => console.log('Get Images Failure: ', error))
                 } else {
                     setImageState(allImages)
                 }
@@ -164,12 +153,10 @@ const ImageGallery = () => {
                     </div>
                     <br></br>
                     <button onClick={() => {
-                        console.log('Like has been pressed')
                         likeImage({ auth, currentUser: currentUser.id, image: image.id, likes: image.likes })
                             .then(response => {
                                 getImages({ auth })
                                     .then(res => {
-                                        console.log('res from likeImage: ', res)
                                         setImageState(res.data)
                                     })
                             })
@@ -180,12 +167,10 @@ const ImageGallery = () => {
 
                     <button style={{ marginLeft: 20 }} onClick={() => {
                         if (image.posted_by === currentUser.id) {
-                            console.log('Delete has been pressed')
                             deleteImage({ auth, imageId: image.id })
                                 .then(response => {
                                     getImages({ auth })
                                         .then(res => {
-                                            console.log('res from getImages: ', res)
                                             setImageState(res.data)
                                         })
                                 })

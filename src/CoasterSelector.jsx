@@ -10,9 +10,6 @@ import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, ge
 
 const CoasterSelector = () => {
 
-    // const baseUrl = "http://127.0.0.1:8000"
-    // const baseUrl = 'https://ryan-anderson-capstone-server-2.fly.dev'
-
     const baseUrl = import.meta.env.VITE_BASE_URL
 
     const { auth } = useContext(AuthContext)
@@ -92,14 +89,12 @@ const CoasterSelector = () => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
                             }
@@ -122,14 +117,12 @@ const CoasterSelector = () => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
                             }
@@ -143,27 +136,6 @@ const CoasterSelector = () => {
             {underConstruction.map(coaster => {
                 return (
                     <div key={coaster.id}>
-                        {/* <input type="checkbox" id = {coaster.id} name = {coaster.name} value={coaster.name} style={{ marginRight: 10}} 
-                        checked = {currentUser.coasters_ridden.includes(coaster.id) ? true : false }
-                            onChange={(e) => {
-                                if (e.target.checked === true) {
-                                        addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                            .then(response => {
-                                                setCurrentUser(response.data)
-                                                localStorage.setItem('storedUser', JSON.stringify(response.data))
-                                        })
-                                            .catch(error => console.log('addCredit failure: ', error))
-                                } else if (e.target.checked === false) {
-                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                    .then(response => {
-                                        setCurrentUser(response.data)
-                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
-                                })
-                                    .catch(error => console.log('removeCredit failure: ', error))
-                                }
-                            }
-                        }
-                        /> */}
                         <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
                     </div>
                 )

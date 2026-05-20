@@ -49,7 +49,6 @@ const Rankings = () => {
             const coasterJson = response.json()
               .then(coasterJson => {
                 setCoasters(coasterJson)
-                console.log(coasterJson)
                 setLoading2(false)
               })
           })
@@ -78,7 +77,6 @@ const Rankings = () => {
       profile.coasters_ridden.forEach(coasterId => {
         if (coasterCount[coasterId]) {
           coasterCount[coasterId]++
-          console.log(coasterCount[coasterId])
         } else {
           coasterCount[coasterId] = 1
         }
@@ -100,7 +98,6 @@ const Rankings = () => {
         if (coasterName !== '') {
           if (favoriteCount[coasterName]) {
             favoriteCount[coasterName]++
-            console.log(favoriteCount[coasterName])
           } else {
             favoriteCount[coasterName] = 1
           }

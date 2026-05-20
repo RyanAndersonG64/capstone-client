@@ -52,21 +52,18 @@ const GroupPage = () => {
 
             fetchAllUsers({ auth })
                 .then(response => {
-                    console.log(response.data)
                     setAllUsers(response.data)
                     setLoading1(false)
                 })
 
             getJoinRequests({ auth })
                 .then(response => {
-                    console.log(response.data)
                     setJoinRequests(response.data)
                     setLoading2(false)
                 })
 
             getMessages({ auth })
                 .then(response => {
-                    console.log(response.data)
                     setMessages(response.data.filter(message => message.group == group.id))
                     setLoading3(false)
                 })
@@ -118,7 +115,6 @@ const GroupPage = () => {
                     <select id="userLookup" name="userLookup" style={{ marginLeft: 10 }} defaultValue={currentUser.id}
                         onChange={(e) => {
                             setUserToInvite(e.target.value)
-                            console.log(userToInvite)
                         }
                         }
                     >
@@ -134,7 +130,6 @@ const GroupPage = () => {
                             // workaround for dumbest bug ever, for some reason this one speific instance isnt recognozing member == userToInvite
 
                             let memberCheck = group.members.map(member => member - userToInvite)
-                            console.log(memberCheck)
                             let memberIncrement = 0
                             for (let i = 0; i < memberCheck.length; i++) {
                                 if (memberCheck[i] === 0) {
@@ -143,7 +138,6 @@ const GroupPage = () => {
                                 } else {
                                     memberIncrement++
                                     if (memberIncrement === memberCheck.length) {
-                                        console.log('invited to group')
                                         inviteToGroup({ auth, group: group.id, userBeingInvited: userToInvite })
                                             .then(response => {
                                                 if (response.data === 'already') {
@@ -166,15 +160,12 @@ const GroupPage = () => {
                     <button
                         style={{ border: 'none', background: 'none' }}
                         onClick={() => {
-                            console.log('join request accepted')
                             acceptJoinRequest({ auth, request: request.id })
                                 .then(response => {
-                                    console.log(response)
                                     setGroup(response.data)
                                     setLoading2(true)
                                     getJoinRequests({ auth })
                                         .then(response => {
-                                            console.log(response.data)
                                             setJoinRequests(response.data)
                                             setLoading2(false)
                                         })
@@ -187,14 +178,11 @@ const GroupPage = () => {
                     <button
                         style={{ border: 'none', background: 'none' }}
                         onClick={() => {
-                            console.log('join request accepted')
                             rejectJoinRequest({ auth, request: request.id })
                                 .then(response => {
-                   
                                     setLoading2(true)
                                     getJoinRequests({ auth })
                                         .then(response => {
-                                            console.log(response.data)
                                             setJoinRequests(response.data)
                                             setLoading2(false)
                                         })
@@ -217,7 +205,6 @@ const GroupPage = () => {
                                 if (member === currentUser.id) {
                                     navigate('/profile')
                                 }
-                                console.log(member)
                             }}
                             to='../otherprofile/'
                         >
@@ -230,7 +217,6 @@ const GroupPage = () => {
                                     if (member != group.founder) {
                                         let confirm_kick = confirm('Are you sure you want to Kick this member?')
                                         if (confirm_kick) {
-                                            console.log('rip in pepperonis mate')
                                             kickFromGroup({ auth, group: group.id, memberToKick: member })
                                                 .then(response => {
                                                     (localStorage.setItem('group', JSON.stringify(group)))

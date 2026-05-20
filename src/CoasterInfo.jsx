@@ -38,7 +38,6 @@ const CoasterSelector = () => {
     }
 
     stats = newStats
-    console.log(stats)
 
     const fillArray = (arr) => {
         if (arr) {
@@ -81,7 +80,6 @@ const CoasterSelector = () => {
 
                 <label htmlFor="stat-types">Measurements: &nbsp;</label>
                 <select id="stayType" name="statType" onChange={(e) => {
-                    console.log(e.target.value)
                     if (e.target.value === 'Imperial') {
                         setImperialStats(true)
                     } else if (e.target.value === 'Metric') {

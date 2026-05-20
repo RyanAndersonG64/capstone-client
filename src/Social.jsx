@@ -69,14 +69,12 @@ const Social = () => {
                     setFriendRequests(response.data.filter(request => request.reciever == storedUser.id))
                     setLoading2(false)
                 })
-                .catch(error => console.log('getFriendRequests error: ', error))
 
             getGroupInvites({ auth })
                 .then(response => {
                     setGroupInvites(response.data.filter(invite => invite.invited_user == storedUser.id))
                     setLoading3(false)
                 })
-                .catch(error => console.log('get group invites error: ', error))
 
             getDms({ auth })
                 .then(response => {
@@ -130,7 +128,6 @@ const Social = () => {
                                 <button
                                     style={{ border: 'none', background: 'none' }}
                                     onClick={() => {
-                                        console.log('group invite accepted')
                                         acceptGroupInvite({ auth, invite: invite.id })
                                             .then(response => {
                                                 getGroups({ auth })
@@ -142,7 +139,6 @@ const Social = () => {
                                                         setGroupInvites(response.data.filter(invite => invite.invited_user == storedUser.id))
                                                         setLoading(false)
                                                     })
-                                                    .catch(error => console.log('get group invites error: ', error))
                                             })
                                     }}
                                 >
@@ -228,7 +224,6 @@ const Social = () => {
                                     onClick={() => {
                                         localStorage.setItem('profileView', JSON.stringify(request.sender))
                                         setProfileView(request.sender)
-                                        console.log(request.sender)
                                     }}
                                     to='../otherprofile/'
                                 >
@@ -273,7 +268,6 @@ const Social = () => {
                                     onClick={() => {
                                         localStorage.setItem('profileView', JSON.stringify(friend.id))
                                         setProfileView(friend.id)
-                                        console.log(friend.id)
                                     }}
                                     to='../otherprofile/'
                                 >

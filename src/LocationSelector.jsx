@@ -173,11 +173,9 @@ const LocationSelector = () => {
 
   useEffect(() => {
     if (storedContinent) {
-      console.log(storedContinent)
       setContinent(storedContinent)
     }
     if (storedCountry) {
-      console.log(storedCountry)
       setCountryParks(
         allParks.filter((park) => park.country === storedCountry || park.country === '' && park.state === storedCountry)
       );
@@ -241,7 +239,6 @@ const LocationSelector = () => {
             setParkState(
               allParks.filter((park) => park.country === e.target.value || park.country === '' && park.state === e.target.value)
             );
-            console.log(e.target.value)
             localStorage.setItem('storedCountry', JSON.stringify(e.target.value))
           }}
         >
