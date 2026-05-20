@@ -89,14 +89,12 @@ const CoasterSelector = () => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
                             }
@@ -119,14 +117,12 @@ const CoasterSelector = () => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('addCredit failure: ', error))
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
                                             localStorage.setItem('storedUser', JSON.stringify(response.data))
                                         })
-                                        .catch(error => console.log('removeCredit failure: ', error))
                                 }
                             }
                             }

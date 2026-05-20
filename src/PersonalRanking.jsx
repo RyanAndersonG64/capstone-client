@@ -88,7 +88,6 @@ const PersonalRanking = () => {
                     </input>
                     <button style={{marginLeft: 10}} id= {number} value = 'Change'
                         onClick = {(e) => {
-                            console.log(buttonText[number])
                             setEditable(!editable)
                             changeButtonText(number-1)
                             if (buttonText[number-1] === 'Set') {

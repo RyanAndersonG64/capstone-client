@@ -33,16 +33,12 @@ const OtherProfile = () => {
             setCurrentUser(storedUser)
             fetchAllUsers({ auth })
                 .then(response => {
-                    console.log(response.data)
                     setAllUsers(response.data)
                     let userBeingViewed = response.data.find(user => user.id == profileStorage)
-                    console.log(userBeingViewed)
-                    console.log(userBeingViewed.first_name)
                     fetchCoasters({ auth })
                         .then(response => {
                             const coasterJson = response.json()
                                 .then(coasterJson => {
-                                    console.log(userBeingViewed)
                                     setAllCoasters(coasterJson.filter((coaster) => (userBeingViewed.coasters_ridden.includes(coaster.id))))
                                     setLoading(false)
                                 })

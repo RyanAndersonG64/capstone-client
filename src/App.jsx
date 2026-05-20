@@ -34,7 +34,6 @@ function App() {
             setAllParks(parkJson);
           });
         })
-        .catch((error) => console.log('Fetch parks Failure: ', error));
     } else {
       navigate('/');
     }

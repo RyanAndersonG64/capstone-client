@@ -75,13 +75,11 @@ const Forum = () => {
                         setAllPosts(response.data)
                         setLoading1(false)
                     })
-                    .catch(error => console.log('Get Posts Failure: ', error))
                 getComments({ auth })
                     .then(response => {
                         setAllComments(response.data)
                         setLoading2(false)
                     })
-                    .catch(error => console.log('Get Comments Failure: ', error))
             }
         },
         [auth.accessToken]
@@ -92,14 +90,11 @@ const Forum = () => {
         let poster = currentUser.id
         addPost({ auth, title, postedBy: poster, textContent })
             .then(response => {
-                console.log('response from AddPost: ', response)
                 getPosts({ auth })
                     .then(res => {
-                        console.log('res from getPosts: ', res)
                         setPostState(res.data)
                     })
             })
-            .catch(error => console.log('Create Post failure: ', error))
     }
 
     if (loading1 || loading2) {
@@ -143,27 +138,11 @@ const Forum = () => {
             <h1>Posts</h1>
             <label htmlFor="postFilter">Sort posts by:</label>
             <select id="postTypes" name="postTypes" onChange={(e) => {
-                console.log(e.target.value)
                 if (e.target.value === 'All Posts') {
-                    // getPosts({ auth })
-                    // .then(response => {
-                    //     setPostState(response.data)
-                    // })
-                    // .catch(error => console.log('Get Posts Failure: ', error))
                     setPostState(allPosts)
                 } else if (e.target.value === 'Your Posts') {
-                    // getPosts({ auth })
-                    // .then(response => {
-                    //     setPostState(response.data.filter((post) => post.posted_by === currentUser.id))
-                    // })
-                    // .catch(error => console.log('Get Posts Failure: ', error))
                     setPostState(allPosts.filter((post) => post.posted_by === currentUser.id))
                 } else if (e.target.value === 'Liked Posts') {
-                    // getPosts({ auth })
-                    // .then(response => {
-                    //     setPostState(response.data.filter((post) => post.liked_by.includes(currentUser.id)))
-                    // })
-                    // .catch(error => console.log('Get Posts Failure: ', error))
                     setPostState(allPosts.filter((post) => post.liked_by.includes(currentUser.id)))
                 } else {
                     setPostState(allPosts)
@@ -184,13 +163,10 @@ const Forum = () => {
 
                     <br></br>
                     <button onClick={() => {
-                        console.log('Like has been pressed')
                         likePost({ auth, current_user: currentUser.id, post_id: post.id, likes: post.likes })
                             .then(response => {
-                                console.log(response)
                                 getPosts({ auth })
                                     .then(res => {
-                                        console.log('res from likePosts: ', res)
                                         setAllPosts(res.data)
                                     })
                             })
@@ -201,12 +177,10 @@ const Forum = () => {
 
                     <button style={{ marginLeft: 20 }} onClick={() => {
                         if (post.posted_by === currentUser.id) {
-                            console.log('Delete has been pressed')
                             deletePost({ auth, postId: post.id })
                                 .then(response => {
                                     getPosts({ auth })
                                         .then(res => {
-                                            console.log('res from getPosts: ', res)
                                             setAllPosts(res.data)
                                         })
                                 })
@@ -219,13 +193,10 @@ const Forum = () => {
 
                     <button style={{ marginLeft: 20 }} onClick={() => {
                         if (post.posted_by === currentUser.id) {
-                            console.log('Edit has been pressed')
                             editPost({ auth, postId: post.id, textContent: prompt('Enter new text content'), likeCount: post.like_count })
                                 .then(response => {
-                                    console.log('response from editPost: ', response)
                                     getPosts({ auth })
                                         .then(res => {
-                                            console.log('res from getPosts: ', res)
                                             setAllPosts(res.data)
                                         })
                                 })
@@ -237,14 +208,10 @@ const Forum = () => {
                     </button>
 
                     <button style={{ marginLeft: 20 }} onClick={() => {
-
-                        console.log('Comment has been pressed')
                         addComment({ auth, postId: post.id, postedBy: currentUser.id, textContent: prompt('Enter comment') })
                             .then(response => {
-                                console.log('response from addComment: ', response)
                                 getComments({ auth })
                                     .then(res => {
-                                        console.log('res from getComments: ', res)
                                         if (res.data) {
                                             setAllComments(res.data)
                                             setCommentState((res.data.filter(comment => comment.post === post.id)))

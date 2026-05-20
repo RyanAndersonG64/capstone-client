@@ -12,7 +12,6 @@ const CreateNewUser = () => {
 
   const submit = () => {
     if (username === '' || username.includes(' ')) {
-      console.log(username)
       alert('username cannot be blank')
     } else if (password === '' || username.includes(' ')) {
       alert('password cannot be blank')

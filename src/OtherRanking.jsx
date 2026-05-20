@@ -48,10 +48,7 @@ const OtherRanking = () => {
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)
-                    console.log(response.data)
-                    console.log(profileStorage)
                     let userBeingViewed = response.data.find(user => user.id == profileStorage)
-                    console.log(userBeingViewed)
                     setProfileView(response.data.find(user => user.id === profileStorage))
                     fetchCoasters({ auth })
                         .then(response => {

@@ -32,11 +32,9 @@ export const fetchUser = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log('PROFILE: ', response);
       return response;
     })
     .catch((error) => {
-      console.log('fetch user ERROR: ', error);
       auth.setAccessToken(undefined);
     });
 };
@@ -50,11 +48,7 @@ export const fetchAllUsers = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log('ALL PROFILES: ', response);
       return response;
-    })
-    .catch((error) => {
-      console.log('get all users ERROR: ', error);
     });
 };
 
@@ -70,11 +64,7 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     },
   })
     .then((response) => {
-      console.log('CREATE USER: ', response);
       return response;
-    })
-    .catch((error) => {
-      console.log('ERROR: ', error);
     });
 };
 
@@ -89,8 +79,7 @@ export const fetchCoasters = ({ auth }) => {
         throw new Error('Network response was not ok');
       }
       return response;
-    })
-    .catch((error) => console.error('fetch coasters Error:', error));
+    });
 };
 
 export const fetchParks = ({ auth }) => {
@@ -102,8 +91,7 @@ export const fetchParks = ({ auth }) => {
         throw new Error('Network response was not ok');
       }
       return response;
-    })
-    .catch((error) => console.error('fetch parks Error:', error));
+    });
 };
 
 // -- Stuff for data images --
@@ -117,10 +105,8 @@ export const getDataImages = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get images error: ', error));
+    });
 };
 
 export const createDataImage = ({ auth, image }) => {
@@ -197,10 +183,8 @@ export const changeProfileViewState = ({ auth, user, newState }) => {
     },
   })
     .then((response) => {
-      console.log('django response = ', response.data);
       return response;
-    })
-    .catch((error) => console.log('changep rofile error: ', error));
+    });
 };
 
 // -- CRUD on forum posts --
@@ -215,8 +199,7 @@ export const getPosts = ({ auth }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('Get posts error: ', error));
+    });
 };
 
 export const addPost = ({ auth, title, postedBy, textContent }) => {
@@ -233,10 +216,8 @@ export const addPost = ({ auth, title, postedBy, textContent }) => {
     },
   })
     .then((response) => {
-      console.log('django response = ', response.data);
       return response;
-    })
-    .catch((error) => console.log('Add post error: ', error));
+    });
 };
 
 export const editPost = ({ auth, postId, textContent }) => {
@@ -252,10 +233,8 @@ export const editPost = ({ auth, postId, textContent }) => {
     },
   })
     .then((response) => {
-      console.log('django response = ', response.data);
       return response;
-    })
-    .catch((error) => console.log('Add post error: ', error));
+    });
 };
 
 export const deletePost = ({ auth, postId }) => {
@@ -270,10 +249,8 @@ export const deletePost = ({ auth, postId }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Delete post error: ', error));
+    });
 };
 
 export const likePost = ({ auth, current_user, post_id, likes }) => {
@@ -289,7 +266,6 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
       Authorization: `Bearer ${auth.accessToken}`,
     },
   }).then((response) => {
-    console.log(response.data);
     return response;
   });
 };
@@ -305,10 +281,8 @@ export const getImages = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get images error: ', error));
+    });
 };
 
 export const createImage = ({ auth, postedBy, title, image }) => {
@@ -341,7 +315,6 @@ export const likeImage = ({ auth, currentUser, image, likes }) => {
       'Content-Type': 'multipart/form-data',
     },
   }).then((response) => {
-    console.log(response.data);
     return response;
   });
 };
@@ -373,8 +346,7 @@ export const getComments = ({ auth }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('Get posts error: ', error));
+    });
 };
 
 export const addComment = ({ auth, postId, postedBy, textContent }) => {
@@ -391,10 +363,8 @@ export const addComment = ({ auth, postId, postedBy, textContent }) => {
     },
   })
     .then((response) => {
-      console.log('django response = ', response.data);
       return response;
-    })
-    .catch((error) => console.log('Add comment error: ', error));
+    });
 };
 
 export const editComment = ({ auth, commentId, textContent }) => {
@@ -410,10 +380,8 @@ export const editComment = ({ auth, commentId, textContent }) => {
     },
   })
     .then((response) => {
-      console.log('django response = ', response.data);
       return response;
-    })
-    .catch((error) => console.log('Edit comment error: ', error));
+    });
 };
 
 export const deleteComment = ({ auth, commentId }) => {
@@ -428,10 +396,8 @@ export const deleteComment = ({ auth, commentId }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Delete comment error: ', error));
+    });
 };
 
 // -- Stuff for friends --
@@ -445,10 +411,8 @@ export const getFriendRequests = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get friend requests error: ', error));
+    });
 };
 
 export const sendFriendRequest = ({ auth, sender, reciever }) => {
@@ -464,10 +428,8 @@ export const sendFriendRequest = ({ auth, sender, reciever }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Send friend requesr error: ', error));
+    });
 };
 
 export const acceptFriendRequest = ({ auth, request }) => {
@@ -483,8 +445,7 @@ export const acceptFriendRequest = ({ auth, request }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('Accept friend requesr error: ', error));
+    });
 };
 
 export const rejectFriendRequest = ({ auth, request }) => {
@@ -500,8 +461,7 @@ export const rejectFriendRequest = ({ auth, request }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('Accept friend requesr error: ', error));
+    });
 };
 
 export const deleteFriend = ({ auth, user, friend }) => {
@@ -518,8 +478,7 @@ export const deleteFriend = ({ auth, user, friend }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('delete friend error: ', error));
+    });
 };
 
 // -- Stuff for groups --
@@ -533,10 +492,8 @@ export const getGroups = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get groups error: ', error));
+    });
 };
 
 export const createGroup = ({ auth, name, creator }) => {
@@ -552,10 +509,8 @@ export const createGroup = ({ auth, name, creator }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Create group error: ', error));
+    });
 };
 
 export const getGroupInvites = ({ auth }) => {
@@ -567,10 +522,8 @@ export const getGroupInvites = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get groups error: ', error));
+    });
 };
 
 export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
@@ -586,10 +539,8 @@ export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Invite to group error: ', error));
+    });
 };
 
 export const acceptGroupInvite = ({ auth, invite }) => {
@@ -604,10 +555,8 @@ export const acceptGroupInvite = ({ auth, invite }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('acceptg group invite error: ', error));
+    });
 };
 
 export const rejectGroupInvite = ({ auth, invite }) => {
@@ -623,8 +572,7 @@ export const rejectGroupInvite = ({ auth, invite }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('Accept friend requesr error: ', error));
+    });
 };
 
 export const kickFromGroup = ({ auth, group, memberToKick }) => {
@@ -640,10 +588,8 @@ export const kickFromGroup = ({ auth, group, memberToKick }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Kick from group error: ', error));
+    });
 };
 
 export const requestToJoinGroup = ({ auth, user, group }) => {
@@ -659,10 +605,8 @@ export const requestToJoinGroup = ({ auth, user, group }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Join request error: ', error));
+    });
 };
 
 export const getJoinRequests = ({ auth }) => {
@@ -674,10 +618,8 @@ export const getJoinRequests = ({ auth }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('Get join requests error: ', error));
+    });
 };
 
 export const acceptJoinRequest = ({ auth, request }) => {
@@ -692,10 +634,8 @@ export const acceptJoinRequest = ({ auth, request }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('acceptg join request error: ', error));
+    });
 };
 
 export const rejectJoinRequest = ({ auth, request }) => {
@@ -711,8 +651,7 @@ export const rejectJoinRequest = ({ auth, request }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('reject join request error: ', error));
+    });
 };
 
 export const leaveGroup = ({ auth, group, memberLeaving }) => {
@@ -728,10 +667,8 @@ export const leaveGroup = ({ auth, group, memberLeaving }) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       return response;
-    })
-    .catch((error) => console.log('leave group error: ', error));
+    });
 };
 
 export const dissolveGroup = ({ auth, group }) => {
@@ -747,8 +684,7 @@ export const dissolveGroup = ({ auth, group }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('dissolve group error: ', error));
+    });
 };
 
 export const getMessages = ({ auth }) => {
@@ -761,8 +697,7 @@ export const getMessages = ({ auth }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('get messages error : ', error));
+    });
 };
 
 export const sendMessage = ({ auth, group, sender, textContent }) => {
@@ -780,8 +715,7 @@ export const sendMessage = ({ auth, group, sender, textContent }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('send message error : ', error));
+    });
 };
 
 // -- stuff for friend DMs --
@@ -796,8 +730,7 @@ export const getDms = ({ auth }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('get DMs error : ', error));
+    });
 };
 
 export const sendDm = ({ auth, sender, reciever, textContent }) => {
@@ -815,6 +748,5 @@ export const sendDm = ({ auth, sender, reciever, textContent }) => {
   })
     .then((response) => {
       return response;
-    })
-    .catch((error) => console.log('send DM error : ', error));
+    });
 };
