@@ -243,7 +243,6 @@ const ProfileContextProvider = ({ children }) => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
-    <PostContextProvider>
       <UserContextProvider>
         <ParkContextProvider>
           <ParkContext2Provider>
@@ -257,6 +256,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </ParkContext2Provider>
         </ParkContextProvider>
       </UserContextProvider>
-    </PostContextProvider>
   </AuthContextProvider>
 )
