@@ -200,19 +200,19 @@ const LocationSelector = () => {
               localStorage.setItem('storedContinent', JSON.stringify(northAmerica))
             } else if (e.target.value === 'South America') {
               setContinent(southAmerica);
-              localStorage.setItem('storedPark', JSON.stringify(southAmerica))
+              localStorage.setItem('storedContinent', JSON.stringify(southAmerica))
             } else if (e.target.value === 'Europe') {
               setContinent(europe);
-              localStorage.setItem('storedPark', JSON.stringify(europe))
+              localStorage.setItem('storedContinent', JSON.stringify(europe))
             } else if (e.target.value === 'Africa') {
               setContinent(africa);
-              localStorage.setItem('storedPark', JSON.stringify(africa))
+              localStorage.setItem('storedContinent', JSON.stringify(africa))
             } else if (e.target.value === 'Asia') {
               setContinent(asia);
-              localStorage.setItem('storedPark', JSON.stringify(asia))
+              localStorage.setItem('storedContinent', JSON.stringify(asia))
             } else if (e.target.value === 'Oceania') {
               setContinent(oceania);
-              localStorage.setItem('storedPark', JSON.stringify(oceania))
+              localStorage.setItem('storedContinent', JSON.stringify(oceania))
             }
           }}
         >
