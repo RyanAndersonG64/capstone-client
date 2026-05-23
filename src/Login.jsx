@@ -56,7 +56,7 @@ function Login() {
 
       <br></br>
     
-      <Link to='/createnewuser'> Don't have an account? Create one here </Link>
+      <Link to='/createnewuser'> Don&apos;t have an account? Create one here </Link>
 
     </div>
   )

@@ -48,7 +48,7 @@ const OtherRanking = () => {
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)
-                    let userBeingViewed = response.data.find(user => user.id == profileStorage)
+                    let userBeingViewed = response.data.find(user => user.id === profileStorage)
                     setProfileView(response.data.find(user => user.id === profileStorage))
                     fetchCoasters({ auth })
                         .then(response => {
@@ -77,7 +77,7 @@ const OtherRanking = () => {
 
 
     function getUserFromId(inputId) {
-        return allUsers.find(user => user.id == inputId)
+        return allUsers.find(user => user.id === inputId)
     }
 
 
@@ -89,21 +89,21 @@ const OtherRanking = () => {
         return (
             <div className="p-5">
                 <br></br>
-                <h1> This user's profile can only be viewed by their friends. </h1>
+                <h1> This user&apos;s profile can only be viewed by their friends. </h1>
             </div>
         )
     } else if (getUserFromId(profileStorage).profile_view_state === 'PRIVATE') {
         return (
             <div className="p-5">
                 <br></br>
-                <h1> This user's profile is private. </h1>
+                <h1> This user&apos;s profile is private. </h1>
             </div>
         )
     } else {
         return (
             <div className='other-ranking'>
                 <br></br>
-                <h1> {getUserFromId(profileStorage).first_name} {getUserFromId(profileStorage).last_name}'s Top 10 </h1>
+                <h1> {getUserFromId(profileStorage).first_name} {getUserFromId(profileStorage).last_name}&apos;s Top 10 </h1>
                 <Link style={{ marginRight: 20 }} to='/otherprofile'>All Coasters Ridden</Link>
                 <br></br><br></br>
                 {numbers.map((number) => {

@@ -113,7 +113,7 @@ const Rankings = () => {
 
 
   function getCoasterFromId(inputId) {
-    return coasters.find(coaster => coaster.id == inputId)
+    return coasters.find(coaster => coaster.id === inputId)
   }
 
   if (loading || loading2) {
@@ -126,8 +126,8 @@ const Rankings = () => {
       <h1> Top 5 Coaster Counts: </h1>
       <ol>
         {rankTop5(allUsers).map(user =>
-          <h6>
-            <li key={user.id}>
+          <h6 key={user.id}>
+            <li>
               {user.first_name} {user.last_name}: {user.coaster_count}
             </li>
           </h6>
@@ -137,8 +137,8 @@ const Rankings = () => {
       <h2>100 Coaster Club: </h2>
       <ol>
         {allUsers.filter(user => user.coaster_count >= 100).map(user =>
-          <h6>
-            <li key={user.id}>
+          <h6 key={user.id}>
+            <li>
               {user.first_name} {user.last_name}: {user.coaster_count}
             </li>
           </h6>
@@ -148,8 +148,8 @@ const Rankings = () => {
       <h2> 50 Coaster Club: </h2>
       <ol>
         {allUsers.filter(user => user.coaster_count >= 50 && user.coaster_count < 100).map(user =>
-          <h6>
-            <li key={user.id}>
+          <h6 key={user.id}>
+            <li>
               {user.first_name} {user.last_name}: {user.coaster_count}
             </li>
           </h6>
@@ -159,8 +159,8 @@ const Rankings = () => {
       <h2>Most Ridden Coasters</h2>
       <ol>
         {sortedCoasters.slice(0, 5).map(coaster => (
-          <h6>
-            <li key={coaster.id}>
+          <h6 key={coaster.id}>
+            <li>
               {getCoasterFromId(coaster.id).name}, {getCoasterFromId(coaster.id).park.name}: {coaster.count}
             </li>
           </h6>
@@ -171,8 +171,8 @@ const Rankings = () => {
       <h2>Most Popular Coasters</h2>
       <ol>
         {sortedFavorites.slice(0, 5).map(coaster => (
-          <h6>
-            <li key={coaster.id}>
+          <h6 key={coaster.name}>
+            <li>
               {coaster.name}: {coaster.favorites} Favorite(s)
             </li>
           </h6>
