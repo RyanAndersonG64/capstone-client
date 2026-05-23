@@ -34,7 +34,7 @@ const OtherProfile = () => {
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)
-                    let userBeingViewed = response.data.find(user => user.id == profileStorage)
+                    let userBeingViewed = response.data.find(user => user.id === profileStorage)
                     fetchCoasters({ auth })
                         .then(response => {
                             const coasterJson = response.json()
@@ -58,7 +58,7 @@ const OtherProfile = () => {
     )
 
     function getUserFromId(inputId) {
-        return allUsers.find(user => user.id == inputId)
+        return allUsers.find(user => user.id === inputId)
     }
 
     if (loading) {
@@ -67,14 +67,14 @@ const OtherProfile = () => {
         return (
             <div className="p-5">
                 <br></br>
-                <h1> This user's profile can only be viewed by their friends. </h1>
+                <h1> This user&apos;s profile can only be viewed by their friends. </h1>
             </div>
         )
     } else if (getUserFromId(profileStorage).profile_view_state === 'PRIVATE') {
         return (
             <div className="p-5">
                 <br></br>
-                <h1> This user's profile is private. </h1>
+                <h1> This user&apos;s profile is private. </h1>
             </div>
         )
     } else {
@@ -101,7 +101,7 @@ const OtherProfile = () => {
                 <h3>
                     Coaster count: {getUserFromId(profileStorage).coaster_count}
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>View {getUserFromId(profileStorage).first_name}'s Top 10</Link>
+                    <Link className='profile-link' style={{ marginRight: 20 }} to='/otherranking'>View {getUserFromId(profileStorage).first_name}&apos;s Top 10</Link>
                 </h3>
                 <br></br><br></br>
                 <h5>Coasters ridden:</h5>

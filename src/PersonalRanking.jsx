@@ -71,7 +71,7 @@ const PersonalRanking = () => {
     return (
         <div className = 'personalRanking'>
             <br></br>
-            <h1> {currentUser.first_name} {currentUser.last_name}'s Top 10 </h1>
+            <h1> {currentUser.first_name} {currentUser.last_name}&apos;s Top 10 </h1>
             <Link style={{ marginRight: 20 }} to='/Profile'>All Coasters Ridden</Link>
             <br></br><br></br>
             {numbers.map((number) => {

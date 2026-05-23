@@ -66,13 +66,13 @@ const Social = () => {
 
             getFriendRequests({ auth })
                 .then(response => {
-                    setFriendRequests(response.data.filter(request => request.reciever == storedUser.id))
+                    setFriendRequests(response.data.filter(request => request.reciever === storedUser.id))
                     setLoading2(false)
                 })
 
             getGroupInvites({ auth })
                 .then(response => {
-                    setGroupInvites(response.data.filter(invite => invite.invited_user == storedUser.id))
+                    setGroupInvites(response.data.filter(invite => invite.invited_user === storedUser.id))
                     setLoading3(false)
                 })
 
@@ -95,11 +95,11 @@ const Social = () => {
     )
 
     function getUserFromId(inputId) {
-        return allUsers.find(user => user.id == inputId)
+        return allUsers.find(user => user.id === inputId)
     }
 
     function getGroupFromId(inputId) {
-        return groups.find(group => group.id == inputId)
+        return groups.find(group => group.id === inputId)
     }
 
     let currentFriends = allUsers.filter(user => storedUser.friends.includes(user.id))
@@ -132,12 +132,11 @@ const Social = () => {
                                             .then(response => {
                                                 getGroups({ auth })
                                                     .then(response => {
-                                                        setAllGroups(response.data)
+                                                        setGroups(response.data)
                                                     })
                                                 getGroupInvites({ auth })
                                                     .then(response => {
-                                                        setGroupInvites(response.data.filter(invite => invite.invited_user == storedUser.id))
-                                                        setLoading(false)
+                                                        setGroupInvites(response.data.filter(invite => invite.invited_user === storedUser.id))
                                                     })
                                             })
                                     }}
@@ -241,8 +240,7 @@ const Social = () => {
                                                     })
                                                 getFriendRequests({ auth })
                                                     .then(response => {
-                                                        setFriendRequests(response.data.filter(request => request.reciever == storedUser.id))
-                                                        setLoading(false)
+                                                        setFriendRequests(response.data.filter(request => request.reciever === storedUser.id))
                                                     })
                                             })
                                     }}

@@ -26,7 +26,7 @@ const GroupPage = () => {
     const navigate = useNavigate()
 
     const memberColor = (member) => {
-        if (member == group.founder) {
+        if (member === group.founder) {
             return 'yellow'
         } else {
             return 'black'
@@ -64,7 +64,7 @@ const GroupPage = () => {
 
             getMessages({ auth })
                 .then(response => {
-                    setMessages(response.data.filter(message => message.group == group.id))
+                    setMessages(response.data.filter(message => message.group === group.id))
                     setLoading3(false)
                 })
         },
@@ -81,7 +81,7 @@ const GroupPage = () => {
     )
 
     function getUserFromId(inputId) {
-        let user = allUsers.find(user => user.id == inputId)
+        let user = allUsers.find(user => user.id === inputId)
         return user ? user : {first_name: '', last_name: ''}
     }
 
@@ -91,10 +91,10 @@ const GroupPage = () => {
 
     return (
         <div className='group-stuff'>
-            {group.founder == storedUser.id &&
+            {group.founder === storedUser.id &&
                 <div>
 
-                    <button className='profile-link' style={{ float: 'right', marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
+                    <button className='profile-link' style={{ float: 'right', marginLeft: 10, background: 'none', border: 'solid 1px' }}
                         onClick={() => {
 
                             let confirm_dissolve = confirm('Are you sure you want to dissolve this group?')
@@ -154,7 +154,7 @@ const GroupPage = () => {
 
                 </div>
             }
-            {joinRequests.filter(request => request.group == group.id).map(request => (
+            {joinRequests.filter(request => request.group === group.id).map(request => (
                 <div key={request.id} className="join-request">
                     {request.sender}
                     <button
@@ -211,8 +211,8 @@ const GroupPage = () => {
                             &nbsp;&nbsp;{getUserFromId(member).first_name} {getUserFromId(member).last_name}&nbsp;&nbsp;
                             <br></br>
                         </Link>
-                        {group.founder == storedUser.id && member !== group.founder &&
-                            <button className='profile-link' style={{ marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
+                        {group.founder === storedUser.id && member !== group.founder &&
+                            <button className='profile-link' style={{ marginLeft: 10, background: 'none', border: 'solid 1px' }}
                                 onClick={() => {
                                     if (member != group.founder) {
                                         let confirm_kick = confirm('Are you sure you want to Kick this member?')
@@ -229,8 +229,8 @@ const GroupPage = () => {
                                 Kick
                             </button>
                         }
-                        {member !== group.founder && member == storedUser.id &&
-                            <button className='profile-link' style={{ marginLeft: 10, border: 'none', background: 'none', border: 'solid 1px' }}
+                        {member !== group.founder && member === storedUser.id &&
+                            <button className='profile-link' style={{ marginLeft: 10, background: 'none', border: 'solid 1px' }}
                                 onClick={() => {
 
                                     let confirm_leave = confirm('Are you sure you want to leave this group?')
