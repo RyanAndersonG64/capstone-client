@@ -18,6 +18,8 @@ import { ParkContext2} from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import { PostContext } from './postcontext'
 import { ProfileContext } from './profileContext'
+import { ErrorProvider } from './ErrorContext'
+import ErrorBanner from './ErrorBanner'
 
 import ErrorPage from './ErrorPage'
 
@@ -44,6 +46,7 @@ import GroupPage from './GroupPage'
 function Layout() {
   return (
     <>
+      <ErrorBanner />
       <Header />
         <div id='page-content'>
           <Outlet />
@@ -242,19 +245,21 @@ const ProfileContextProvider = ({ children }) => {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <AuthContextProvider>
-      <UserContextProvider>
-        <ParkContextProvider>
-          <ParkContext2Provider>
-            <CoasterContextProvider>
-              <PostContextProvider>
-                <ProfileContextProvider>
-                  <RouterProvider router={router} />
-                </ProfileContextProvider>
-              </PostContextProvider>
-            </CoasterContextProvider>
-          </ParkContext2Provider>
-        </ParkContextProvider>
-      </UserContextProvider>
-  </AuthContextProvider>
+  <ErrorProvider>
+    <AuthContextProvider>
+        <UserContextProvider>
+          <ParkContextProvider>
+            <ParkContext2Provider>
+              <CoasterContextProvider>
+                <PostContextProvider>
+                  <ProfileContextProvider>
+                    <RouterProvider router={router} />
+                  </ProfileContextProvider>
+                </PostContextProvider>
+              </CoasterContextProvider>
+            </ParkContext2Provider>
+          </ParkContextProvider>
+        </UserContextProvider>
+    </AuthContextProvider>
+  </ErrorProvider>
 )
