@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createUser } from './api'
+import { createUser } from './api/authApi'
 
 
 const CreateNewUser = () => {

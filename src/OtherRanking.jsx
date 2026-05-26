@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchParks, fetchCoasters, setFavorite, fetchAllUsers } from "./api"
+import { fetchAllUsers } from './api/authApi'
+import { fetchParks, fetchCoasters, setFavorite } from './api/coasterApi'
 
 import { AuthContext } from "./context"
 import { CoasterContext } from "./coasterContext"

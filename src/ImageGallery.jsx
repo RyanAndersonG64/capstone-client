@@ -6,7 +6,7 @@ import { ProfileContext } from "./profileContext"
 import { useNavigate } from "react-router-dom"
 
 
-import { getImages, deleteImage, createImage, likeImage } from './api'
+import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
 
 const ImageGallery = () => {
 

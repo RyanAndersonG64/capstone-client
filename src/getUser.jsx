@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react"
-import { fetchUser } from "./api"
+import { fetchUser } from './api/authApi'
 import { AuthContext } from "./context"
 import { UserContext } from "./usercontext"
 
