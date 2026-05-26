@@ -6,7 +6,7 @@ import { ParkContext2 } from "./parkcontext2"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
 import { useNavigate } from "react-router-dom"
-import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from "./api"
+import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from './api/coasterApi'
 
 const CoasterSelector = () => {
 

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchAllUsers, fetchCoasters, changeProfileViewState } from "./api"
+import { fetchAllUsers } from './api/authApi'
+import { fetchCoasters, changeProfileViewState } from './api/coasterApi'
 
 
 import { AuthContext } from "./context"
@@ -91,7 +92,7 @@ const Profile = () => {
       </h1>
       <button style={{ float: "right", marginLeft: 2 }}
         onClick={() => {
-          if (profileView == currentUser.id) {
+          if (profileView === currentUser.id) {
             navigate('/profile')
           } else {
             navigate('/otherprofile')

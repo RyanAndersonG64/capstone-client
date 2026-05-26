@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchAllUsers, fetchCoasters, sendFriendRequest } from "./api"
+import { fetchAllUsers } from './api/authApi'
+import { fetchCoasters } from './api/coasterApi'
+import { sendFriendRequest } from './api/socialApi'
 
 
 import { AuthContext } from "./context"

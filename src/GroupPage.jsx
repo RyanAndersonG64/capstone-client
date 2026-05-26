@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers, inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from "./api"
+import { fetchUser, fetchAllUsers } from './api/authApi'
+import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from './api/groupApi'
 
 
 import { AuthContext } from "./context"

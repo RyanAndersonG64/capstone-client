@@ -1,4 +1,5 @@
-import { fetchCoasters, fetchUser, fetchParks } from './api';
+import { fetchCoasters, fetchParks } from './api/coasterApi'
+import { fetchUser } from './api/authApi'
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

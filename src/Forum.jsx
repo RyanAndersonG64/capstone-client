@@ -7,7 +7,7 @@ import { PostContext } from './postcontext'
 import { ProfileContext } from "./profileContext"
 
 
-import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api'
+import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api/forumApi'
 
 const Forum = () => {
 

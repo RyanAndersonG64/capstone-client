@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./context"
 import { UserContext }from './usercontext'
-import { getToken, fetchUser } from "./api"
+import { getToken, fetchUser } from './api/authApi'
 import CreateNewUser from "./CreateNewUser"
 
 

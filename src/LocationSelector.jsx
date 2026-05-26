@@ -1,4 +1,5 @@
-import { fetchCoasters, fetchUser, fetchParks } from './api';
+import { fetchCoasters, fetchParks } from './api/coasterApi'
+import { fetchUser } from './api/authApi'
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from './context';
 import { ParkContext } from './parkcontext';

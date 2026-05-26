@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers, sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriendRequest, deleteFriend, getDms, sendDm, getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from "./api"
+import { fetchUser, fetchAllUsers } from './api/authApi'
+import { sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriendRequest, deleteFriend, getDms, sendDm } from './api/socialApi'
+import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from './api/groupApi'
 import { useCollapse } from "react-collapsed"
 
 import { AuthContext } from "./context"
