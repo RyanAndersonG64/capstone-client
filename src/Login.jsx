@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./context"
 import { UserContext }from './usercontext'
 import { getToken, fetchUser } from './api/authApi'
+import { useError } from './useError'
 import CreateNewUser from "./CreateNewUser"
 
 
 function Login() {
   const { auth } = useContext(AuthContext)
   const {currentUser, setCurrentUser} = useContext(UserContext)
-  
+  const { setError } = useError()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -24,7 +26,7 @@ function Login() {
       }
     }
     catch (error) {
-      alert('Invalid username and/or password')
+      setError(error.message || 'Invalid username and/or password')
     }
     }
   

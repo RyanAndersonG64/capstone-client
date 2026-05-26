@@ -12,8 +12,12 @@ export const getToken = ({ auth, username, password }) => {
       auth.setAccessToken(response.data.access)
       return response
     })
-    .catch(() => {
+    .catch((error) => {
       auth.setAccessToken(undefined)
+      const message = error.response?.status === 401
+        ? 'Invalid username or password'
+        : error.message || 'Failed to log in'
+      throw new Error(message)
     })
 }
 
@@ -28,8 +32,11 @@ export const fetchUser = ({ auth }) => {
     .then((response) => {
       return response
     })
-    .catch(() => {
-      auth.setAccessToken(undefined)
+    .catch((error) => {
+      if (error.response?.status === 401) {
+        auth.setAccessToken(undefined)
+      }
+      throw error
     })
 }
 
