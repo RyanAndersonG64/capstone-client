@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const composeProviders = (providers) => {
     return providers.reduce(
         (Accumulated, Current) => {
