@@ -14,12 +14,14 @@ import { Navigate } from 'react-router-dom'
 import { AuthContext } from './context'
 import { UserContext } from './usercontext'
 import { ParkContext } from './parkcontext'
-import { ParkContext2} from './parkcontext2'
+import { ParkContext2 } from './parkcontext2'
 import { CoasterContext } from './coasterContext'
 import { PostContext } from './postcontext'
 import { ProfileContext } from './profileContext'
 import { ErrorProvider } from './ErrorContext'
 import ErrorBanner from './ErrorBanner'
+
+import { composeProviders } from './utils/composeProviders'
 
 import ErrorPage from './ErrorPage'
 
@@ -48,15 +50,15 @@ function Layout() {
     <>
       <ErrorBanner />
       <Header />
-        <div id='page-content'>
-          <Outlet />
-        </div>
+      <div id='page-content'>
+        <Outlet />
+      </div>
       <Footer />
     </>
   )
 }
 
-const Protected = ({component}) => {
+const Protected = ({ component }) => {
   const { auth } = useContext(AuthContext)
   return auth?.accessToken ? (
     <>
@@ -82,55 +84,55 @@ const router = createBrowserRouter([
       },
       {
         path: 'getuser',
-        element: <Protected component = {<GetUser />} />
+        element: <Protected component={<GetUser />} />
       },
       {
         path: '/App',
-        element: <Protected component = {<App />} />
+        element: <Protected component={<App />} />
       },
       {
         path: '/coasterselector',
-        element: <Protected component = {<CoasterSelector />} />
+        element: <Protected component={<CoasterSelector />} />
       },
       {
         path: '/coasterinfo',
-        element: <Protected component = {<CoasterInfo />} />
+        element: <Protected component={<CoasterInfo />} />
       },
       {
         path: '/profile',
-        element: <Protected component = {<Profile />} />
+        element: <Protected component={<Profile />} />
       },
       {
         path: '/otherprofile',
-        element: <Protected component = {<OtherProfile />} />
+        element: <Protected component={<OtherProfile />} />
       },
       {
         path: '/personalranking',
-        element: <Protected component = {<PersonalRanking />} />
+        element: <Protected component={<PersonalRanking />} />
       },
       {
         path: '/otherranking',
-        element: <Protected component = {<OtherRanking />} />
+        element: <Protected component={<OtherRanking />} />
       },
       {
         path: '/rankings',
-        element: <Protected component = {<Rankings />} />
+        element: <Protected component={<Rankings />} />
       },
       {
         path: '/forum',
-        element: <Protected component = {<Forum />} />
+        element: <Protected component={<Forum />} />
       },
       {
         path: '/imagegallery',
-        element: <Protected component = {<ImageGallery />} />
+        element: <Protected component={<ImageGallery />} />
       },
       {
         path: '/social',
-        element: <Protected component = {<Social />} />
+        element: <Protected component={<Social />} />
       },
       {
         path: '/grouppage',
-        element: <Protected component = {<GroupPage />} />
+        element: <Protected component={<GroupPage />} />
       },
     ],
   }
@@ -146,13 +148,13 @@ const initialAuth = () => {
 const AuthContextProvider = ({ children }) => {
 
   const [accessToken, setAccessToken] = useState(initialAuth)
-  
+
   const auth = {
     accessToken,
     setAccessToken,
   }
 
-  return(
+  return (
     <AuthContext.Provider value={{ auth: auth }} >
       {children}
     </AuthContext.Provider>
@@ -168,7 +170,7 @@ const initialUser = () => {
 
 
 const UserContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(initialUser) 
+  const [currentUser, setCurrentUser] = useState(initialUser)
 
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
@@ -182,7 +184,7 @@ const ParkContextProvider = ({ children }) => {
   const [allParks, setAllParks] = useState([])
 
   return (
-    <ParkContext.Provider value = {{ allParks, setAllParks }}>
+    <ParkContext.Provider value={{ allParks, setAllParks }}>
       {children}
     </ParkContext.Provider>
   )
@@ -196,10 +198,10 @@ const initialPark = () => {
 }
 
 const ParkContext2Provider = ({ children }) => {
-  const[selectedPark, setSelectedPark] = useState(initialPark)
+  const [selectedPark, setSelectedPark] = useState(initialPark)
 
   return (
-    <ParkContext2.Provider value = {{ selectedPark, setSelectedPark }}>
+    <ParkContext2.Provider value={{ selectedPark, setSelectedPark }}>
       {children}
     </ParkContext2.Provider>
   )
@@ -217,7 +219,7 @@ const CoasterContextProvider = ({ children }) => {
   const [allCoasters, setAllCoasters] = useState(initialCoasters)
 
   return (
-    <CoasterContext.Provider value = {{ allCoasters, setAllCoasters }}>
+    <CoasterContext.Provider value={{ allCoasters, setAllCoasters }}>
       {children}
     </CoasterContext.Provider>
   )
@@ -238,28 +240,25 @@ const ProfileContextProvider = ({ children }) => {
   const [profileView, setProfileView] = useState([])
 
   return (
-    <ProfileContext.Provider value = {{ profileView, setProfileView }}>
+    <ProfileContext.Provider value={{ profileView, setProfileView }}>
       {children}
     </ProfileContext.Provider>
   )
 }
 
+const ComposedProviders = composeProviders([
+  AuthContextProvider,
+  UserContextProvider,
+  ParkContextProvider,
+  ParkContext2Provider,
+  CoasterContextProvider,
+  ProfileContextProvider,
+  PostContextProvider,
+  ErrorProvider,
+])
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ErrorProvider>
-    <AuthContextProvider>
-        <UserContextProvider>
-          <ParkContextProvider>
-            <ParkContext2Provider>
-              <CoasterContextProvider>
-                <PostContextProvider>
-                  <ProfileContextProvider>
-                    <RouterProvider router={router} />
-                  </ProfileContextProvider>
-                </PostContextProvider>
-              </CoasterContextProvider>
-            </ParkContext2Provider>
-          </ParkContextProvider>
-        </UserContextProvider>
-    </AuthContextProvider>
-  </ErrorProvider>
+  <ComposedProviders>
+    <RouterProvider router={router} />
+  </ComposedProviders>
 )
