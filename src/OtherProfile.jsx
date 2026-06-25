@@ -3,12 +3,11 @@ import { useNavigate, Link } from "react-router-dom"
 import { fetchAllUsers } from './api/authApi'
 import { fetchCoasters } from './api/coasterApi'
 import { sendFriendRequest } from './api/socialApi'
-
-
 import { AuthContext } from "./context"
 import { ProfileContext } from "./profileContext"
 import { CoasterContext } from "./coasterContext"
 import { UserContext } from "./usercontext"
+import { useError } from './useError'
 
 
 
@@ -18,6 +17,7 @@ const OtherProfile = () => {
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const { allCoasters, setAllCoasters } = useContext(CoasterContext)
     const { profileView, setProfileView } = useContext(ProfileContext)
+    const { setError } = useError()
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
@@ -91,7 +91,7 @@ const OtherProfile = () => {
                             sendFriendRequest({ auth, sender: currentUser.id, reciever: getUserFromId(profileStorage).id })
                                 .then(response => {
                                     if (response.data === 'already') {
-                                        throw new Error('That user is already your friend, or you have already sent them a friend invite')
+                                        setError('That user is already your friend, or you have already sent them a friend invite')
                                     }
                                 })
                         }

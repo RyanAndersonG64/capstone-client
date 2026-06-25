@@ -2,17 +2,17 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { fetchUser, fetchAllUsers } from './api/authApi'
 import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from './api/groupApi'
-
-
 import { AuthContext } from "./context"
 import { UserContext } from "./usercontext"
 import { ProfileContext } from "./profileContext"
+import { useError } from "./useError"
 
 const GroupPage = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const { profileView, setProfileView } = useContext(ProfileContext)
+    const { setError } = useError()
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')
@@ -134,7 +134,7 @@ const GroupPage = () => {
                             let memberIncrement = 0
                             for (let i = 0; i < memberCheck.length; i++) {
                                 if (memberCheck[i] === 0) {
-                                    throw new Error('This user is already a member of the group')
+                                    setError('This user is already a member of the group')
                                     break
                                 } else {
                                     memberIncrement++
@@ -142,7 +142,7 @@ const GroupPage = () => {
                                         inviteToGroup({ auth, group: group.id, userBeingInvited: userToInvite })
                                             .then(response => {
                                                 if (response.data === 'already') {
-                                                    throw new Error('That user has already been invited')
+                                                    setError('That user has already been invited')
                                                 }
                                             })
                                     }

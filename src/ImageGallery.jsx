@@ -4,6 +4,7 @@ import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
 import { ProfileContext } from "./profileContext"
 import { useNavigate } from "react-router-dom"
+import { useError } from './useError'
 
 
 import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
@@ -13,6 +14,7 @@ const ImageGallery = () => {
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const { profileView, setProfileView } = useContext(ProfileContext)
+    const { setError } = useError()
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
@@ -175,7 +177,7 @@ const ImageGallery = () => {
                                         })
                                 })
                         } else {
-                            throw new Error("You can't delete someone else's image")
+                            setError("You can't delete someone else's image")
                         }
                     }}>
                         Delete

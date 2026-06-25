@@ -1,9 +1,13 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createUser } from './api/authApi'
+import { useError } from "./useError"
 
 
 const CreateNewUser = () => {
+
+  const { setError } = useError()
+  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -12,15 +16,15 @@ const CreateNewUser = () => {
 
   const submit = () => {
     if (username === '' || username.includes(' ')) {
-      throw new Error('username cannot be blank')
+      setError('username cannot be blank')
     } else if (password === '' || username.includes(' ')) {
-      throw new Error('password cannot be blank')
+      setError('password cannot be blank')
     } else if (password.length < 8) {
-      throw new Error('password must be at least 8 characters')
+      setError('password must be at least 8 characters')
     } else if (firstName === '' || username.includes(' ')) {
-      throw new Error('first name cannot be blank')
+      setError('first name cannot be blank')
     } else if (lastName === '' || username.includes(' ')) {
-      throw new Error('last name cannot be blank')
+      setError('last name cannot be blank')
     } else {
       createUser({ username, password, firstName, lastName })
       navigate('/')

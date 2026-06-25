@@ -5,12 +5,14 @@ import { AuthContext } from './context'
 import { UserContext } from "./usercontext"
 import { PostContext } from './postcontext'
 import { ProfileContext } from "./profileContext"
+import { useError } from "./useError"
 
 
 import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api/forumApi'
 
 const Forum = () => {
 
+    const { setError } = useError()
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const { allPosts, setAllPosts } = useContext(PostContext)
@@ -185,7 +187,7 @@ const Forum = () => {
                                         })
                                 })
                         } else {
-                            throw new Error("You can't delete someone else's post")
+                            setError("You can't delete someone else's post")
                         }
                     }}>
                         Delete
@@ -201,7 +203,7 @@ const Forum = () => {
                                         })
                                 })
                         } else {
-                            throw new Error("You can't edit someone else's post")
+                            setError("You can't edit someone else's post")
                         }
                     }}>
                         Edit
@@ -253,7 +255,7 @@ const Forum = () => {
                                                                 })
                                                         })
                                                 } else {
-                                                    throw new Error("You can't edit someone else's comment")
+                                                    setError("You can't edit someone else's comment")
                                                 }
                                             }}
                                         >
@@ -271,7 +273,7 @@ const Forum = () => {
                                                                 })
                                                         })
                                                 } else {
-                                                    throw new Error("You can't delete someone else's comment")
+                                                    setError("You can't delete someone else's comment")
                                                 }
                                             }}>
 
