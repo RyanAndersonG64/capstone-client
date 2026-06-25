@@ -114,7 +114,7 @@ const Rankings = () => {
 
 
   function getCoasterFromId(inputId) {
-    return coasters.find(coaster => coaster.id === inputId)
+    return coasters.find(coaster => coaster.id == inputId)
   }
 
   if (loading || loading2) {
