@@ -175,7 +175,7 @@ const ImageGallery = () => {
                                         })
                                 })
                         } else {
-                            alert("You can't delete someone else's image")
+                            throw new Error("You can't delete someone else's image")
                         }
                     }}>
                         Delete

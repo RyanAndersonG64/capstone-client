@@ -185,7 +185,7 @@ const Forum = () => {
                                         })
                                 })
                         } else {
-                            alert("You can't delete someone else's post")
+                            throw new Error("You can't delete someone else's post")
                         }
                     }}>
                         Delete
@@ -201,7 +201,7 @@ const Forum = () => {
                                         })
                                 })
                         } else {
-                            alert("You can't edit someone else's post")
+                            throw new Error("You can't edit someone else's post")
                         }
                     }}>
                         Edit
@@ -253,7 +253,7 @@ const Forum = () => {
                                                                 })
                                                         })
                                                 } else {
-                                                    alert("You can't edit someone else's comment")
+                                                    throw new Error("You can't edit someone else's comment")
                                                 }
                                             }}
                                         >
@@ -271,7 +271,7 @@ const Forum = () => {
                                                                 })
                                                         })
                                                 } else {
-                                                    alert("You can't delete someone else's comment")
+                                                    throw new Error("You can't delete someone else's comment")
                                                 }
                                             }}>
 

@@ -100,7 +100,7 @@ const PersonalRanking = () => {
                                         localStorage.setItem('storedUser', JSON.stringify(response.data))
                                 })
                                 } else {
-                                    alert('You have not ridden a coaster with that name. Note that name entries are case-sensitive')
+                                    throw new Error('You have not ridden a coaster with that name. Note that name entries are case-sensitive')
                                 }
                             }
                         }

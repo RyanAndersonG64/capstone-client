@@ -204,7 +204,7 @@ const Social = () => {
                                     requestToJoinGroup({ auth, user: currentUser.id, group: group.id })
                                         .then(response => {
                                             if (response.data === 'already') {
-                                                alert('You have already requested to join this group')
+                                                throw new Error('You have already requested to join this group')
                                             }
                                         })
                                 }}
@@ -359,7 +359,7 @@ const Social = () => {
                                     sendFriendRequest({ auth, sender: currentUser.id, reciever: friendToAdd })
                                         .then(response => {
                                             if (response.data === 'already') {
-                                                alert('That user is already your friend, or you have already sent them a friend invite')
+                                                throw new Error('That user is already your friend, or you have already sent them a friend invite')
                                             }
                                         })
                                 }}

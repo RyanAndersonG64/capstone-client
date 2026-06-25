@@ -47,8 +47,12 @@ export const fetchAllUsers = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw error
   })
 }
 
@@ -62,7 +66,11 @@ export const createUser = ({ username, password, firstName, lastName }) => {
       first_name: firstName,
       last_name: lastName,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch((error) => {
+    throw new Error("Failed to create user")
   })
 }
