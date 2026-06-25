@@ -91,7 +91,7 @@ const OtherProfile = () => {
                             sendFriendRequest({ auth, sender: currentUser.id, reciever: getUserFromId(profileStorage).id })
                                 .then(response => {
                                     if (response.data === 'already') {
-                                        alert('That user is already your friend, or you have already sent them a friend invite')
+                                        throw new Error('That user is already your friend, or you have already sent them a friend invite')
                                     }
                                 })
                         }

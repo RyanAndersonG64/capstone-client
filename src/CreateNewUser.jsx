@@ -12,15 +12,15 @@ const CreateNewUser = () => {
 
   const submit = () => {
     if (username === '' || username.includes(' ')) {
-      alert('username cannot be blank')
+      throw new Error('username cannot be blank')
     } else if (password === '' || username.includes(' ')) {
-      alert('password cannot be blank')
+      throw new Error('password cannot be blank')
     } else if (password.length < 8) {
-      alert('password must be at least 8 characters')
+      throw new Error('password must be at least 8 characters')
     } else if (firstName === '' || username.includes(' ')) {
-      alert('name cannot be blank')
+      throw new Error('first name cannot be blank')
     } else if (lastName === '' || username.includes(' ')) {
-      alert('name cannot be blank')
+      throw new Error('last name cannot be blank')
     } else {
       createUser({ username, password, firstName, lastName })
       navigate('/')

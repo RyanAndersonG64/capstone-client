@@ -134,7 +134,7 @@ const GroupPage = () => {
                             let memberIncrement = 0
                             for (let i = 0; i < memberCheck.length; i++) {
                                 if (memberCheck[i] === 0) {
-                                    alert('This user is already a member of the group')
+                                    throw new Error('This user is already a member of the group')
                                     break
                                 } else {
                                     memberIncrement++
@@ -142,7 +142,7 @@ const GroupPage = () => {
                                         inviteToGroup({ auth, group: group.id, userBeingInvited: userToInvite })
                                             .then(response => {
                                                 if (response.data === 'already') {
-                                                    alert('That user has already been invited')
+                                                    throw new Error('That user has already been invited')
                                                 }
                                             })
                                     }
