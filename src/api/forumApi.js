@@ -9,8 +9,12 @@ export const getPosts = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -26,8 +30,12 @@ export const addPost = ({ auth, title, postedBy, textContent }) => {
       posted_by: postedBy,
       text_content: textContent,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -42,8 +50,12 @@ export const editPost = ({ auth, postId, textContent }) => {
       post_pk: postId,
       text_content: textContent,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -55,8 +67,12 @@ export const deletePost = ({ auth, postId }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -68,8 +84,12 @@ export const likePost = ({ auth, current_user, post_id, likes }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -80,8 +100,12 @@ export const getComments = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -97,8 +121,12 @@ export const addComment = ({ auth, postId, postedBy, textContent }) => {
       posted_by: postedBy,
       text_content: textContent,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -113,8 +141,12 @@ export const editComment = ({ auth, commentId, textContent }) => {
       comment_pk: commentId,
       text_content: textContent,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -126,7 +158,11 @@ export const deleteComment = ({ auth, commentId }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }

@@ -9,9 +9,13 @@ export const getGroups = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const createGroup = ({ auth, name, creator }) => {
@@ -22,9 +26,13 @@ export const createGroup = ({ auth, name, creator }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const getGroupInvites = ({ auth }) => {
@@ -34,9 +42,13 @@ export const getGroupInvites = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
@@ -50,9 +62,13 @@ export const inviteToGroup = ({ auth, group, userBeingInvited }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const acceptGroupInvite = ({ auth, invite }) => {
@@ -63,9 +79,13 @@ export const acceptGroupInvite = ({ auth, invite }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const rejectGroupInvite = ({ auth, invite }) => {
@@ -76,9 +96,13 @@ export const rejectGroupInvite = ({ auth, invite }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const kickFromGroup = ({ auth, group, memberToKick }) => {
@@ -92,9 +116,13 @@ export const kickFromGroup = ({ auth, group, memberToKick }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const requestToJoinGroup = ({ auth, user, group }) => {
@@ -105,9 +133,13 @@ export const requestToJoinGroup = ({ auth, user, group }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const getJoinRequests = ({ auth }) => {
@@ -117,9 +149,13 @@ export const getJoinRequests = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const acceptJoinRequest = ({ auth, request }) => {
@@ -130,9 +166,13 @@ export const acceptJoinRequest = ({ auth, request }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const rejectJoinRequest = ({ auth, request }) => {
@@ -143,9 +183,13 @@ export const rejectJoinRequest = ({ auth, request }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const leaveGroup = ({ auth, group, memberLeaving }) => {
@@ -159,9 +203,13 @@ export const leaveGroup = ({ auth, group, memberLeaving }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const dissolveGroup = ({ auth, group }) => {
@@ -172,9 +220,13 @@ export const dissolveGroup = ({ auth, group }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const getMessages = ({ auth }) => {
@@ -184,9 +236,13 @@ export const getMessages = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const sendMessage = ({ auth, group, sender, textContent }) => {
@@ -201,7 +257,11 @@ export const sendMessage = ({ auth, group, sender, textContent }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }

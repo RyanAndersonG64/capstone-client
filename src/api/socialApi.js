@@ -9,8 +9,12 @@ export const getFriendRequests = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -22,8 +26,12 @@ export const sendFriendRequest = ({ auth, sender, reciever }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -35,8 +43,12 @@ export const acceptFriendRequest = ({ auth, request }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -48,8 +60,12 @@ export const rejectFriendRequest = ({ auth, request }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -61,8 +77,12 @@ export const deleteFriend = ({ auth, user, friend }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -73,8 +93,12 @@ export const getDms = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }
 
@@ -90,7 +114,11 @@ export const sendDm = ({ auth, sender, reciever, textContent }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
+  })
+  .then((response) => {
     return response
+  })
+  .catch ((error) => {
+    throw new Error(error.message)
   })
 }

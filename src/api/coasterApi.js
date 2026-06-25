@@ -5,23 +5,25 @@ const baseUrl = import.meta.env.VITE_BASE_URL
 export const fetchCoasters = () => {
   return fetch(
     'https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/coasters.json'
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    return response
-  })
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response
+    })
 }
 
 export const fetchParks = () => {
   return fetch(
     'https://raw.githubusercontent.com/fabianrguez/rcdb-api/main/db/theme-parks.json'
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    return response
-  })
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response
+    })
 }
 
 export const getDataImages = ({ auth }) => {
@@ -31,9 +33,13 @@ export const getDataImages = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error("Failed to fetch images")
+    })
 }
 
 export const createDataImage = ({ auth, image }) => {
@@ -46,6 +52,12 @@ export const createDataImage = ({ auth, image }) => {
       'Content-Type': 'multipart/form-data',
     },
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const addCredit = ({ auth, userId, coasterId }) => {
@@ -60,6 +72,12 @@ export const addCredit = ({ auth, userId, coasterId }) => {
       Authorization: `Bearer ${auth.accessToken}`,
     },
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const removeCredit = ({ auth, userId, coasterId }) => {
@@ -74,6 +92,12 @@ export const removeCredit = ({ auth, userId, coasterId }) => {
       Authorization: `Bearer ${auth.accessToken}`,
     },
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const setFavorite = ({ auth, id, coaster, rank }) => {
@@ -85,6 +109,12 @@ export const setFavorite = ({ auth, id, coaster, rank }) => {
       Authorization: `Bearer ${auth.accessToken}`,
     },
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const changeProfileViewState = ({ auth, user, newState }) => {
@@ -98,7 +128,11 @@ export const changeProfileViewState = ({ auth, user, newState }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }

@@ -9,9 +9,13 @@ export const getImages = ({ auth }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const createImage = ({ auth, postedBy, title, image }) => {
@@ -28,6 +32,12 @@ export const createImage = ({ auth, postedBy, title, image }) => {
       'Content-Type': 'multipart/form-data',
     },
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const likeImage = ({ auth, currentUser, image, likes }) => {
@@ -43,9 +53,13 @@ export const likeImage = ({ auth, currentUser, image, likes }) => {
       Authorization: `Bearer ${auth.accessToken}`,
       'Content-Type': 'multipart/form-data',
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
 
 export const deleteImage = ({ auth, imageId }) => {
@@ -56,7 +70,11 @@ export const deleteImage = ({ auth, imageId }) => {
     headers: {
       Authorization: `Bearer ${auth.accessToken}`,
     },
-  }).then((response) => {
-    return response
   })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      throw new Error(error.message)
+    })
 }
