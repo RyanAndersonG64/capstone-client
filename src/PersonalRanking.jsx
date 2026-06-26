@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom"
 import { fetchParks, fetchCoasters, setFavorite } from './api/coasterApi'
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
-import { useError } from './contexts/useError'
+import { useError } from './hooks/useError'
+import { useLocalStorage } from "./hooks/useLocalStorage.js"
 
 
 const PersonalRanking = () => {
@@ -11,9 +12,9 @@ const PersonalRanking = () => {
     const {currentUser, setCurrentUser, allCoasters, setAllCoasters} = useContext(DataContext)
     const { setError } = useError()
     
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
-    const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
+    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
+    const [authStorage] = useLocalStorage('authStorage', null)
+    const [storedCoasters] = useLocalStorage('storedCoasters', null)
     const [coasterState, setCoasterState] = useState([])
     const [loading, setLoading] = useState(true)
     
@@ -96,7 +97,7 @@ const PersonalRanking = () => {
                                     setFavorite ({ auth, id: currentUser.id, coaster: inputValue, rank: number })
                                     .then(response => {
                                         setCurrentUser(response.data)
-                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                        setStoredUser(response.data)
                                 })
                                 } else {
                                     setError('You have not ridden a coaster with that name. Note that name entries are case-sensitive')

@@ -3,14 +3,16 @@ import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from './contexts/DataContext'
 import { getToken, fetchUser } from './api/authApi'
-import { useError } from './contexts/useError'
+import { useError } from './hooks/useError.js'
 import CreateNewUser from "./CreateNewUser"
+import { useLocalStorage } from "./hooks/useLocalStorage.js"
 
 
 function Login() {
   const { auth } = useContext(AuthContext)
   const {currentUser, setCurrentUser} = useContext(DataContext)
   const { setError } = useError()
+  const [ authStorage, setAuthStorage ] = useLocalStorage('authStorage', null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +23,7 @@ function Login() {
     try {
      const response = await getToken({ auth, username, password })
      if (response.data.access) {
-       localStorage.setItem('authStorage', response.data.access)
+       setAuthStorage(response.data.access)
        navigate('/getuser')
       }
     }

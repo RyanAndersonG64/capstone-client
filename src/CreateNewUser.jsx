@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createUser } from './api/authApi'
-import { useError } from "./contexts/useError"
+import { useError } from "./hooks/useError"
 
 
 const CreateNewUser = () => {

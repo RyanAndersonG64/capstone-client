@@ -4,6 +4,7 @@ import { fetchUser, fetchAllUsers } from './api/authApi'
 import { sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriendRequest, deleteFriend, getDms, sendDm } from './api/socialApi'
 import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from './api/groupApi'
 import { useCollapse } from "react-collapsed"
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
@@ -15,8 +16,8 @@ const Social = () => {
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
+    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
+    const [authStorage] = useLocalStorage('authStorage', null)
 
     const [allUsers, setAllUsers] = useState([])
     const [friendRequests, setFriendRequests] = useState([])
@@ -162,7 +163,7 @@ const Social = () => {
                         <div className='group' key={group.id}>
                             <button className='profile-link' style={{ border: 'none', background: 'none' }}
                                 onClick={() => {
-                                    localStorage.setItem('group', JSON.stringify(group))
+                                    // group state is updated by API response
                                     navigate('/grouppage')
                                 }}
                             >
@@ -223,7 +224,7 @@ const Social = () => {
                             <div key={request.id} className="friend-request">
                                 <Link className="profile-link"
                                     onClick={() => {
-                                        localStorage.setItem('profileView', JSON.stringify(request.sender))
+                                        setProfileView(request.sender)
                                         setProfileView(request.sender)
                                     }}
                                     to='../otherprofile/'
@@ -237,7 +238,7 @@ const Social = () => {
                                             .then(response => {
                                                 fetchUser({ auth })
                                                     .then(response => {
-                                                        localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                                        setStoredUser(response.data)
                                                         setCurrentUser(response.data)
                                                     })
                                                 getFriendRequests({ auth })
@@ -266,7 +267,7 @@ const Social = () => {
                             <div key={friend.id} className="friend">
                                 <Link className='profile-link'
                                     onClick={() => {
-                                        localStorage.setItem('profileView', JSON.stringify(friend.id))
+                                        setProfileView(friend.id)
                                         setProfileView(friend.id)
                                     }}
                                     to='../otherprofile/'

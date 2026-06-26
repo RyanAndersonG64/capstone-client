@@ -5,7 +5,7 @@ import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejec
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from "./contexts/UIContext"
-import { useError } from "./contexts/useError"
+import { useError } from "./hooks/useError"
 
 const GroupPage = () => {
 
@@ -201,7 +201,7 @@ const GroupPage = () => {
                     <div key={member} className="group-member" >
                         <Link className='profile-link' style={{ color: memberColor(member) }}
                             onClick={() => {
-                                localStorage.setItem('profileView', JSON.stringify(member))
+                                setProfileView(member)
                                 setProfileView(member)
                                 if (member === currentUser.id) {
                                     navigate('/profile')
@@ -220,7 +220,7 @@ const GroupPage = () => {
                                         if (confirm_kick) {
                                             kickFromGroup({ auth, group: group.id, memberToKick: member })
                                                 .then(response => {
-                                                    (localStorage.setItem('group', JSON.stringify(group)))
+                                                    setGroup(group)
                                                 })
                                         }
                                     }
@@ -238,7 +238,7 @@ const GroupPage = () => {
                                     if (confirm_leave) {
                                         leaveGroup({ auth, group: group.id, memberLeaving: storedUser.id })
                                             .then(response => {
-                                                (localStorage.setItem('group', JSON.stringify(group)))
+                                                setGroup(group)
                                                 navigate('/social')
                                             })
                                     }
