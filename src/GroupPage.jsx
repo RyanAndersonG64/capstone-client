@@ -2,16 +2,16 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { fetchUser, fetchAllUsers } from './api/authApi'
 import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from './api/groupApi'
-import { AuthContext } from "./context"
-import { UserContext } from "./usercontext"
-import { ProfileContext } from "./profileContext"
-import { useError } from "./useError"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from "./contexts/UIContext"
+import { useError } from "./contexts/useError"
 
 const GroupPage = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { profileView, setProfileView } = useContext(ProfileContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))

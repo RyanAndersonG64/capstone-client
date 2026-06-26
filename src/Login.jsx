@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { AuthContext } from "./context"
-import { UserContext }from './usercontext'
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from './contexts/DataContext'
 import { getToken, fetchUser } from './api/authApi'
-import { useError } from './useError'
+import { useError } from './contexts/useError'
 import CreateNewUser from "./CreateNewUser"
 
 
 function Login() {
   const { auth } = useContext(AuthContext)
-  const {currentUser, setCurrentUser} = useContext(UserContext)
+  const {currentUser, setCurrentUser} = useContext(DataContext)
   const { setError } = useError()
 
   const [username, setUsername] = useState('')

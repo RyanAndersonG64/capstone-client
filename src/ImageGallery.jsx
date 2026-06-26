@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react"
 import { useState } from "react"
-import { AuthContext } from './context'
-import { UserContext } from "./usercontext"
-import { ProfileContext } from "./profileContext"
+import { AuthContext } from './contexts/context.jsx'
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from "./contexts/UIContext"
 import { useNavigate } from "react-router-dom"
-import { useError } from './useError'
+import { useError } from './contexts/useError'
 
 
 import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
@@ -12,8 +12,8 @@ import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
 const ImageGallery = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { profileView, setProfileView } = useContext(ProfileContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
 
     const authStorage = localStorage.getItem('authStorage')

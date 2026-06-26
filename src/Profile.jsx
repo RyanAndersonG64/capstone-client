@@ -4,19 +4,17 @@ import { fetchAllUsers } from './api/authApi'
 import { fetchCoasters, changeProfileViewState } from './api/coasterApi'
 
 
-import { AuthContext } from "./context"
-import { ProfileContext } from "./profileContext"
-import { CoasterContext } from "./coasterContext"
-import { UserContext } from "./usercontext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from "./contexts/UIContext"
 
 
 
 const Profile = () => {
 
   const { auth } = useContext(AuthContext)
-  const { currentUser, setCurrentUser } = useContext(UserContext)
-  const { allCoasters, setAllCoasters } = useContext(CoasterContext)
-  const { profileView, setProfileView } = useContext(ProfileContext)
+  const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
+  const { profileView, setProfileView } = useContext(UIContext)
 
   const storedUser = JSON.parse(localStorage.getItem('storedUser'))
   const authStorage = localStorage.getItem('authStorage')

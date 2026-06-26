@@ -1,17 +1,14 @@
 import { useState, useContext, useEffect } from "react"
 import LocationSelector from "./LocationSelector"
-import { AuthContext } from "./context"
-import { ParkContext } from "./parkcontext"
-import { ParkContext2 } from "./parkcontext2"
-import { CoasterContext } from "./coasterContext"
-import { UserContext } from "./usercontext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
 import { useNavigate } from "react-router-dom"
 import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from './api/coasterApi'
 
 const CoasterSelector = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')

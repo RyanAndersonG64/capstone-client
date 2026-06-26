@@ -1,26 +1,23 @@
 import { useState, useContext, useEffect } from "react"
 import LocationSelector from "./LocationSelector"
-import { AuthContext } from "./context"
-import { ParkContext } from "./parkcontext"
-import { ParkContext2 } from "./parkcontext2"
-import { CoasterContext } from "./coasterContext"
-import { UserContext } from "./usercontext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
 import { useNavigate } from "react-router-dom"
 import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from './api/coasterApi'
+import { useLocalStorage } from "./hooks/useLocalStorage.js"
 
 const CoasterSelector = () => {
 
     const baseUrl = import.meta.env.VITE_BASE_URL
 
     const { auth } = useContext(AuthContext)
-    const { selectedPark, setSelectedPark } = useContext(ParkContext2)
-    const { allCoasters, setAllCoasters } = useContext(CoasterContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { selectedPark, setSelectedPark, allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext)
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
-    const storedPark = JSON.parse(localStorage.getItem('storedPark'))
-    const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
+    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
+    const [authStorage] = useLocalStorage('authStorage', null)
+    const [storedPark] = useLocalStorage('storedPark', null)
+    const [storedCoasters] = useLocalStorage('storedCoasters', null)
+    const [coaster, setCoaster] = useLocalStorage('coaster', null)
 
     const [loading, setLoading] = useState(true)
 
@@ -87,19 +84,19 @@ const CoasterSelector = () => {
                                     addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
-                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                            setStoredUser(response.data)
                                         })
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
-                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                            setStoredUser(response.data)
                                         })
                                 }
                             }
                             }
                         />
-                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => setCoaster(coaster)}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -115,19 +112,19 @@ const CoasterSelector = () => {
                                     addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
-                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                            setStoredUser(response.data)
                                         })
                                 } else if (e.target.checked === false) {
                                     removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
                                         .then(response => {
                                             setCurrentUser(response.data)
-                                            localStorage.setItem('storedUser', JSON.stringify(response.data))
+                                            setStoredUser(response.data)
                                         })
                                 }
                             }
                             }
                         />
-                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => setCoaster(coaster)}> {coaster.name} </a>
                     </div>
                 )
             })}
@@ -136,7 +133,7 @@ const CoasterSelector = () => {
             {underConstruction.map(coaster => {
                 return (
                     <div key={coaster.id}>
-                        <a className='profile-link' href='./coasterinfo' onClick={() => localStorage.setItem('coaster', JSON.stringify(coaster))}> {coaster.name} </a>
+                        <a className='profile-link' href='./coasterinfo' onClick={() => setCoaster(coaster)}> {coaster.name} </a>
                     </div>
                 )
             })}

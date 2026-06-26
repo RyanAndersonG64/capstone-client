@@ -1,18 +1,14 @@
 import { fetchCoasters, fetchParks } from './api/coasterApi'
 import { fetchUser } from './api/authApi'
 import { useState, useEffect, useContext } from 'react';
-import { AuthContext } from './context';
-import { ParkContext } from './parkcontext';
-import { ParkContext2 } from './parkcontext2';
-import { CoasterContext } from './coasterContext';
+import { AuthContext } from './contexts/context.jsx';
+import { DataContext } from './contexts/DataContext';
 import { all } from 'axios';
 import { Link } from 'react-router-dom';
 
 const LocationSelector = () => {
   const { auth } = useContext(AuthContext);
-  const { allParks, setAllParks } = useContext(ParkContext);
-  const { allCoasters, setAllCoasters } = useContext(ParkContext);
-  const { selectedPark, setSelectedPark } = useContext(ParkContext2);
+  const { allParks, setAllParks, allCoasters, setAllCoasters, selectedPark, setSelectedPark } = useContext(DataContext);
 
   const storedContinent = JSON.parse(localStorage.getItem('storedContinent'))
   const storedCountry = JSON.parse(localStorage.getItem('storedCountry'))

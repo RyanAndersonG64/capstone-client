@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
-import { AuthContext } from "./context"
+import { AuthContext } from "./contexts/context.jsx"
 import { useContext } from "react"
-import { UserContext } from "./usercontext"
+import { DataContext } from "./contexts/DataContext"
 
 function Header() {
 
   const { auth } = useContext(AuthContext)
-  const { currentUser, setCurrentUser } = useContext(UserContext)
+  const { currentUser, setCurrentUser } = useContext(DataContext)
 
   return (
     <div style={{ margin: 10, textAlign: "center" }}>

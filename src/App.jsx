@@ -3,22 +3,19 @@ import { fetchUser } from './api/authApi'
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from './context';
-import { UserContext } from './usercontext';
-import { ParkContext } from './parkcontext';
-import { CoasterContext } from './coasterContext';
+import { AuthContext } from './contexts/context';
+import { DataContext } from './contexts/DataContext';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
 import GetUser from './getUser';
 import LocationSelector from './LocationSelector';
 
 function App() {
   const { auth } = useContext(AuthContext);
-  const { allParks, setAllParks } = useContext(ParkContext);
-  const { allCoasters, setAllCoasters } = useContext(CoasterContext);
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { allParks, setAllParks, allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext);
 
-  const authStorage = localStorage.getItem('authStorage');
-  const storedUser = JSON.parse(localStorage.getItem('storedUser'));
+  const [authStorage] = useLocalStorage('authStorage', null);
+  const [storedUser] = useLocalStorage('storedUser', null);
 
   const navigate = useNavigate();
 

@@ -11,15 +11,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 
 import { Navigate } from 'react-router-dom'
-import { AuthContext } from './context'
-import { UserContext } from './usercontext'
-import { ParkContext } from './parkcontext'
-import { ParkContext2 } from './parkcontext2'
-import { CoasterContext } from './coasterContext'
-import { PostContext } from './postcontext'
-import { ProfileContext } from './profileContext'
-import { ErrorProvider } from './ErrorContext'
-import ErrorBanner from './ErrorBanner'
+import { AuthContext, AuthContextProvider } from './contexts/context.jsx'
+import { DataContextProvider } from './contexts/DataContext'
+import { UIContextProvider } from './contexts/UIContext'
+import { ErrorProvider } from './contexts/ErrorContext'
+import ErrorBanner from './contexts/ErrorBanner'
 
 import { composeProviders } from './utils/composeProviders'
 
@@ -138,123 +134,12 @@ const router = createBrowserRouter([
   }
 ])
 
-const initialAuth = () => {
-  const storedAuth = localStorage.getItem('authStorage')
-  return (
-    storedAuth ? storedAuth : undefined
-  )
-}
-
-const AuthContextProvider = ({ children }) => {
-
-  const [accessToken, setAccessToken] = useState(initialAuth)
-
-  const auth = {
-    accessToken,
-    setAccessToken,
-  }
-
-  return (
-    <AuthContext.Provider value={{ auth: auth }} >
-      {children}
-    </AuthContext.Provider>
-  )
-}
-
-const initialUser = () => {
-  const storedUser = localStorage.getItem('storedUser')
-  return (
-    storedUser ? storedUser : []
-  )
-}
-
-
-const UserContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(initialUser)
-
-  return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-      {children}
-    </UserContext.Provider>
-  )
-
-}
-
-const ParkContextProvider = ({ children }) => {
-  const [allParks, setAllParks] = useState([])
-
-  return (
-    <ParkContext.Provider value={{ allParks, setAllParks }}>
-      {children}
-    </ParkContext.Provider>
-  )
-}
-
-const initialPark = () => {
-  const storedPark = localStorage.getItem('storedPark')
-  return (
-    storedPark ? storedPark : []
-  )
-}
-
-const ParkContext2Provider = ({ children }) => {
-  const [selectedPark, setSelectedPark] = useState(initialPark)
-
-  return (
-    <ParkContext2.Provider value={{ selectedPark, setSelectedPark }}>
-      {children}
-    </ParkContext2.Provider>
-  )
-
-}
-
-const initialCoasters = () => {
-  const storedCoasters = localStorage.getItem('storedCoasters')
-  return (
-    storedCoasters ? storedCoasters : []
-  )
-}
-
-const CoasterContextProvider = ({ children }) => {
-  const [allCoasters, setAllCoasters] = useState(initialCoasters)
-
-  return (
-    <CoasterContext.Provider value={{ allCoasters, setAllCoasters }}>
-      {children}
-    </CoasterContext.Provider>
-  )
-}
-
-
-const PostContextProvider = ({ children }) => {
-  const [allPosts, setAllPosts] = useState([])
-
-  return (
-    <PostContext.Provider value={{ allPosts, setAllPosts }}>
-      {children}
-    </PostContext.Provider>
-  )
-}
-
-const ProfileContextProvider = ({ children }) => {
-  const [profileView, setProfileView] = useState([])
-
-  return (
-    <ProfileContext.Provider value={{ profileView, setProfileView }}>
-      {children}
-    </ProfileContext.Provider>
-  )
-}
 
 const ComposedProviders = composeProviders([
-  AuthContextProvider,
-  UserContextProvider,
-  ParkContextProvider,
-  ParkContext2Provider,
-  CoasterContextProvider,
-  ProfileContextProvider,
-  PostContextProvider,
   ErrorProvider,
+  AuthContextProvider,
+  DataContextProvider,
+  UIContextProvider,
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

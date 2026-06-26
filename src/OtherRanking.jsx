@@ -3,17 +3,15 @@ import { useNavigate, Link } from "react-router-dom"
 import { fetchAllUsers } from './api/authApi'
 import { fetchParks, fetchCoasters, setFavorite } from './api/coasterApi'
 
-import { AuthContext } from "./context"
-import { CoasterContext } from "./coasterContext"
-import { UserContext } from "./usercontext"
-import { ProfileContext } from "./profileContext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from "./contexts/UIContext"
 
 
 const OtherRanking = () => {
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { allCoasters, setAllCoasters } = useContext(CoasterContext)
-    const { profileView, setProfileView } = useContext(ProfileContext)
+    const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
+    const { profileView, setProfileView } = useContext(UIContext)
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')

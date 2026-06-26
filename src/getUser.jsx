@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react"
 import { fetchUser } from './api/authApi'
-import { AuthContext } from "./context"
-import { UserContext } from "./usercontext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
 
 function GetUser() {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
 
     const navigate = useNavigate()
 

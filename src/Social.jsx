@@ -5,15 +5,15 @@ import { sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriend
 import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from './api/groupApi'
 import { useCollapse } from "react-collapsed"
 
-import { AuthContext } from "./context"
-import { UserContext } from "./usercontext"
-import { ProfileContext } from "./profileContext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from "./contexts/UIContext"
 
 const Social = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { profileView, setProfileView } = useContext(ProfileContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { profileView, setProfileView } = useContext(UIContext)
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
     const authStorage = localStorage.getItem('authStorage')

@@ -1,11 +1,10 @@
 import { useState, useContext, useEffect } from "react"
 import { useCollapse } from "react-collapsed"
 import { useNavigate } from "react-router-dom"
-import { AuthContext } from './context'
-import { UserContext } from "./usercontext"
-import { PostContext } from './postcontext'
-import { ProfileContext } from "./profileContext"
-import { useError } from "./useError"
+import { AuthContext } from './contexts/context.jsx'
+import { DataContext } from "./contexts/DataContext"
+import { UIContext } from './contexts/UIContext'
+import { useError } from "./contexts/useError"
 
 
 import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api/forumApi'
@@ -14,9 +13,8 @@ const Forum = () => {
 
     const { setError } = useError()
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { allPosts, setAllPosts } = useContext(PostContext)
-    const { profileView, setProfileView } = useContext(ProfileContext)
+    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { allPosts, setAllPosts, profileView, setProfileView } = useContext(UIContext)
 
     const authStorage = localStorage.getItem('authStorage')
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))

@@ -3,17 +3,15 @@ import { fetchCoasters, fetchParks } from './api/coasterApi'
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { AuthContext } from "./context"
-import { UserContext } from "./usercontext"
-import { ParkContext } from "./parkcontext"
-import { CoasterContext } from "./coasterContext"
+import { AuthContext } from "./contexts/context.jsx"
+import { DataContext } from "./contexts/DataContext"
 
 
 
 const Rankings = () => {
 
   const { auth } = useContext(AuthContext)
-  const { currentUser, setCurrentUser } = useContext(UserContext)
+  const { currentUser, setCurrentUser } = useContext(DataContext)
 
   const authStorage = localStorage.getItem('authStorage')
   const storedUser = JSON.parse(localStorage.getItem('storedUser'))
