@@ -4,15 +4,16 @@ import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
 import { useNavigate } from "react-router-dom"
 import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from './api/coasterApi'
+import { useLocalStorage } from "./hooks/useLocalStorage.js"
 
 const CoasterSelector = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
-    const savedCoaster = JSON.parse(localStorage.getItem('coaster'))
+    const [storedUser] = useLocalStorage('storedUser', null)
+    const [authStorage] = useLocalStorage('authStorage', null)
+    const [savedCoaster] = useLocalStorage('coaster', null)
 
     const [imperialStats, setImperialStats] = useState(true)
 

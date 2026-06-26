@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { AuthContext } from './contexts/context.jsx'
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from './contexts/UIContext'
-import { useError } from "./contexts/useError"
+import { useError } from "./hooks/useError"
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 
 import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api/forumApi'
@@ -16,8 +17,8 @@ const Forum = () => {
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { allPosts, setAllPosts, profileView, setProfileView } = useContext(UIContext)
 
-    const authStorage = localStorage.getItem('authStorage')
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
+    const [authStorage] = useLocalStorage('authStorage', null)
+    const [storedUser] = useLocalStorage('storedUser', null)
 
     const [postState, setPostState] = useState([])
     const [allComments, setAllComments] = useState([])
@@ -293,7 +294,7 @@ const Forum = () => {
                                 if (post.posted_by === currentUser.id) {
                                     navigate('/profile')
                                 } else {
-                                    localStorage.setItem('storedProfile', [post.posted_by])
+                                    setProfileView(post.posted_by)
                                     setProfileView(post.posted_by)
                                     navigate('/otherprofile')
                                 }

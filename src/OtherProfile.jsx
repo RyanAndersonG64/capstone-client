@@ -3,10 +3,10 @@ import { useNavigate, Link } from "react-router-dom"
 import { fetchAllUsers } from './api/authApi'
 import { fetchCoasters } from './api/coasterApi'
 import { sendFriendRequest } from './api/socialApi'
+import { useLocalStorage } from './hooks/useLocalStorage'
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from "./contexts/UIContext"
-import { useError } from './contexts/useError'
 
 
 
@@ -15,11 +15,10 @@ const OtherProfile = () => {
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
-    const { setError } = useError()
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
-    const profileStorage = JSON.parse(localStorage.getItem('profileView'))
+    const [storedUser] = useLocalStorage('storedUser', null)
+    const [authStorage] = useLocalStorage('authStorage', null)
+    const [profileStorage] = useLocalStorage('profileView', null)
     const [allUsers, setAllUsers] = useState([])
     const [loading, setLoading] = useState([])
 

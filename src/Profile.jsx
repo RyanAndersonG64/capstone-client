@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { fetchAllUsers } from './api/authApi'
 import { fetchCoasters, changeProfileViewState } from './api/coasterApi'
-
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
@@ -16,8 +16,8 @@ const Profile = () => {
   const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
   const { profileView, setProfileView } = useContext(UIContext)
 
-  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-  const authStorage = localStorage.getItem('authStorage')
+  const [storedUser] = useLocalStorage('storedUser', null)
+  const [authStorage] = useLocalStorage('authStorage', null)
   const [profileViewState, setProfileViewState] = useState([storedUser.profile_view_state])
 
   const [allUsers, setAllUsers] = useState([])

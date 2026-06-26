@@ -4,7 +4,7 @@ import { AuthContext } from './contexts/context.jsx'
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from "./contexts/UIContext"
 import { useNavigate } from "react-router-dom"
-import { useError } from './contexts/useError'
+import { useError } from './hooks/useError'
 
 
 import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
@@ -192,7 +192,7 @@ const ImageGallery = () => {
                                 if (image.posted_by === currentUser.id) {
                                     navigate('/profile')
                                 } else {
-                                    localStorage.setItem('storedProfile', [image.posted_by])
+                                    setProfileView(image.posted_by)
                                     setProfileView(image.posted_by)
                                     navigate('/otherprofile')
                                 }
