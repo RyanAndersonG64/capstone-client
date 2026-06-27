@@ -13,6 +13,7 @@ const LocationSelector = () => {
 
   const [storedContinent, setStoredContinent] = useLocalStorage('storedContinent', null)
   const [storedCountry, setStoredCountry] = useLocalStorage('storedCountry', null)
+  const [storedPark, setStoredPark] = useLocalStorage('storedPark', null)
 
   const [continent, setContinent] = useState([]);
   const [parkState, setParkState] = useState([]);
@@ -284,8 +285,7 @@ const LocationSelector = () => {
                 className="park-link"
                 to="/coasterselector"
                 onClick={() => {
-                  setSelectedPark(park);
-                  setSelectedPark(park);
+                  setStoredPark(park);
                 }}
               >
                 {park.name}
