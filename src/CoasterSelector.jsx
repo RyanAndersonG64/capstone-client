@@ -5,6 +5,7 @@ import { DataContext } from "./contexts/DataContext"
 import { useNavigate } from "react-router-dom"
 import { fetchParks, fetchCoasters, addCredit, removeCredit, createDataImage, getDataImages } from './api/coasterApi'
 import { useLocalStorage } from "./hooks/useLocalStorage.js"
+import CoasterCheckbox from "./CoasterCheckbox.jsx"
 
 const CoasterSelector = () => {
 
@@ -13,7 +14,7 @@ const CoasterSelector = () => {
     const { auth } = useContext(AuthContext)
     const { allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext)
 
-    const [, setStoredUser] = useLocalStorage('storedUser', null)
+    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
     const [storedPark] = useLocalStorage('storedPark', null)
     const [storedCoasters] = useLocalStorage('storedCoasters', null)
     const [coaster, setCoaster] = useLocalStorage('coaster', null)
@@ -44,17 +45,17 @@ const CoasterSelector = () => {
 
 
 
-    const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === storedPark.id)
+    if (loading || !storedPark) {
+        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
+    }
+
+    const coastersAtPark = allCoasters.filter((coaster) => coaster.park?.id === storedPark.id)
 
     const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
 
     const defunctCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operated' || coaster.status.state === 'SBNO')
 
     const underConstruction = coastersAtPark.filter((coaster) => coaster.status.state === 'Under Construction')
-
-    if (loading) {
-        return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
-    }
 
     return (
         <div className='coaster-selector'>
@@ -65,56 +66,14 @@ const CoasterSelector = () => {
                 <h5>Check off coasters you have ridden (or uncheck ones you checked by mistake)</h5>
             {operatingCoasters.map(coaster => {
                 return (
-                    <div key={coaster.id}>
-                        <input type="checkbox" id={coaster.id} name={coaster.name} value={coaster.name} style={{ marginRight: 10 }}
-                            checked={currentUser.coasters_ridden.includes(coaster.id) ? true : false}
-                            onChange={(e) => {
-                                if (e.target.checked === true) {
-                                    addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                        .then(response => {
-                                            setCurrentUser(response.data)
-                                            setStoredUser(response.data)
-                                        })
-                                } else if (e.target.checked === false) {
-                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                        .then(response => {
-                                            setCurrentUser(response.data)
-                                            setStoredUser(response.data)
-                                        })
-                                }
-                            }
-                            }
-                        />
-                        <a className='profile-link' href='./coasterinfo' onClick={() => setCoaster(coaster)}> {coaster.name} </a>
-                    </div>
+                    <CoasterCheckbox key={coaster.id} coaster={coaster} />
                 )
             })}
             <br></br>
             <h2> Defunct Coasters</h2>
             {defunctCoasters.map(coaster => {
                 return (
-                    <div key={coaster.id}>
-                        <input type="checkbox" id={coaster.id} name={coaster.name} value={coaster.name} style={{ marginRight: 10 }}
-                            checked={currentUser.coasters_ridden.includes(coaster.id) ? true : false}
-                            onChange={(e) => {
-                                if (e.target.checked === true) {
-                                    addCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                        .then(response => {
-                                            setCurrentUser(response.data)
-                                            setStoredUser(response.data)
-                                        })
-                                } else if (e.target.checked === false) {
-                                    removeCredit({ auth, userId: currentUser.id, coasterId: coaster.id })
-                                        .then(response => {
-                                            setCurrentUser(response.data)
-                                            setStoredUser(response.data)
-                                        })
-                                }
-                            }
-                            }
-                        />
-                        <a className='profile-link' href='./coasterinfo' onClick={() => setCoaster(coaster)}> {coaster.name} </a>
-                    </div>
+                    <CoasterCheckbox key={coaster.id} coaster={coaster} />
                 )
             })}
             <br></br>
