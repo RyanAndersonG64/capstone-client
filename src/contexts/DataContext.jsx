@@ -7,11 +7,6 @@ const initialUser = () => {
   return storedUser ? JSON.parse(storedUser) : null
 }
 
-const initialPark = () => {
-  const storedPark = localStorage.getItem('storedPark')
-  return storedPark ? JSON.parse(storedPark) : null
-}
-
 const initialCoasters = () => {
   const storedCoasters = localStorage.getItem('storedCoasters')
   return storedCoasters ? JSON.parse(storedCoasters) : []
@@ -20,7 +15,6 @@ const initialCoasters = () => {
 export const DataContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(initialUser)
   const [allParks, setAllParks] = useState([])
-  const [selectedPark, setSelectedPark] = useState(initialPark)
   const [allCoasters, setAllCoasters] = useState(initialCoasters)
 
   return (
@@ -30,8 +24,6 @@ export const DataContextProvider = ({ children }) => {
         setCurrentUser,
         allParks,
         setAllParks,
-        selectedPark,
-        setSelectedPark,
         allCoasters,
         setAllCoasters,
       }}

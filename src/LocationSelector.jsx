@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const LocationSelector = () => {
   const { auth } = useContext(AuthContext);
-  const { allParks, setAllParks, allCoasters, setAllCoasters, selectedPark, setSelectedPark } = useContext(DataContext);
+  const { allParks, setAllParks, allCoasters, setAllCoasters } = useContext(DataContext);
 
   const [storedContinent, setStoredContinent] = useLocalStorage('storedContinent', null)
   const [storedCountry, setStoredCountry] = useLocalStorage('storedCountry', null)

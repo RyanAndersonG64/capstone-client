@@ -11,7 +11,7 @@ const CoasterSelector = () => {
     const baseUrl = import.meta.env.VITE_BASE_URL
 
     const { auth } = useContext(AuthContext)
-    const { selectedPark, setSelectedPark, allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext)
+    const { allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext)
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
     const [authStorage] = useLocalStorage('authStorage', null)
@@ -28,7 +28,6 @@ const CoasterSelector = () => {
 
             auth.setAccessToken(authStorage)
             setCurrentUser(storedUser)
-            setSelectedPark(storedPark)
         },
         []
     )
@@ -55,7 +54,7 @@ const CoasterSelector = () => {
 
 
 
-    const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === selectedPark.id)
+    const coastersAtPark = allCoasters.filter((coaster) => coaster.park.id === storedPark.id)
 
     const operatingCoasters = coastersAtPark.filter((coaster) => coaster.status.state === 'Operating')
 
@@ -69,7 +68,7 @@ const CoasterSelector = () => {
 
     return (
         <div className='coaster-selector'>
-            <h1> {selectedPark.name} </h1>
+            <h1> {storedPark.name} </h1>
             {storedPark.mainPicture && <img className='park-main-picture' src={`https://rcdb.com${storedPark.mainPicture.url}`}></img>}
             <br></br>
             <h2> Operating Coasters</h2>
