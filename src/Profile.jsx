@@ -17,7 +17,6 @@ const Profile = () => {
   const { profileView, setProfileView } = useContext(UIContext)
 
   const [storedUser] = useLocalStorage('storedUser', null)
-  const [authStorage] = useLocalStorage('authStorage', null)
   const [profileViewState, setProfileViewState] = useState([storedUser.profile_view_state])
 
   const [allUsers, setAllUsers] = useState([])
@@ -25,11 +24,6 @@ const Profile = () => {
   const navigate = useNavigate()
   useEffect(
     () => {
-      if (!currentUser) {
-        setCurrentUser(storedUser)
-      }
-      auth.setAccessToken(authStorage)
-
       setProfileView(currentUser.id)
 
       fetchCoasters({ auth })

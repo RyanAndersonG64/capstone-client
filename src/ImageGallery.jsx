@@ -12,12 +12,9 @@ import { getImages, deleteImage, createImage, likeImage } from './api/imageApi'
 const ImageGallery = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { currentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
-
-    const authStorage = localStorage.getItem('authStorage')
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
 
     const [allImages, setAllImages] = useState([])
     const [imageState, setImageState] = useState([])
@@ -34,16 +31,6 @@ const ImageGallery = () => {
     };
 
     const baseUrl = import.meta.env.VITE_BASE_URL
-
-    useEffect(
-        () => {
-
-            auth.setAccessToken(authStorage)
-            setCurrentUser(storedUser)
-
-        },
-        []
-    )
 
     useEffect(
         () => {

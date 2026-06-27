@@ -10,12 +10,11 @@ import { useError } from "./hooks/useError"
 const GroupPage = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser } = useContext(DataContext)
+    const { currentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
 
     const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
     const [group, setGroup] = useState(JSON.parse(localStorage.getItem('group')))
 
     const [allUsers, setAllUsers] = useState([])
@@ -45,12 +44,6 @@ const GroupPage = () => {
 
     useEffect(
         () => {
-            if (!currentUser) {
-                setCurrentUser(storedUser)
-            }
-
-            auth.setAccessToken(authStorage)
-
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)

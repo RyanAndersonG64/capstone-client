@@ -12,17 +12,9 @@ import LocationSelector from './LocationSelector';
 
 function App() {
   const { auth } = useContext(AuthContext);
-  const { allParks, setAllParks, allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext);
-
-  const [authStorage] = useLocalStorage('authStorage', null);
-  const [storedUser] = useLocalStorage('storedUser', null);
+  const { allParks, setAllParks, allCoasters, setAllCoasters } = useContext(DataContext);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    auth.setAccessToken(authStorage);
-    setCurrentUser(storedUser);
-  }, []);
 
   useEffect(() => {
     if (auth.accessToken) {

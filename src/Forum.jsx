@@ -17,9 +17,6 @@ const Forum = () => {
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { allPosts, setAllPosts, profileView, setProfileView } = useContext(UIContext)
 
-    const [authStorage] = useLocalStorage('authStorage', null)
-    const [storedUser] = useLocalStorage('storedUser', null)
-
     const [postState, setPostState] = useState([])
     const [allComments, setAllComments] = useState([])
     const [commentState, setCommentState] = useState([])
@@ -47,16 +44,6 @@ const Forum = () => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
-
-    useEffect(
-        () => {
-
-            auth.setAccessToken(authStorage)
-            setCurrentUser(storedUser)
-
-        },
-        []
-    )
 
     useEffect(
         () => {

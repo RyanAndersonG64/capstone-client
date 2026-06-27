@@ -13,11 +13,9 @@ import { UIContext } from "./contexts/UIContext"
 const OtherProfile = () => {
 
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
+    const { currentUser, allCoasters, setAllCoasters } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
 
-    const [storedUser] = useLocalStorage('storedUser', null)
-    const [authStorage] = useLocalStorage('authStorage', null)
     const [profileStorage] = useLocalStorage('profileView', null)
     const [allUsers, setAllUsers] = useState([])
     const [loading, setLoading] = useState([])
@@ -26,10 +24,6 @@ const OtherProfile = () => {
 
     useEffect(
         () => {
-
-
-            auth.setAccessToken(authStorage)
-            setCurrentUser(storedUser)
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)

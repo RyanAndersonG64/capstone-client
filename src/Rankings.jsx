@@ -4,18 +4,12 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { AuthContext } from "./contexts/context.jsx"
-import { DataContext } from "./contexts/DataContext"
 
 
 
 const Rankings = () => {
 
   const { auth } = useContext(AuthContext)
-  const { currentUser, setCurrentUser } = useContext(DataContext)
-
-  const authStorage = localStorage.getItem('authStorage')
-  const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-
   const [allUsers, setAllUsers] = useState([])
   const [coasters, setCoasters] = useState([])
   const [loading, setLoading] = useState(true)
@@ -23,16 +17,6 @@ const Rankings = () => {
 
 
   const navigate = useNavigate()
-
-  useEffect(
-    () => {
-
-      auth.setAccessToken(authStorage)
-      setCurrentUser(storedUser)
-
-    },
-    []
-  )
 
   useEffect(
     () => {

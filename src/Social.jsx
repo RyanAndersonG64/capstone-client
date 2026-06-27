@@ -17,7 +17,6 @@ const Social = () => {
     const { profileView, setProfileView } = useContext(UIContext)
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
-    const [authStorage] = useLocalStorage('authStorage', null)
 
     const [allUsers, setAllUsers] = useState([])
     const [friendRequests, setFriendRequests] = useState([])
@@ -49,11 +48,6 @@ const Social = () => {
 
     useEffect(
         () => {
-            if (!currentUser) {
-                setCurrentUser(storedUser)
-            }
-            auth.setAccessToken(authStorage)
-
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)

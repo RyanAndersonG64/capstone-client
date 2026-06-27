@@ -10,12 +10,9 @@ import { UIContext } from "./contexts/UIContext"
 
 const OtherRanking = () => {
     const { auth } = useContext(AuthContext)
-    const { currentUser, setCurrentUser, allCoasters, setAllCoasters } = useContext(DataContext)
+    const { currentUser, allCoasters, setAllCoasters } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const authStorage = localStorage.getItem('authStorage')
-    const storedCoasters = JSON.parse(localStorage.getItem('storedCoasters'))
     const profileStorage = JSON.parse(localStorage.getItem('profileView'))
     const [coasterState, setCoasterState] = useState([])
     const [allUsers, setAllUsers] = useState([])
@@ -40,10 +37,6 @@ const OtherRanking = () => {
 
     useEffect(
         () => {
-
-            auth.setAccessToken(authStorage)
-            setCurrentUser(storedUser)
-
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)

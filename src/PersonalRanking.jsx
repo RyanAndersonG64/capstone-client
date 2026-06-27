@@ -12,9 +12,7 @@ const PersonalRanking = () => {
     const {currentUser, setCurrentUser, allCoasters, setAllCoasters} = useContext(DataContext)
     const { setError } = useError()
     
-    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
-    const [authStorage] = useLocalStorage('authStorage', null)
-    const [storedCoasters] = useLocalStorage('storedCoasters', null)
+    const [, setStoredUser] = useLocalStorage('storedUser', null)
     const [coasterState, setCoasterState] = useState([])
     const [loading, setLoading] = useState(true)
     
@@ -37,10 +35,6 @@ const PersonalRanking = () => {
 
     useEffect (
         () => {
-
-              auth.setAccessToken(authStorage)
-              setCurrentUser(storedUser)
-                
               fetchCoasters ({ auth })
               .then(response => {
                 const coasterJson = response.json()

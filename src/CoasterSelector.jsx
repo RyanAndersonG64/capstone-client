@@ -13,8 +13,7 @@ const CoasterSelector = () => {
     const { auth } = useContext(AuthContext)
     const { allCoasters, setAllCoasters, currentUser, setCurrentUser } = useContext(DataContext)
 
-    const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
-    const [authStorage] = useLocalStorage('authStorage', null)
+    const [, setStoredUser] = useLocalStorage('storedUser', null)
     const [storedPark] = useLocalStorage('storedPark', null)
     const [storedCoasters] = useLocalStorage('storedCoasters', null)
     const [coaster, setCoaster] = useLocalStorage('coaster', null)
@@ -22,15 +21,6 @@ const CoasterSelector = () => {
     const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate()
-
-    useEffect(
-        () => {
-
-            auth.setAccessToken(authStorage)
-            setCurrentUser(storedUser)
-        },
-        []
-    )
 
     useEffect(
         () => {
