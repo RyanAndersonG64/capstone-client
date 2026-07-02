@@ -38,7 +38,9 @@ import OtherRanking from './OtherRanking'
 import Rankings from './Rankings'
 import Forum from './Forum'
 import ImageGallery from './ImageGallery'
-import Social from "./Social"
+import FriendManager from "./social/FriendManager"
+import GroupManager from "./social/GroupManager"
+import DirectMessages from "./social/DirectMessages"
 import GroupPage from './GroupPage'
 
 function Layout() {
@@ -123,8 +125,16 @@ const router = createBrowserRouter([
         element: <Protected component={<ImageGallery />} />
       },
       {
-        path: '/social',
-        element: <Protected component={<Social />} />
+        path: '/social/friendmanager',
+        element: <Protected component={<FriendManager />} />
+      },
+      {
+        path: '/social/groupmanager',
+        element: <Protected component={<GroupManager />} />
+      },
+      {
+        path: '/social/directmessages',
+        element: <Protected component={<DirectMessages />} />
       },
       {
         path: '/grouppage',

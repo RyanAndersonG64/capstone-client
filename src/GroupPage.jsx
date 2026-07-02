@@ -95,7 +95,7 @@ const GroupPage = () => {
                             if (confirm_dissolve) {
                                 dissolveGroup({ auth, group: group.id })
                                     .then(response => {
-                                        navigate('/social')
+                                        navigate('/social/groupmanager')
                                     })
                             }
 
@@ -232,7 +232,7 @@ const GroupPage = () => {
                                         leaveGroup({ auth, group: group.id, memberLeaving: storedUser.id })
                                             .then(response => {
                                                 setGroup(group)
-                                                navigate('/social')
+                                                navigate('/social/groupmanager')
                                             })
                                     }
 

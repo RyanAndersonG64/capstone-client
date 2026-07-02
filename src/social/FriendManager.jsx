@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers } from './api/authApi'
-import { sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriendRequest, deleteFriend } from './api/socialApi'
+import { fetchUser, fetchAllUsers } from '../api/authApi'
+import { sendFriendRequest, getFriendRequests, acceptFriendRequest, rejectFriendRequest, deleteFriend } from '../api/socialApi'
 import { useCollapse } from "react-collapsed"
-import { useLocalStorage } from './hooks/useLocalStorage'
-import { AuthContext } from "./contexts/context.jsx"
-import { DataContext } from "./contexts/DataContext"
-import { UIContext } from "./contexts/UIContext"
+import { useLocalStorage } from '../hooks/useLocalStorage'
+import { AuthContext } from "../contexts/context.jsx"
+import { DataContext } from "../contexts/DataContext"
+import { UIContext } from "../contexts/UIContext"
 
-const Social = () => {
+const FriendManager = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
@@ -137,53 +137,6 @@ const Social = () => {
                                 </Link>
                                 <div className="buttons">
                                     <button className='profile-link friend-button' style={{ border: 'solid 1px', background: 'none' }}
-                                        {...getToggleProps({
-                                            onClick: () => {
-                                                expandOrCollapse(friend.id)
-                                                setDmState(dms.filter(dm => dm.sender === currentUser.id && dm.reciever === friend.id || dm.sender === friend.id && dm.reciever === currentUser.id))
-                                            },
-                                        })}
-                                    >
-                                        {isExpanded[friend.id] ? 'Collapse' : `Message`}
-                                    </button>
-                                    <section {...getCollapseProps()}>
-                                        {isExpanded[friend.id] &&
-                                            <div>
-                                                <br></br>
-                                            </div>
-                                        }
-                                    </section>
-                                    <section {...getCollapseProps()}>
-                                        {isExpanded[friend.id] &&
-                                            dmState.map(dm => (
-                                                <div key={dm.id} className='dm'>
-                                                    <h6> {dm.sender === currentUser.id ? 'You:' : friend.first_name} </h6>
-                                                    <p>{dm.text_content}</p>
-                                                </div>
-                                            ))
-                                        }
-                                    </section>
-                                    <section {...getCollapseProps()}>
-                                        {isExpanded[friend.id] &&
-                                            <div>
-                                                <input type="text" name="dm" id="dm" value={dm}
-                                                    onChange={(e) => {
-                                                        setDm(e.target.value)
-                                                    }}
-                                                />
-                                                <button className='profile-link' style={{ float: "right", marginLeft: 2, border: 'solid 1px', background: 'none' }}
-                                                    onClick={() => {
-                                                        sendDm({ auth, sender: currentUser.id, reciever: friend.id, textContent: dm })
-                                                        setDm('')
-                                                    }}
-                                                >
-                                                    Send
-                                                </button>
-                                            </div>
-                                        }
-                                    </section>
-
-                                    <button className='profile-link friend-button' style={{ border: 'solid 1px', background: 'none' }}
                                         onClick={() => {
                                             let confirm_delete = confirm('Are you sure you want to delete this friend?')
                                             if (confirm_delete) {
@@ -236,4 +189,4 @@ const Social = () => {
 
 }
 
-export default Social
+export default FriendManager

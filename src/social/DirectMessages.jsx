@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers } from './api/authApi'
-import { getDms, sendDm } from './api/socialApi'
+import { fetchUser, fetchAllUsers } from '../api/authApi'
+import { getDms, sendDm } from '../api/socialApi'
 import { useCollapse } from "react-collapsed"
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
-import { AuthContext } from "./contexts/context.jsx"
-import { DataContext } from "./contexts/DataContext"
-import { UIContext } from "./contexts/UIContext"
+import { AuthContext } from "../contexts/context.jsx"
+import { DataContext } from "../contexts/DataContext"
+import { UIContext } from "../contexts/UIContext"
 
 const Social = () => {
 
@@ -18,11 +18,6 @@ const Social = () => {
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
 
     const [allUsers, setAllUsers] = useState([])
-    const [friendRequests, setFriendRequests] = useState([])
-    const [groupInvites, setGroupInvites] = useState([])
-    const [groups, setGroups] = useState([])
-    const [groupState, setGroupState] = useState([])
-    const [friendToAdd, setFriendToAdd] = useState(0)
     const [dms, setDms] = useState([])
     const [dmState, setDmState] = useState([])
     const [dm, setDm] = useState('')
@@ -48,11 +43,11 @@ const Social = () => {
                 fetchAllUsers({ auth }),
                 getDms({ auth })
             ])
-            .then (([userResponse, dmResponse]) => {
-                setAllUsers(userResponse.data)
-                setDms(dmResponse.data)
-                setLoading(false)
-            })
+                .then(([userResponse, dmResponse]) => {
+                    setAllUsers(userResponse.data)
+                    setDms(dmResponse.data)
+                    setLoading(false)
+                })
         },
         []
     )
@@ -89,16 +84,7 @@ const Social = () => {
                         <h3> Friends: {storedUser.friends.length} </h3>
                         {currentFriends.map(friend => (
                             <div key={friend.id} className="friend">
-                                <Link className='profile-link'
-                                    onClick={() => {
-                                        setProfileView(friend.id)
-                                        setProfileView(friend.id)
-                                    }}
-                                    to='../otherprofile/'
-                                >
-                                    &nbsp;&nbsp;{friend.first_name} {friend.last_name}&nbsp;&nbsp;
-                                    <br></br>
-                                </Link>
+                                {friend.first_name} {friend.last_name}
                                 <div className="buttons">
                                     <button className='profile-link friend-button' style={{ border: 'solid 1px', background: 'none' }}
                                         {...getToggleProps({
@@ -130,14 +116,14 @@ const Social = () => {
                                     <section {...getCollapseProps()}>
                                         {isExpanded[friend.id] &&
                                             <div>
-                                                <input type="text" name="dm" id="dm" value = {dm}
+                                                <input type="text" name="dm" id="dm" value={dm}
                                                     onChange={(e) => {
                                                         setDm(e.target.value)
                                                     }}
-                                                 />
+                                                />
                                                 <button className='profile-link' style={{ float: "right", marginLeft: 2, border: 'solid 1px', background: 'none' }}
-                                                    onClick = {() => {
-                                                        sendDm ({ auth, sender: currentUser.id, reciever: friend.id, textContent: dm })
+                                                    onClick={() => {
+                                                        sendDm({ auth, sender: currentUser.id, reciever: friend.id, textContent: dm })
                                                         setDm('')
                                                     }}
                                                 >
@@ -149,36 +135,6 @@ const Social = () => {
                                 </div>
                             </div>
                         ))}
-                        <div className="friend-search">
-
-                            <label style={{ float: 'right' }} htmlFor="userLookup">Find New Friends:</label>
-                            <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={currentUser.id}
-                                onChange={(e) => {
-                                    setFriendToAdd(e.target.value)
-                                }
-                                }
-                            >
-                                <option value={currentUser.id}> --- </option>
-                                {allUsers.map(user =>
-                                    <option key={user.id} value={user.id}> {`${user.first_name} ${user.last_name}`} </option>
-                                )}
-
-
-                            </select>
-
-                            <button className='profile-link' style={{ float: "right", marginLeft: 2, border: 'solid 1px', background: 'none' }}
-                                onClick={() => {
-                                    sendFriendRequest({ auth, sender: currentUser.id, reciever: friendToAdd })
-                                        .then(response => {
-                                            if (response.data === 'already') {
-                                                throw new Error('That user is already your friend, or you have already sent them a friend invite')
-                                            }
-                                        })
-                                }}
-                            >
-                                Add Friend
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -13,9 +13,11 @@ function Header() {
       <Link className='nav-item' to='/app'>Parks</Link>
       <Link className='nav-item' to='/rankings'>Rankings</Link>
       <Link className='nav-item' to='/profile'>Profile</Link>
-      <Link className='nav-item' to='/social'>Social</Link>
       <Link className='nav-item' to='/forum'>Forum</Link>
       <Link className='nav-item' to='/imagegallery'>Image Gallery</Link>
+      <Link className='nav-item' to='/social/friendmanager'>Friends</Link>
+      <Link className='nav-item' to='/social/directmessages'>Messaging</Link>
+      <Link className='nav-item' to='/social/groupmanager'>Groups</Link>
       <Link className='nav-item'
         onClick={() => {
           localStorage.clear()

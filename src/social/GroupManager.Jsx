@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers } from './api/authApi'
-import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from './api/groupApi'
+import { fetchUser, fetchAllUsers } from '../api/authApi'
+import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from '../api/groupApi'
 import { useCollapse } from "react-collapsed"
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
-import { AuthContext } from "./contexts/context.jsx"
-import { DataContext } from "./contexts/DataContext"
-import { UIContext } from "./contexts/UIContext"
+import { AuthContext } from "../contexts/context.jsx"
+import { DataContext } from "../contexts/DataContext"
+import { UIContext } from "../contexts/UIContext"
 
-const Social = () => {
+const GroupManager = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
@@ -183,4 +183,4 @@ const Social = () => {
 
 }
 
-export default Social
+export default GroupManager
