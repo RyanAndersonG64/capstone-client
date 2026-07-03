@@ -8,20 +8,21 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
 import { UIContext } from "../contexts/UIContext"
+import { useError } from "../hooks/useError.js"
 
-const Social = () => {
+const DirectMessages = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
+    const { setError } = useError()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
-
     const [allUsers, setAllUsers] = useState([])
+    const [friends, setFriends] = useState([])
     const [dms, setDms] = useState([])
     const [dmState, setDmState] = useState([])
     const [dm, setDm] = useState('')
-
 
     const [loading, setLoading] = useState(true)
 
@@ -39,17 +40,26 @@ const Social = () => {
 
     useEffect(
         () => {
+            if (!auth.accessToken) return
+
             Promise.all([
                 fetchAllUsers({ auth }),
                 getDms({ auth })
             ])
                 .then(([userResponse, dmResponse]) => {
                     setAllUsers(userResponse.data)
+                    if (storedUser?.friends) {
+                        setFriends(userResponse.data.filter(user => storedUser.friends.includes(user.id)))
+                    }
                     setDms(dmResponse.data)
                     setLoading(false)
                 })
+                .catch(error => {
+                    setError('Error fetching messages')
+                    setLoading(false)
+                })
         },
-        []
+        [auth]
     )
 
     useEffect(
@@ -65,10 +75,6 @@ const Social = () => {
         return allUsers.find(user => user.id === inputId)
     }
 
-    function getGroupFromId(inputId) {
-        return groups.find(group => group.id === inputId)
-    }
-
     if (loading) {
         return <div><img src='https://http.cat/images/102.jpg'></img></div>
     }
@@ -82,7 +88,7 @@ const Social = () => {
                 <div className="friend-stuff col-4">
                     <div id='friends-list'>
                         <h3> Friends: {storedUser.friends.length} </h3>
-                        {currentFriends.map(friend => (
+                        {friends.map(friend => (
                             <div key={friend.id} className="friend">
                                 {friend.first_name} {friend.last_name}
                                 <div className="buttons">
@@ -143,4 +149,4 @@ const Social = () => {
 
 }
 
-export default Social
+export default DirectMessages

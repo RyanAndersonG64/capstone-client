@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { fetchUser, fetchAllUsers } from './api/authApi'
-import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from './api/groupApi'
-import { AuthContext } from "./contexts/context.jsx"
-import { DataContext } from "./contexts/DataContext"
-import { UIContext } from "./contexts/UIContext"
-import { useError } from "./hooks/useError"
+import { fetchUser, fetchAllUsers } from '../api/authApi'
+import { inviteToGroup, kickFromGroup, getJoinRequests, acceptJoinRequest, rejectJoinRequest, leaveGroup, dissolveGroup, getMessages, sendMessage } from '../api/groupApi'
+import { AuthContext } from "../contexts/context.jsx"
+import { DataContext } from "../contexts/DataContext"
+import { UIContext } from "../contexts/UIContext"
+import { useError } from "../hooks/useError"
 
 const GroupPage = () => {
 

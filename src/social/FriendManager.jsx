@@ -7,12 +7,14 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
 import { UIContext } from "../contexts/UIContext"
+import { useError } from "../hooks/useError.js"
 
 const FriendManager = () => {
 
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
+    const { setError } = useError()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
 
@@ -37,6 +39,7 @@ const FriendManager = () => {
 
     useEffect(
         () => {
+            if (!auth.accessToken) return
 
             Promise.all([
                 fetchAllUsers({ auth }),
@@ -46,10 +49,13 @@ const FriendManager = () => {
                     setAllUsers(userResponse.data)
                     setFriendRequests(friendRequestResponse.data)
                     setLoading(false)
-                }
-                )
+                })
+                .catch(error => {
+                    setError('Error fetching friends')
+                    setLoading(false)
+                })
         },
-        []
+        [auth]
     )
 
     useEffect(
@@ -65,7 +71,7 @@ const FriendManager = () => {
         return allUsers.find(user => user.id === inputId)
     }
 
-    let currentFriends = allUsers.filter(user => storedUser.friends.includes(user.id))
+    let currentFriends = storedUser?.friends ? allUsers.filter(user => storedUser.friends.includes(user.id)) : []
 
 
     if (loading) {

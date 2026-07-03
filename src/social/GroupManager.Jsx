@@ -4,6 +4,7 @@ import { fetchUser, fetchAllUsers } from '../api/authApi'
 import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, requestToJoinGroup, createGroup } from '../api/groupApi'
 import { useCollapse } from "react-collapsed"
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useError } from "../hooks/useError.js"
 
 import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
@@ -14,6 +15,7 @@ const GroupManager = () => {
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
+    const { setError } = useError()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
 
@@ -39,6 +41,8 @@ const GroupManager = () => {
 
     useEffect(
         () => {
+            if (!auth.accessToken) return
+
             Promise.all([
                 getGroups({ auth }),
                 getGroupInvites({ auth })
@@ -48,8 +52,12 @@ const GroupManager = () => {
                     setGroupInvites(groupInviteResponse.data)
                     setLoading(false)
                 })
+                .catch(error => {
+                    setError('Error fetching groups')
+                    setLoading(false)
+                })
         },
-        []
+        [auth]
     )
 
     useEffect(

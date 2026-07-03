@@ -4,12 +4,15 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { AuthContext } from "./contexts/context.jsx"
+import { useError } from './hooks/useError.js'
 
 
 
 const Rankings = () => {
 
   const { auth } = useContext(AuthContext)
+  const { SetError } = useError()
+
   const [allUsers, setAllUsers] = useState([])
   const [coasters, setCoasters] = useState([])
   const [loading, setLoading] = useState(true)
@@ -20,29 +23,39 @@ const Rankings = () => {
 
   useEffect(
     () => {
-      if (auth.accessToken) {
-        fetchAllUsers({ auth })
-          .then(response => {
-            setAllUsers(response.data)
-            setLoading(false)
-          })
-
-        fetchCoasters({ auth })
-          .then(response => {
-            const coasterJson = response.json()
-              .then(coasterJson => {
-                setCoasters(coasterJson)
-                setLoading2(false)
-              })
-          })
-
-
-      }
-      else {
+      if (!auth.accessToken) {
         navigate('/')
+        return
       }
+
+      fetchAllUsers({ auth })
+        .then(response => {
+          setAllUsers(response.data)
+          setLoading(false)
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error)
+          setLoading(false)
+        })
+
+      fetchCoasters({ auth })
+        .then(response => {
+          const coasterJson = response.json()
+            .then(coasterJson => {
+              setCoasters(coasterJson)
+              setLoading(false)
+            })
+            .catch(error => {
+              console.error('Error fetching coasters:', error)
+              setLoading(false)
+            })
+        })
+        .catch(error => {
+          console.error('Error fetching coasters:', error)
+          setLoading(false)
+        })
     },
-    []
+    [auth]
   )
 
 

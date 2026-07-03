@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { useError } from './useError'
 
 export const useLocalStorage = (key, initialValue) => {
+
+  const { setError } = useError()
+
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = window.localStorage.getItem(key)
@@ -16,7 +20,7 @@ export const useLocalStorage = (key, initialValue) => {
       setStoredValue(valueToStore)
       window.localStorage.setItem(key, JSON.stringify(valueToStore))
     } catch (error) {
-      console.error(`Error writing to localStorage key "${key}":`, error)
+      SetError(`Error writing to localStorage key "${key}"`)
     }
   }
 

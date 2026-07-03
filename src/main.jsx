@@ -41,7 +41,7 @@ import ImageGallery from './ImageGallery'
 import FriendManager from "./social/FriendManager"
 import GroupManager from "./social/GroupManager"
 import DirectMessages from "./social/DirectMessages"
-import GroupPage from './GroupPage'
+import GroupPage from './social/GroupPage'
 
 function Layout() {
   return (

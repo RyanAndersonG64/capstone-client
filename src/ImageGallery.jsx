@@ -43,16 +43,21 @@ const ImageGallery = () => {
 
     useEffect(
         () => {
-            if (auth.accessToken) {
-                getImages({ auth })
-                    .then(response => {
-                        setImageState(response.data)
-                        setAllImages(response.data)
-                        setLoading(false)
-                    })
-            }
+            if (!auth.accessToken) return
+
+            setLoading(true)
+            getImages({ auth })
+                .then(response => {
+                    setImageState(response.data)
+                    setAllImages(response.data)
+                    setLoading(false)
+                })
+                .catch(error => {
+                    setError('Error fetching images:')
+                    setLoading(false)
+                })
         },
-        [auth.accessToken]
+        [auth]
     )
 
     const submit = () => {

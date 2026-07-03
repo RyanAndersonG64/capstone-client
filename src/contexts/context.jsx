@@ -4,7 +4,12 @@ export const AuthContext = createContext()
 
 const initialAuth = () => {
   const storedAuth = localStorage.getItem('authStorage')
-  return storedAuth ? storedAuth : undefined
+  if (!storedAuth) return undefined
+  try {
+    return JSON.parse(storedAuth)
+  } catch {
+    return storedAuth  // fallback if not JSON
+  }
 }
 
 export const AuthContextProvider = ({ children }) => {

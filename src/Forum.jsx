@@ -24,8 +24,7 @@ const Forum = () => {
     const [title, setTitle] = useState('')
     const [textContent, setTextContent] = useState('')
     
-    const [loading1, setLoading1] = useState(true)
-    const [loading2, setLoading2] = useState(true)
+    const [loading, setLoading] = useState(true)
     
     const navigate = useNavigate()
 
@@ -56,21 +55,24 @@ const Forum = () => {
 
     useEffect(
         () => {
-            if (auth.accessToken) {
-                getPosts({ auth })
-                    .then(response => {
-                        setPostState(response.data)
-                        setAllPosts(response.data)
-                        setLoading1(false)
-                    })
+            if (!auth.accessToken) return
+
+            Promise.all([
+                getPosts({ auth }),
                 getComments({ auth })
-                    .then(response => {
-                        setAllComments(response.data)
-                        setLoading2(false)
-                    })
-            }
+            ])
+                .then(([postsResponse, commentsResponse]) => {
+                    setPostState(postsResponse.data)
+                    setAllPosts(postsResponse.data)
+                    setAllComments(commentsResponse.data)
+                    setLoading(false)
+                })
+                .catch(error => {
+                    console.error('Error fetching posts/comments:', error)
+                    setLoading(false)
+                })
         },
-        [auth.accessToken]
+        [auth]
     )
 
     const submit = () => {
@@ -85,7 +87,7 @@ const Forum = () => {
             })
     }
 
-    if (loading1 || loading2) {
+    if (loading) {
         return <div><img src = 'https://http.cat/images/102.jpg'></img></div>
     }
 
