@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx eslint *)",
+      "Bash(git config *)",
+      "Bash(echo \"global now: $\\(git config --global --get status.showUntrackedFiles || echo 'unset \\(default: normal\\)'\\)\")"
+    ]
+  }
+}

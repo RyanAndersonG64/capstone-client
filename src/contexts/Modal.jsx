@@ -73,12 +73,12 @@ const Modal = ({
             />
           )}
 
-          <div className="modal-buttons">
-            <button ref={cancelRef} type="button" className="modal-button" onClick={dismiss}>
-              {cancelText}
-            </button>
+          <div className="modal-buttons" style={{ justifyContent: 'center'}}>
             <button type="submit" className="modal-button modal-button-confirm" disabled={submitDisabled}>
               {confirmText || (isPrompt ? 'Submit' : 'Confirm')}
+            </button>
+            <button ref={cancelRef} type="button" className="modal-button" onClick={dismiss}>
+              {cancelText}
             </button>
           </div>
         </form>
