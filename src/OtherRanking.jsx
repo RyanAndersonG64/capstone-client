@@ -6,14 +6,15 @@ import { fetchParks, fetchCoasters, setFavorite } from './api/coasterApi'
 import { AuthContext } from "./contexts/context.jsx"
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from "./contexts/UIContext"
+import { useError } from './hooks/useError'
 
 
 const OtherRanking = () => {
     const { auth } = useContext(AuthContext)
+    const { setError } = useError()
     const { currentUser, allCoasters, setAllCoasters } = useContext(DataContext)
-    const { profileView, setProfileView } = useContext(UIContext)
+    const { profileView } = useContext(UIContext)
 
-    const profileStorage = JSON.parse(localStorage.getItem('profileView'))
     const [coasterState, setCoasterState] = useState([])
     const [allUsers, setAllUsers] = useState([])
 
@@ -40,19 +41,24 @@ const OtherRanking = () => {
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)
-                    let userBeingViewed = response.data.find(user => user.id === profileStorage)
-                    setProfileView(response.data.find(user => user.id === profileStorage))
-                    fetchCoasters({ auth })
-                        .then(response => {
-                            const coasterJson = response.json()
-                                .then(coasterJson => {
-                                    setAllCoasters(coasterJson.filter((coaster) => userBeingViewed.coasters_ridden.includes(coaster.id)))
-                                    setCoasterState(coasterJson.filter((coaster) => userBeingViewed.coasters_ridden.includes(coaster.id)))
-                                    setLoading(false)
-                                })
+                    const userBeingViewed = response.data.find(user => user.id === profileView)
+                    if (!userBeingViewed) {
+                        setLoading(false)
+                        return
+                    }
+                    return fetchCoasters({ auth })
+                        .then(response => response.json())
+                        .then(coasterJson => {
+                            const ridden = coasterJson.filter((coaster) => userBeingViewed.coasters_ridden.includes(coaster.id))
+                            setAllCoasters(ridden)
+                            setCoasterState(ridden)
+                            setLoading(false)
                         })
                 })
-
+                .catch(() => {
+                    setError('Error loading rankings')
+                    setLoading(false)
+                })
         },
         []
     )
@@ -73,18 +79,27 @@ const OtherRanking = () => {
     }
 
 
+    const userBeingViewed = getUserFromId(profileView)
+
     if (loading) {
         return <div><img src='https://http.cat/images/102.jpg'></img></div>
     }
 
-    if (getUserFromId(profileStorage).profile_view_state === 'FRIENDS ONLY' && !getUserFromId(profileStorage).friends.includes(currentUser)) {
+    if (!userBeingViewed) {
+        return (
+            <div className="p-5">
+                <br></br>
+                <h1> No profile selected. </h1>
+            </div>
+        )
+    } else if (userBeingViewed.profile_view_state === 'FRIENDS ONLY' && !userBeingViewed.friends.includes(currentUser.id)) {
         return (
             <div className="p-5">
                 <br></br>
                 <h1> This user&apos;s profile can only be viewed by their friends. </h1>
             </div>
         )
-    } else if (getUserFromId(profileStorage).profile_view_state === 'PRIVATE') {
+    } else if (userBeingViewed.profile_view_state === 'PRIVATE') {
         return (
             <div className="p-5">
                 <br></br>
@@ -95,14 +110,14 @@ const OtherRanking = () => {
         return (
             <div className='other-ranking'>
                 <br></br>
-                <h1> {getUserFromId(profileStorage).first_name} {getUserFromId(profileStorage).last_name}&apos;s Top 10 </h1>
+                <h1> {userBeingViewed.first_name} {userBeingViewed.last_name}&apos;s Top 10 </h1>
                 <Link style={{ marginRight: 20 }} to='/otherprofile'>All Coasters Ridden</Link>
                 <br></br><br></br>
                 {numbers.map((number) => {
                     return (
                         <div key={number}>
                             <span className="rankingNumber">{number}</span>
-                            <input type="text" key={number} name={'number' + number} readOnly={!editable} defaultValue={getUserFromId(profileStorage).favorites[number - 1]}
+                            <input type="text" key={number} name={'number' + number} readOnly={!editable} defaultValue={userBeingViewed.favorites[number - 1]}
                                 onChange={(e) => {
                                     setCoasterState(allCoasters.filter((coaster) => coaster.name.includes(e.target.value)))
                                     setInputValue(e.target.value)

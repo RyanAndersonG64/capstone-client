@@ -96,8 +96,8 @@ const Profile = () => {
 
       <select style={{ float: 'right' }} id='userLookup' name='userLookup' defaultValue={currentUser.id}
         onChange={(e) => {
-          setProfileView(e.target.value)
-          localStorage.setItem('profileView', JSON.stringify(e.target.value))
+          // select values are strings; user ids are numbers everywhere else
+          setProfileView(Number(e.target.value))
         }
         }
       >

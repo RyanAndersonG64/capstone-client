@@ -18,6 +18,7 @@ const GroupManager = () => {
     const { setError } = useError()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
+    const [, setStoredGroup] = useLocalStorage('group', null)
 
     const [allUsers, setAllUsers] = useState([])
     const [groupInvites, setGroupInvites] = useState([])
@@ -133,7 +134,8 @@ const GroupManager = () => {
                         <div className='group' key={group.id}>
                             <button className='profile-link' style={{ border: 'none', background: 'none' }}
                                 onClick={() => {
-                                    // group state is updated by API response
+                                    // GroupPage reads the selected group from storage
+                                    setStoredGroup(group)
                                     navigate('/grouppage')
                                 }}
                             >

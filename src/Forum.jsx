@@ -284,7 +284,6 @@ const Forum = () => {
                                     navigate('/profile')
                                 } else {
                                     setProfileView(post.posted_by)
-                                    setProfileView(post.posted_by)
                                     navigate('/otherprofile')
                                 }
                             }

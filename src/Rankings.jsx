@@ -11,12 +11,11 @@ import { useError } from './hooks/useError.js'
 const Rankings = () => {
 
   const { auth } = useContext(AuthContext)
-  const { SetError } = useError()
+  const { setError } = useError()
 
   const [allUsers, setAllUsers] = useState([])
   const [coasters, setCoasters] = useState([])
   const [loading, setLoading] = useState(true)
-  const [loading2, setLoading2] = useState(true)
 
 
   const navigate = useNavigate()
@@ -28,30 +27,17 @@ const Rankings = () => {
         return
       }
 
-      fetchAllUsers({ auth })
-        .then(response => {
-          setAllUsers(response.data)
+      Promise.all([
+        fetchAllUsers({ auth }),
+        fetchCoasters({ auth }).then(response => response.json()),
+      ])
+        .then(([userResponse, coasterJson]) => {
+          setAllUsers(userResponse.data)
+          setCoasters(coasterJson)
           setLoading(false)
         })
-        .catch(error => {
-          console.error('Error fetching users:', error)
-          setLoading(false)
-        })
-
-      fetchCoasters({ auth })
-        .then(response => {
-          const coasterJson = response.json()
-            .then(coasterJson => {
-              setCoasters(coasterJson)
-              setLoading(false)
-            })
-            .catch(error => {
-              console.error('Error fetching coasters:', error)
-              setLoading(false)
-            })
-        })
-        .catch(error => {
-          console.error('Error fetching coasters:', error)
+        .catch(() => {
+          setError('Error fetching rankings')
           setLoading(false)
         })
     },
@@ -68,7 +54,7 @@ const Rankings = () => {
 
   const coasterCount = {}
 
-  if (!loading && !loading2) {
+  if (!loading) {
     allUsers.forEach(profile => {
       profile.coasters_ridden.forEach(coasterId => {
         if (coasterCount[coasterId]) {
@@ -88,7 +74,7 @@ const Rankings = () => {
 
   const favoriteCount = {}
 
-  if (!loading && !loading2) {
+  if (!loading) {
     allUsers.forEach(profile => {
       profile.favorites.forEach(coasterName => {
         if (coasterName !== '') {
@@ -112,7 +98,7 @@ const Rankings = () => {
     return coasters.find(coaster => coaster.id == inputId)
   }
 
-  if (loading || loading2) {
+  if (loading) {
     return <div><img src='https://http.cat/images/102.jpg'></img></div>
   }
 

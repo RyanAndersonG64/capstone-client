@@ -91,7 +91,6 @@ const FriendManager = () => {
                                 <Link className="profile-link"
                                     onClick={() => {
                                         setProfileView(request.sender)
-                                        setProfileView(request.sender)
                                     }}
                                     to='../otherprofile/'
                                 >
@@ -133,7 +132,6 @@ const FriendManager = () => {
                             <div key={friend.id} className="friend">
                                 <Link className='profile-link'
                                     onClick={() => {
-                                        setProfileView(friend.id)
                                         setProfileView(friend.id)
                                     }}
                                     to='../otherprofile/'

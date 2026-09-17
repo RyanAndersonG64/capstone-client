@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
 import { UIContext } from "../contexts/UIContext"
 import { useError } from "../hooks/useError"
+import { useLocalStorage } from "../hooks/useLocalStorage"
 
 const GroupPage = () => {
 
@@ -14,8 +15,8 @@ const GroupPage = () => {
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
 
-    const storedUser = JSON.parse(localStorage.getItem('storedUser'))
-    const [group, setGroup] = useState(JSON.parse(localStorage.getItem('group')))
+    const [storedUser] = useLocalStorage('storedUser', null)
+    const [group, setGroup] = useLocalStorage('group', null)
 
     const [allUsers, setAllUsers] = useState([])
     const [userToInvite, setUserToInvite] = useState(0)
@@ -44,6 +45,8 @@ const GroupPage = () => {
 
     useEffect(
         () => {
+            if (!group) return
+
             fetchAllUsers({ auth })
                 .then(response => {
                     setAllUsers(response.data)
@@ -69,6 +72,9 @@ const GroupPage = () => {
         () => {
             if (!auth.accessToken) {
                 navigate('/')
+            } else if (!group) {
+                // reached without picking a group (e.g. a direct link or a stale refresh)
+                navigate('/social/groupmanager')
             }
         },
         []
@@ -77,6 +83,10 @@ const GroupPage = () => {
     function getUserFromId(inputId) {
         let user = allUsers.find(user => user.id === inputId)
         return user ? user : {first_name: '', last_name: ''}
+    }
+
+    if (!group) {
+        return null
     }
 
     if (loading1 || loading2 || loading3) {
@@ -194,7 +204,6 @@ const GroupPage = () => {
                     <div key={member} className="group-member" >
                         <Link className='profile-link' style={{ color: memberColor(member) }}
                             onClick={() => {
-                                setProfileView(member)
                                 setProfileView(member)
                                 if (member === currentUser.id) {
                                     navigate('/profile')

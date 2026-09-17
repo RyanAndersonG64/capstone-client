@@ -185,7 +185,6 @@ const ImageGallery = () => {
                                     navigate('/profile')
                                 } else {
                                     setProfileView(image.posted_by)
-                                    setProfileView(image.posted_by)
                                     navigate('/otherprofile')
                                 }
                             }
