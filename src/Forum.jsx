@@ -5,7 +5,7 @@ import { AuthContext } from './contexts/context.jsx'
 import { DataContext } from "./contexts/DataContext"
 import { UIContext } from './contexts/UIContext'
 import { useError } from "./hooks/useError"
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useModal } from './hooks/useModal'
 
 
 import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComment, editComment, deleteComment } from './api/forumApi'
@@ -13,11 +13,14 @@ import { getPosts, deletePost, editPost, addPost, likePost, getComments, addComm
 const Forum = () => {
 
     const { setError } = useError()
+    const { prompt } = useModal()
     const { auth } = useContext(AuthContext)
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { allPosts, setAllPosts, profileView, setProfileView } = useContext(UIContext)
 
-    const [postState, setPostState] = useState([])
+    // the visible list is derived from allPosts rather than held as a second
+    // copy, so a refresh after an edit keeps whichever sort is selected
+    const [postFilter, setPostFilter] = useState('All Posts')
     const [allComments, setAllComments] = useState([])
     const [commentState, setCommentState] = useState([])
 
@@ -62,29 +65,44 @@ const Forum = () => {
                 getComments({ auth })
             ])
                 .then(([postsResponse, commentsResponse]) => {
-                    setPostState(postsResponse.data)
                     setAllPosts(postsResponse.data)
                     setAllComments(commentsResponse.data)
                     setLoading(false)
                 })
-                .catch(error => {
-                    console.error('Error fetching posts/comments:', error)
+                .catch(() => {
+                    setError('Error fetching posts and comments')
                     setLoading(false)
                 })
         },
         [auth]
     )
 
+    const visiblePosts = postFilter === 'Your Posts'
+        ? allPosts.filter(post => post.posted_by === currentUser.id)
+        : postFilter === 'Liked Posts'
+            ? allPosts.filter(post => post.liked_by.includes(currentUser.id))
+            : allPosts
+
+    const refreshPosts = () => {
+        return getPosts({ auth })
+            .then(res => setAllPosts(res.data))
+            .catch(() => setError('Error refreshing posts'))
+    }
+
+    const refreshComments = (postId) => {
+        return getComments({ auth })
+            .then(res => {
+                setAllComments(res.data)
+                setCommentState(res.data.filter(comment => comment.post === postId))
+            })
+            .catch(() => setError('Error refreshing comments'))
+    }
+
     const submit = () => {
 
         let poster = currentUser.id
         addPost({ auth, title, postedBy: poster, textContent })
-            .then(response => {
-                getPosts({ auth })
-                    .then(res => {
-                        setPostState(res.data)
-                    })
-            })
+            .then(() => refreshPosts())
     }
 
     if (loading) {
@@ -127,18 +145,8 @@ const Forum = () => {
             <hr />
             <h1>Posts</h1>
             <label htmlFor="postFilter">Sort posts by:</label>
-            <select id="postTypes" name="postTypes" onChange={(e) => {
-                if (e.target.value === 'All Posts') {
-                    setPostState(allPosts)
-                } else if (e.target.value === 'Your Posts') {
-                    setPostState(allPosts.filter((post) => post.posted_by === currentUser.id))
-                } else if (e.target.value === 'Liked Posts') {
-                    setPostState(allPosts.filter((post) => post.liked_by.includes(currentUser.id)))
-                } else {
-                    setPostState(allPosts)
-                }
-            }
-            }
+            <select id="postTypes" name="postTypes" value={postFilter}
+                onChange={(e) => setPostFilter(e.target.value)}
             >
                 <option value='All Posts'>All Posts</option>
                 <option value='Your Posts'>Your Posts</option>
@@ -146,7 +154,7 @@ const Forum = () => {
 
             </select>
 
-            {postState.toReversed().map(post => (
+            {visiblePosts.toReversed().map(post => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
                     <p>{post.text_content}</p>
@@ -154,13 +162,7 @@ const Forum = () => {
                     <br></br>
                     <button onClick={() => {
                         likePost({ auth, current_user: currentUser.id, post_id: post.id, likes: post.likes })
-                            .then(response => {
-                                getPosts({ auth })
-                                    .then(res => {
-                                        setAllPosts(res.data)
-                                    })
-                            })
-
+                            .then(() => refreshPosts())
                     }}>
                         Like
                     </button>
@@ -168,12 +170,7 @@ const Forum = () => {
                     <button style={{ marginLeft: 20 }} onClick={() => {
                         if (post.posted_by === currentUser.id) {
                             deletePost({ auth, postId: post.id })
-                                .then(response => {
-                                    getPosts({ auth })
-                                        .then(res => {
-                                            setAllPosts(res.data)
-                                        })
-                                })
+                                .then(() => refreshPosts())
                         } else {
                             setError("You can't delete someone else's post")
                         }
@@ -181,33 +178,29 @@ const Forum = () => {
                         Delete
                     </button>
 
-                    <button style={{ marginLeft: 20 }} onClick={() => {
-                        if (post.posted_by === currentUser.id) {
-                            editPost({ auth, postId: post.id, textContent: prompt('Enter new text content'), likeCount: post.like_count })
-                                .then(response => {
-                                    getPosts({ auth })
-                                        .then(res => {
-                                            setAllPosts(res.data)
-                                        })
-                                })
-                        } else {
+                    <button style={{ marginLeft: 20 }} onClick={async () => {
+                        if (post.posted_by !== currentUser.id) {
                             setError("You can't edit someone else's post")
+                            return
                         }
+                        const textContent = await prompt('Enter new text content', {
+                            defaultValue: post.text_content,
+                            confirmText: 'Save',
+                        })
+                        if (textContent === null) return
+
+                        editPost({ auth, postId: post.id, textContent, likeCount: post.like_count })
+                            .then(() => refreshPosts())
                     }}>
                         Edit
                     </button>
 
-                    <button style={{ marginLeft: 20 }} onClick={() => {
-                        addComment({ auth, postId: post.id, postedBy: currentUser.id, textContent: prompt('Enter comment') })
-                            .then(response => {
-                                getComments({ auth })
-                                    .then(res => {
-                                        if (res.data) {
-                                            setAllComments(res.data)
-                                            setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                        }
-                                    })
-                            })
+                    <button style={{ marginLeft: 20 }} onClick={async () => {
+                        const textContent = await prompt('Enter comment', { confirmText: 'Post comment' })
+                        if (textContent === null) return
+
+                        addComment({ auth, postId: post.id, postedBy: currentUser.id, textContent })
+                            .then(() => refreshComments(post.id))
                     }}>
                         Comment
                     </button>
@@ -232,19 +225,19 @@ const Forum = () => {
                                         <br></br>
                                         <p className="comment-text">{comment.text_content}</p>
                                         <button
-                                            onClick={() => {
-                                                if (comment.posted_by === currentUser.id) {
-                                                    editComment({ auth, commentId: comment.id, textContent: prompt('Enter new text content') })
-                                                        .then(response => {
-                                                            getComments({ auth })
-                                                                .then(res => {
-                                                                    setAllComments(res.data)
-                                                                    setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                                                })
-                                                        })
-                                                } else {
+                                            onClick={async () => {
+                                                if (comment.posted_by !== currentUser.id) {
                                                     setError("You can't edit someone else's comment")
+                                                    return
                                                 }
+                                                const textContent = await prompt('Enter new text content', {
+                                                    defaultValue: comment.text_content,
+                                                    confirmText: 'Save',
+                                                })
+                                                if (textContent === null) return
+
+                                                editComment({ auth, commentId: comment.id, textContent })
+                                                    .then(() => refreshComments(post.id))
                                             }}
                                         >
                                             Edit
@@ -253,13 +246,7 @@ const Forum = () => {
                                             onClick={() => {
                                                 if (comment.posted_by === currentUser.id) {
                                                     deleteComment({ auth, commentId: comment.id })
-                                                        .then(response => {
-                                                            getComments({ auth })
-                                                                .then(res => {
-                                                                    setCommentState((res.data.filter(comment => comment.post === post.id)))
-                                                                    setAllComments(res.data)
-                                                                })
-                                                        })
+                                                        .then(() => refreshComments(post.id))
                                                 } else {
                                                     setError("You can't delete someone else's comment")
                                                 }

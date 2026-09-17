@@ -7,6 +7,7 @@ import { DataContext } from "../contexts/DataContext"
 import { UIContext } from "../contexts/UIContext"
 import { useError } from "../hooks/useError"
 import { useLocalStorage } from "../hooks/useLocalStorage"
+import { useModal } from "../hooks/useModal"
 
 const GroupPage = () => {
 
@@ -14,6 +15,7 @@ const GroupPage = () => {
     const { currentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
+    const { confirm } = useModal()
 
     const [storedUser] = useLocalStorage('storedUser', null)
     const [group, setGroup] = useLocalStorage('group', null)
@@ -99,15 +101,20 @@ const GroupPage = () => {
                 <div>
 
                     <button className='profile-link' style={{ float: 'right', marginLeft: 10, background: 'none', border: 'solid 1px' }}
-                        onClick={() => {
+                        onClick={async () => {
 
-                            let confirm_dissolve = confirm('Are you sure you want to dissolve this group?')
-                            if (confirm_dissolve) {
-                                dissolveGroup({ auth, group: group.id })
-                                    .then(response => {
-                                        navigate('/social/groupmanager')
-                                    })
-                            }
+                            const confirmed = await confirm(
+                                `Are you sure you want to dissolve ${group.name}? This cannot be undone.`,
+                                { confirmText: 'Dissolve' }
+                            )
+                            if (!confirmed) return
+
+                            dissolveGroup({ auth, group: group.id })
+                                .then(() => {
+                                    setGroup(null)
+                                    navigate('/social/groupmanager')
+                                })
+                                .catch(() => setError('Error dissolving group'))
 
                         }
                         }
@@ -216,16 +223,21 @@ const GroupPage = () => {
                         </Link>
                         {group.founder === storedUser.id && member !== group.founder &&
                             <button className='profile-link' style={{ marginLeft: 10, background: 'none', border: 'solid 1px' }}
-                                onClick={() => {
-                                    if (member != group.founder) {
-                                        let confirm_kick = confirm('Are you sure you want to Kick this member?')
-                                        if (confirm_kick) {
-                                            kickFromGroup({ auth, group: group.id, memberToKick: member })
-                                                .then(response => {
-                                                    setGroup(group)
-                                                })
-                                        }
-                                    }
+                                onClick={async () => {
+                                    if (member === group.founder) return
+
+                                    const confirmed = await confirm(
+                                        `Are you sure you want to kick ${getUserFromId(member).first_name} ${getUserFromId(member).last_name} from the group?`,
+                                        { confirmText: 'Kick' }
+                                    )
+                                    if (!confirmed) return
+
+                                    kickFromGroup({ auth, group: group.id, memberToKick: member })
+                                        .then(response => {
+                                            // the endpoint returns the updated group
+                                            setGroup(response.data)
+                                        })
+                                        .catch(() => setError('Error kicking member'))
                                 }
                                 }
                             >
@@ -234,16 +246,20 @@ const GroupPage = () => {
                         }
                         {member !== group.founder && member === storedUser.id &&
                             <button className='profile-link' style={{ marginLeft: 10, background: 'none', border: 'solid 1px' }}
-                                onClick={() => {
+                                onClick={async () => {
 
-                                    let confirm_leave = confirm('Are you sure you want to leave this group?')
-                                    if (confirm_leave) {
-                                        leaveGroup({ auth, group: group.id, memberLeaving: storedUser.id })
-                                            .then(response => {
-                                                setGroup(group)
-                                                navigate('/social/groupmanager')
-                                            })
-                                    }
+                                    const confirmed = await confirm(
+                                        `Are you sure you want to leave ${group.name}?`,
+                                        { confirmText: 'Leave' }
+                                    )
+                                    if (!confirmed) return
+
+                                    leaveGroup({ auth, group: group.id, memberLeaving: storedUser.id })
+                                        .then(() => {
+                                            setGroup(null)
+                                            navigate('/social/groupmanager')
+                                        })
+                                        .catch(() => setError('Error leaving group'))
 
                                 }
                                 }

@@ -8,6 +8,7 @@ import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
 import { UIContext } from "../contexts/UIContext"
 import { useError } from "../hooks/useError.js"
+import { useModal } from "../hooks/useModal.js"
 
 const FriendManager = () => {
 
@@ -15,6 +16,7 @@ const FriendManager = () => {
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
+    const { confirm } = useModal()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
 
@@ -141,11 +143,25 @@ const FriendManager = () => {
                                 </Link>
                                 <div className="buttons">
                                     <button className='profile-link friend-button' style={{ border: 'solid 1px', background: 'none' }}
-                                        onClick={() => {
-                                            let confirm_delete = confirm('Are you sure you want to delete this friend?')
-                                            if (confirm_delete) {
-                                                deleteFriend({ auth, user: currentUser.id, friend: friend.id })
-                                            }
+                                        onClick={async () => {
+                                            const confirmed = await confirm(
+                                                `Are you sure you want to remove ${friend.first_name} ${friend.last_name} as a friend?`,
+                                                { confirmText: 'Delete' }
+                                            )
+                                            if (!confirmed) return
+
+                                            deleteFriend({ auth, user: currentUser.id, friend: friend.id })
+                                                .then(response => {
+                                                    // the endpoint returns every profile; the friends
+                                                    // list is derived from storedUser, so refresh that too
+                                                    setAllUsers(response.data)
+                                                    return fetchUser({ auth })
+                                                })
+                                                .then(response => {
+                                                    setStoredUser(response.data)
+                                                    setCurrentUser(response.data)
+                                                })
+                                                .catch(() => setError('Error removing friend'))
                                         }
                                         }
                                     >

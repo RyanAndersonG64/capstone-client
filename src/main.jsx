@@ -15,6 +15,7 @@ import { AuthContext, AuthContextProvider } from './contexts/context.jsx'
 import { DataContextProvider } from './contexts/DataContext'
 import { UIContextProvider } from './contexts/UIContext'
 import { ErrorProvider } from './contexts/ErrorContext'
+import { ModalProvider } from './contexts/ModalContext'
 import ErrorBanner from './contexts/ErrorBanner'
 
 import { composeProviders } from './utils/composeProviders'
@@ -147,6 +148,7 @@ const router = createBrowserRouter([
 
 const ComposedProviders = composeProviders([
   ErrorProvider,
+  ModalProvider,
   AuthContextProvider,
   DataContextProvider,
   UIContextProvider,

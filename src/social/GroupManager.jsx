@@ -5,6 +5,7 @@ import { getGroups, getGroupInvites, acceptGroupInvite, rejectGroupInvite, reque
 import { useCollapse } from "react-collapsed"
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useError } from "../hooks/useError.js"
+import { useModal } from "../hooks/useModal.js"
 
 import { AuthContext } from "../contexts/context.jsx"
 import { DataContext } from "../contexts/DataContext"
@@ -16,6 +17,7 @@ const GroupManager = () => {
     const { currentUser, setCurrentUser } = useContext(DataContext)
     const { profileView, setProfileView } = useContext(UIContext)
     const { setError } = useError()
+    const { prompt } = useModal()
 
     const [storedUser, setStoredUser] = useLocalStorage('storedUser', null)
     const [, setStoredGroup] = useLocalStorage('group', null)
@@ -147,7 +149,15 @@ const GroupManager = () => {
                     <hr />
 
                     <button className='profile-link' style={{ border: 'solid 1px', background: 'none' }}
-                        onClick={() => createGroup({ auth, name: prompt('Enter a group name'), creator: currentUser.id })}
+                        onClick={async () => {
+                            const name = await prompt('Enter a group name', { confirmText: 'Create' })
+                            if (name === null) return
+
+                            createGroup({ auth, name, creator: currentUser.id })
+                                .then(() => getGroups({ auth }))
+                                .then(response => setGroups(response.data))
+                                .catch(() => setError('Error creating group'))
+                        }}
                     >
                         Create Group
                     </button>
